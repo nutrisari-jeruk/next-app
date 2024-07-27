@@ -1,6 +1,5 @@
 import axios from 'axios';
 import type { AxiosRequestHeaders, AxiosResponse } from 'axios';
-import { redirect } from 'next/navigation';
 
 const genericSuccessResponseInterceptor = function (response: AxiosResponse) {
   // Any status code that lie within the range of 2xx cause this function to trigger
@@ -35,14 +34,14 @@ const genericErrorResponseInterceptor = function (error: any) {
 };
 
 const $http = axios.create({
-  baseURL: process.env.API_URL,
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
   timeout: 60000,
 });
 
 $http.interceptors.request.use(function (config) {
   // TODO: get token from cookies
   const auth = {
-    token: 'secret-token',
+    token: null,
   };
 
   if (auth.token) {

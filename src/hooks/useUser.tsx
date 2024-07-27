@@ -5,16 +5,14 @@ import { AxiosError } from 'axios';
 import $http from '@/lib/axios';
 
 export default function useUser() {
-  const [user, setUser] = useState<BaseResponse<User> | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<AxiosError>();
 
   const fetchUser = async () => {
-    setIsLoading(true);
-
     try {
-      const { data } = await $http.get('/user');
-      setUser(data.data);
+      const { data } = await $http.get<BaseResponse<User>>('/users');
+      setUser(data?.data!);
     } catch (error: any) {
       if (error instanceof AxiosError) {
         setError(error);
@@ -28,5 +26,5 @@ export default function useUser() {
     fetchUser();
   }, []);
 
-  return [user, isLoading, error];
+  return { user, isLoading, error };
 }
