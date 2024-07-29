@@ -5,16 +5,16 @@ export const authConfig = {
     signIn: '/login',
   },
   callbacks: {
-    authorized({ auth, request: { nextUrl } }) {
+    authorized({ auth }) {
       const isLoggedIn = !!auth?.user;
-      const isOnDashboard = nextUrl.pathname.startsWith('/');
-      if (isOnDashboard) {
-        if (isLoggedIn) return true;
-        return false; // Redirect unauthenticated users to login page
-      } else if (isLoggedIn) {
-        return Response.redirect(new URL('/dashboard', nextUrl));
-      }
-      return true;
+console.log(auth);
+
+      if (isLoggedIn) return true;
+      return false; // Redirect unauthenticated users to login page
+    },
+    session({ session, token }) {
+      session.user = token;
+      return session;
     },
   },
   providers: [], // Add providers with an empty array for now

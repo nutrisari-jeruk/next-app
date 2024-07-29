@@ -15,7 +15,7 @@ export const { signIn, signOut, auth } = NextAuth({
         email: {},
         password: {},
       },
-      authorize: async (credentials) => {
+      authorize: async (credentials): Promise<ResponseCredentials | null> => {
         const { email, password } = await signInSchema.parseAsync(credentials);
 
         const { data } = await $http.post<ResponseCredentials>('/v1/login', {
@@ -23,8 +23,8 @@ export const { signIn, signOut, auth } = NextAuth({
           password,
         });
 
-        if (!!data.access_token) return data;
-        return null;
+        if (!data.access_token) return null;
+        return data as ResponseCredentials;
       },
     }),
   ],

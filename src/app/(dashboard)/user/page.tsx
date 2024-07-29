@@ -3,6 +3,7 @@
 import useUser from '@/hooks/useUser';
 import { Table } from '@/components';
 import type { Record } from '@/types/table';
+import { auth } from '@/auth';
 
 export default function Page() {
   const { user, isLoading, error } = useUser();
@@ -20,10 +21,6 @@ export default function Page() {
 
   return (
     <>
-      <h1>User Page</h1>
-      {error && <p>{error.message}</p>}
-      {isLoading && <p>Loading...</p>}
-      {user && !isLoading && <p>{JSON.stringify(user)}</p>}
       <Table rows={rows || []} />
     </>
   );

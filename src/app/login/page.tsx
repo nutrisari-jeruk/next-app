@@ -3,7 +3,7 @@
 import { Button, Input } from '@/components';
 import { useFormState, useFormStatus } from 'react-dom';
 import { authenticate } from '@/app/login/_actions/authenticate';
-import { ExclamationCircle } from '@/components/icon';
+import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
 
 export default function Login() {
   const { pending } = useFormStatus();
@@ -25,7 +25,7 @@ export default function Login() {
         </form>
         {errorMessage && (
           <p className="flex text-sm text-red-500 items-center gap-1">
-            <ExclamationCircle />
+            <ExclamationCircleIcon />
             {errorMessage}
           </p>
         )}
