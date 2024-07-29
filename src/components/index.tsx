@@ -1,4 +1,5 @@
 import Button from './button';
 import Input from './input';
+import Table from './table';
 
-export { Button, Input };
+export { Button, Input, Table };
