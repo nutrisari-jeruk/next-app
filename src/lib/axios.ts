@@ -1,7 +1,6 @@
 import { auth } from '@/auth';
 import axios from 'axios';
 import type { AxiosRequestHeaders, AxiosResponse } from 'axios';
-import { getSession } from 'next-auth/react';
 
 const genericSuccessResponseInterceptor = function (response: AxiosResponse) {
   // Any status code that lie within the range of 2xx cause this function to trigger
@@ -41,9 +40,9 @@ const $http = axios.create({
 });
 
 $http.interceptors.request.use(async function (config) {
-  // TODO: get token from session
   const session = await auth();
   const token = session?.user.access_token;
+  console.log(token);
 
   if (token) {
     config.headers = {
