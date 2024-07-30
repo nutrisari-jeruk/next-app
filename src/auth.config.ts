@@ -1,20 +1,38 @@
-import type { NextAuthConfig } from 'next-auth';
+import type { NextAuthConfig, Session, User } from 'next-auth';
+import type { JWT } from 'next-auth/jwt';
+import type { DefaultSession } from 'next-auth';
 
-export const authConfig = {
+declare module 'next-auth' {
+  /**
+   * Returned by `auth`, `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
+   */
+  interface Session {
+    user: {
+      access_token: string;
+    } & DefaultSession['user'];
+  }
+
+  interface User {
+    access_token?: string;
+  }
+}
+
+export const authConfig: NextAuthConfig = {
   pages: {
     signIn: '/login',
   },
   callbacks: {
     authorized({ auth }) {
       const isLoggedIn = !!auth?.user;
-console.log(auth);
 
       if (isLoggedIn) return true;
       return false; // Redirect unauthenticated users to login page
     },
-    session({ session, token }) {
-      session.user = token;
-      return session;
+    async session({ session, token }) {
+      return {
+        ...session,
+        accessToken: token.accessToken,
+      };
     },
   },
   providers: [], // Add providers with an empty array for now

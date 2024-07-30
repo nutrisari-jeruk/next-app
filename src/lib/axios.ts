@@ -1,5 +1,7 @@
+import { auth } from '@/auth';
 import axios from 'axios';
 import type { AxiosRequestHeaders, AxiosResponse } from 'axios';
+import { getSession } from 'next-auth/react';
 
 const genericSuccessResponseInterceptor = function (response: AxiosResponse) {
   // Any status code that lie within the range of 2xx cause this function to trigger
@@ -13,7 +15,7 @@ const genericErrorResponseInterceptor = function (error: any) {
     // that falls out of the range of 2xx
     if (error.response.status === 401) {
       return Promise.reject(
-        new Error('Anda belum terautentikasi, harap login terlebih dahulu')
+        new Error('Anda belum terautentikasi, harap login terlebih dahulu'),
       );
     }
 
@@ -38,16 +40,15 @@ const $http = axios.create({
   timeout: 60000,
 });
 
-$http.interceptors.request.use(function (config) {
-  // TODO: get token from cookies
-  const auth = {
-    token: null,
-  };
+$http.interceptors.request.use(async function (config) {
+  // TODO: get token from session
+  const session = await auth();
+  const token = session?.user.access_token;
 
-  if (auth.token) {
+  if (token) {
     config.headers = {
       ...config.headers,
-      Authorization: `Bearer ${auth.token}`,
+      Authorization: `Bearer ${token}`,
     } as AxiosRequestHeaders;
   }
 
@@ -56,7 +57,7 @@ $http.interceptors.request.use(function (config) {
 
 $http.interceptors.response.use(
   genericSuccessResponseInterceptor,
-  genericErrorResponseInterceptor
+  genericErrorResponseInterceptor,
 );
 
 export { $http };
