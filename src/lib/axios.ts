@@ -1,6 +1,7 @@
 import { auth } from '@/auth';
 import axios from 'axios';
 import type { AxiosRequestHeaders, AxiosResponse } from 'axios';
+import { Session } from 'next-auth';
 
 const genericSuccessResponseInterceptor = function (response: AxiosResponse) {
   // Any status code that lie within the range of 2xx cause this function to trigger

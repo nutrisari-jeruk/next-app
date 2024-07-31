@@ -1,37 +1,15 @@
-import { useEffect, useState } from 'react';
 import type { BaseResponse } from '@/types/api';
 import type { User } from '@/types/user';
-import $http from '@/lib/axios';
-import { AxiosError } from 'axios';
-import { auth } from '@/auth';
+import useSWR from 'swr';
+import fetcher from '@/lib/fetcher';
 
 export default function useUser() {
-  const [user, setUser] = useState<User[] | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState('');
+  const { data, error, isLoading } = useSWR<BaseResponse<User[]>>(
+    '/api/user',
+    fetcher,
+  );
 
-  const fetchUser = async () => {
-    try {
-      const session = await auth();
-      const headers = {
-        Authorization: `Bearer ${session?.user.access_token}`,
-      }
-      const response = await fetch('/api/user', { headers });
-      const data = await response.json();
-      setUser(data);
-    } catch (error: any) {
-      console.log(error)
-      if (error instanceof AxiosError) {
-        setError(error.message);
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchUser();
-  }, []);
+  const user = data?.data;
 
   return { user, isLoading, error };
 }
