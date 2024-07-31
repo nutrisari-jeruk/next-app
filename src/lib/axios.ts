@@ -43,7 +43,6 @@ const $http = axios.create({
 $http.interceptors.request.use(async function (config) {
   const session = await auth();
   const token = session?.user.access_token;
-  console.log(token);
 
   if (token) {
     config.headers = {

@@ -37,7 +37,7 @@ export default function Button(props: Button) {
   return (
     <button
       type={type}
-      className={`${className} w-full rounded-full text-white ${variantClass[variant]} ${sizeClass[size]}`}
+      className={`${className} w-full rounded text-white ${variantClass[variant]} ${sizeClass[size]}`}
       onClick={handleClick}
     >
       <div className="flex items-center justify-center gap-2">
