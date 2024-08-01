@@ -6,7 +6,7 @@ import {
   FolderIcon,
   HomeIcon,
   UsersIcon,
-  PowerIcon
+  PowerIcon,
 } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -33,7 +33,7 @@ function classNames(...classes: string[]): string {
 
 export default async function Sidebar() {
   return (
-    <div className="flex min-h-screen w-72 grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6">
+    <div className="flex h-svh w-72 grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6 shadow">
       <div className="-mx-6 mt-auto flex h-16 shrink-0 items-center bg-indigo-600">
         <Link
           href="/"

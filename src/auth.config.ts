@@ -18,20 +18,22 @@ export const authConfig: NextAuthConfig = {
     signIn: '/login',
   },
   callbacks: {
-    authorized({ auth }) {
+    authorized: ({ auth }) => {
       const isLoggedIn = !!auth?.user;
       if (isLoggedIn) return true;
       return false; // Redirect unauthenticated users to login page
     },
-    jwt({ token, user }) {
+    jwt: ({ token, user }) => {
       if (user) {
         token.accessToken = user.access_token;
       }
+
       return token;
     },
-    session({ session, token }) {
+    session: ({ session, token }) => {
       if (token) {
-        session.user.access_token = token.accessToken as Session['user']['access_token'];
+        session.user.access_token =
+          token.accessToken as Session['user']['access_token'];
       }
       return session;
     },

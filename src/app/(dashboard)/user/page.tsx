@@ -6,6 +6,7 @@ import type { BaseResponse } from '@/types/api';
 import type { User } from '@/types/user';
 import Table from './components/table';
 import { Button } from '@/components';
+import Link from 'next/link';
 
 export default function Page() {
   const { data, error, isLoading } = useSWR<BaseResponse<User[]>>(
@@ -30,9 +31,11 @@ export default function Page() {
         </p>
       </div>
 
-      <div className="flex flex-col gap-4 mt-8">
+      <div className="mt-8 flex flex-col gap-4">
         <div className="w-24">
-          <Button title="Add User" variant="primary" size="sm" />
+          <Link href="/user/create">
+            <Button title="Add User" variant="primary" size="sm" />
+          </Link>
         </div>
         <Table />
       </div>

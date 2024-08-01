@@ -3,9 +3,10 @@ interface Input {
   placeholder?: string;
   type?: string;
   isError?: boolean;
-  errorMessage?: string;
+  errorMessage?: string | string[];
   value?: string;
   className?: string;
+  required?: boolean;
   handleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -14,12 +15,13 @@ export default function Input(props: Input) {
 
   const {
     name = `input-${randomId}`,
-    placeholder = 'Masukkan disini',
+    placeholder = 'Enter here',
     type = 'text',
     isError = false,
     errorMessage = 'Error message',
     value = '',
     className = '',
+    required = false,
     handleChange = () => {},
   } = props;
 
@@ -32,7 +34,10 @@ export default function Input(props: Input) {
         htmlFor={name}
         className={`text-sm font-medium capitalize ${isError && textError}`}
       >
-        {name}
+        <div className="flex items-center gap-1">
+          {required && <span className="text-red-500">*</span>}
+          {name}
+        </div>
       </label>
       <input
         id={name}
@@ -41,6 +46,7 @@ export default function Input(props: Input) {
         type={type}
         defaultValue={value}
         placeholder={placeholder}
+        required
         onChange={handleChange}
       />
       {isError && (

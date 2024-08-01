@@ -5,7 +5,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <div className="flex">
       <Sidebar />
 
-      <main className="w-full px-4 py-8">{children}</main>
+      <main className="w-full px-4 py-8 h-svh overflow-y-auto">
+        <div className="bg-white p-4 rounded">{children}</div>
+      </main>
     </div>
   );
 }

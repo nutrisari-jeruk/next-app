@@ -5,7 +5,7 @@ import type { Credentials as ResponseCredentials } from '@/types/auth';
 import { signInSchema } from './lib/zod';
 import { authConfig } from './auth.config';
 
-export const { signIn, signOut, auth } = NextAuth({
+export const { handlers, signIn, signOut, auth } = NextAuth({
   ...authConfig,
   providers: [
     Credentials({
