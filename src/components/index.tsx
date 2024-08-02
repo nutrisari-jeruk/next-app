@@ -1,4 +1,4 @@
-import TwButton from './TwButton';
+import TwButton from './tw-button';
 import Input from './input';
 import Table from './table';
 

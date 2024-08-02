@@ -1,5 +1,5 @@
 import { auth } from '@/auth';
-import { AuthProvider } from '@/components/AuthProvider';
+import { AuthProvider } from '@/components/auth-provider';
 import { Sidebar } from '../ui/partials';
 import { redirect } from 'next/navigation';
 
