@@ -1,23 +1,12 @@
-'use client';
-
-import useSWR from 'swr';
-import fetcher from '@/lib/fetcher';
-import type { BaseResponse } from '@/types/api';
-import type { User } from '@/types/user';
 import Table from './components/table';
 import { Button } from '@/components';
+import useUser from '@/hooks/user';
 import Link from 'next/link';
 
-export default function Page() {
-  const { data, error, isLoading } = useSWR<BaseResponse<User[]>>(
-    '/api/user',
-    fetcher,
-  );
+export default async function Page() {
+  const { user } = await useUser();
 
-  const user = data?.data;
-
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  !!user && '<p>Loading...</p>';
 
   return (
     <div className="px-8">

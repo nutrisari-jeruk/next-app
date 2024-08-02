@@ -10,7 +10,7 @@ export default function Page() {
 
   return (
     <div>
-      {!!state && <p>{JSON.stringify(state?.errors)}</p>}
+
       <form action={formAction}>
         <div className="space-y-12">
           <div className="border-b border-gray-900/10 pb-12">

@@ -1,13 +1,23 @@
 import { Sidebar } from '../ui/partials';
+import { SessionProvider } from 'next-auth/react';
+import type { Session } from 'next-auth';
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Layout({
+  children,
+  session,
+}: {
+  children: React.ReactNode;
+  session: Session;
+}) {
   return (
-    <div className="flex">
-      <Sidebar />
+    <SessionProvider session={session}>
+      <div className="flex">
+        <Sidebar />
 
-      <main className="w-full px-4 py-8 h-svh overflow-y-auto">
-        <div className="bg-white p-4 rounded">{children}</div>
-      </main>
-    </div>
+        <main className="h-svh w-full overflow-y-auto px-4 py-8">
+          <div className="rounded bg-white p-4">{children}</div>
+        </main>
+      </div>
+    </SessionProvider>
   );
 }
