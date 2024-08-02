@@ -18,8 +18,8 @@ export default async function Layout({
       <div className="flex">
         <Sidebar />
 
-        <main className="h-svh w-full overflow-y-auto px-4 py-8">
-          <div className="rounded p-4">{children}</div>
+        <main className="h-svh w-full overflow-y-auto px-8 py-8 space-y-4">
+          {children}
         </main>
       </div>
     </AuthProvider>
