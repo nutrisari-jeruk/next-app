@@ -113,6 +113,7 @@ export default async function Sidebar() {
             </ul>
           </li>
           <li className="-mx-6 mb-2 mt-auto">
+            {/* TODO: Improve signout UI */}
             <form
               className="flex items-center justify-center"
               action={async () => {

@@ -1,23 +1,27 @@
+import { auth } from '@/auth';
+import { AuthProvider } from '@/components/AuthProvider';
 import { Sidebar } from '../ui/partials';
-import { SessionProvider } from 'next-auth/react';
-import type { Session } from 'next-auth';
+import { redirect } from 'next/navigation';
 
-export default function Layout({
+export default async function Layout({
   children,
-  session,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-  session: Session;
-}) {
+}>) {
+  const session = await auth();
+  if (!session) {
+    redirect('/signin');
+  }
+
   return (
-    <SessionProvider session={session}>
+    <AuthProvider session={session}>
       <div className="flex">
         <Sidebar />
 
         <main className="h-svh w-full overflow-y-auto px-4 py-8">
-          <div className="rounded bg-white p-4">{children}</div>
+          <div className="rounded p-4">{children}</div>
         </main>
       </div>
-    </SessionProvider>
+    </AuthProvider>
   );
 }

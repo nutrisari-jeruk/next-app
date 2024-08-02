@@ -3,6 +3,7 @@
 import { Input } from '@/components';
 import { createUser } from '../actions';
 import { useFormState, useFormStatus } from 'react-dom';
+import Link from 'next/link';
 
 export default function Page() {
   const { pending } = useFormStatus();
@@ -10,7 +11,6 @@ export default function Page() {
 
   return (
     <div>
-
       <form action={formAction}>
         <div className="space-y-12">
           <div className="border-b border-gray-900/10 pb-12">
@@ -105,12 +105,14 @@ export default function Page() {
         </div>
 
         <div className="mt-6 flex items-center justify-end gap-x-6">
-          <button
-            type="button"
-            className="text-sm font-semibold leading-6 text-gray-900"
-          >
-            Cancel
-          </button>
+          <Link href="/user">
+            <button
+              type="button"
+              className="text-sm font-semibold leading-6 text-gray-900"
+            >
+              Cancel
+            </button>
+          </Link>
           <button
             type="submit"
             disabled={pending}
