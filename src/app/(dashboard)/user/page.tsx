@@ -5,8 +5,9 @@ import fetcher from '@/lib/fetcher';
 import type { BaseResponse } from '@/types/api';
 import type { User } from '@/types/user';
 import Table from './components/table';
-import { Button } from '@/components';
+import { TwButton } from '@/components';
 import Link from 'next/link';
+import { PlusCircleIcon } from '@heroicons/react/24/outline';
 
 export default function Page() {
   const { data, error, isLoading } = useSWR<BaseResponse<User[]>>(
@@ -32,11 +33,16 @@ export default function Page() {
       </div>
 
       <div className="mt-8 flex flex-col gap-4">
-        <div className="w-24">
-          <Link href="/user/create">
-            <Button title="Add User" variant="primary" size="sm" />
-          </Link>
-        </div>
+        <Link href="/user/create">
+          <TwButton
+            type="submit"
+            title="Add User"
+            variant="success"
+            size="xs"
+            iconPosition="right"
+            icon={<PlusCircleIcon className="h-5 w-5" aria-hidden="true" />}
+          />
+        </Link>
         <Table />
       </div>
     </div>

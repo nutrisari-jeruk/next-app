@@ -1,8 +1,9 @@
 'use client';
 
-import { Input } from '@/components';
+import { Input, TwButton } from '@/components';
 import { createUser } from '../actions';
 import { useFormState, useFormStatus } from 'react-dom';
+import { ArrowUturnLeftIcon, CheckIcon } from '@heroicons/react/24/outline';
 
 export default function Page() {
   const { pending } = useFormStatus();
@@ -105,19 +106,20 @@ export default function Page() {
         </div>
 
         <div className="mt-6 flex items-center justify-end gap-x-6">
-          <button
+          <TwButton
             type="button"
-            className="text-sm font-semibold leading-6 text-gray-900"
-          >
-            Cancel
-          </button>
-          <button
+            title="Cancel"
+            variant="secondary"
+            icon={<ArrowUturnLeftIcon className="h-5 w-5" aria-hidden="true" />}
+          />
+
+          <TwButton
             type="submit"
             disabled={pending}
-            className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          >
-            Save
-          </button>
+            title="Save"
+            variant="success"
+            icon={<CheckIcon className="h-5 w-5" aria-hidden="true" />}
+          />
         </div>
       </form>
     </div>

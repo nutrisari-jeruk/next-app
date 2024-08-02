@@ -1,5 +1,5 @@
-import Button from './button';
+import TwButton from './TwButton';
 import Input from './input';
 import Table from './table';
 
-export { Button, Input, Table };
+export { TwButton, Input, Table };
