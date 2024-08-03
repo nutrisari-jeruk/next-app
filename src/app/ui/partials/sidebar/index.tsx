@@ -1,5 +1,10 @@
 import { signOut } from '@/auth';
-import { HomeIcon, UsersIcon, PowerIcon } from '@heroicons/react/24/outline';
+import {
+  HomeIcon,
+  UsersIcon,
+  PowerIcon,
+  CodeBracketSquareIcon,
+} from '@heroicons/react/24/outline';
 import Link from 'next/link';
 
 import type { Menu } from '@/types/menu';
@@ -13,10 +18,17 @@ const navigation: Menu[] = [
     current: true,
   },
   {
+    name: 'Base Template',
+    href: '/base-template',
+    icon: CodeBracketSquareIcon,
+    count: 2,
+    current: false,
+  },
+  {
     name: 'Users',
     href: '/user',
     icon: UsersIcon,
-    count: 2,
+    count: 3,
     current: false,
   },
 ];
