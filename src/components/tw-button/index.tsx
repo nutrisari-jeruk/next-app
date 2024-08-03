@@ -40,25 +40,27 @@ export default function TwButton(props: TwButton) {
   const sizeClass: { [key: string]: string } = {
     xs: 'px-2 py-1 text-xs',
     sm: 'px-2 py-1 text-sm',
-    md: 'px-2.5 py-1.5 text-sm',
-    lg: 'px-3 py-2 text-sm',
-    xl: 'px-3.5 py-2.5 text-sm',
+    md: 'px-2.5 py-1.5 text-base',
+    lg: 'px-3 py-2 text-base',
+    xl: 'px-3.5 py-2.5 text-lg',
   };
 
   return (
     <div>
       <HeadlessUIButton
         className={clsx(
-          'inline-flex items-center gap-x-1.5 rounded-md font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2',
+          'inline-lex items-center text- gap-x-1.5 rounded-md font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2',
           sizeClass[size],
           variantClass[variant],
           className,
         )}
         {...attr}
       >
-        {iconPosition === 'left' && icon}
-        {title}
-        {iconPosition === 'right' && icon}
+        <div className="flex items-center justify-center gap-2">
+          {iconPosition === 'left' && icon}
+          <span>{title}</span>
+          {iconPosition === 'right' && icon}
+        </div>
       </HeadlessUIButton>
     </div>
   );

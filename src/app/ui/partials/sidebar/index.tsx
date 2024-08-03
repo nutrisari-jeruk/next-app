@@ -1,58 +1,7 @@
-import { signOut } from '@/auth';
-import {
-  HomeIcon,
-  UsersIcon,
-  PowerIcon,
-  CodeBracketSquareIcon,
-} from '@heroicons/react/24/outline';
 import Link from 'next/link';
-
-import type { Menu } from '@/types/menu';
-
-const navigation: Menu[] = [
-  {
-    name: 'Dashboard',
-    href: '/',
-    icon: HomeIcon,
-    count: 1,
-    current: true,
-  },
-  {
-    name: 'Base Template',
-    href: '/base-template',
-    icon: CodeBracketSquareIcon,
-    count: 2,
-    current: false,
-  },
-  {
-    name: 'Users',
-    href: '/user',
-    icon: UsersIcon,
-    count: 3,
-    current: false,
-  },
-];
-
-const subMenus: Menu[] = [
-  {
-    id: 1,
-    name: 'Sub Menu 1',
-    href: '#',
-    initial: 'M1',
-    current: false,
-  },
-  {
-    id: 2,
-    name: 'Sub Menu 2',
-    href: '#',
-    initial: 'M2',
-    current: false,
-  },
-];
-
-function classNames(...classes: string[]): string {
-  return classes.filter(Boolean).join(' ');
-}
+import NavLink from '../nav-links';
+import { signOut } from '@/auth';
+import { PowerIcon } from '@heroicons/react/24/outline';
 
 const logout = async () => {
   'use server';
@@ -61,8 +10,8 @@ const logout = async () => {
 
 export default function Sidebar() {
   return (
-    <div className="flex h-svh w-72 grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6 shadow">
-      <div className="-mx-6 mt-auto flex h-16 shrink-0 items-center bg-indigo-600">
+    <div className="flex h-svh w-80 grow flex-col gap-y-5 border-r border-gray-200 bg-white px-2 shadow">
+      <div className="-mx-2 mt-auto flex h-16 shrink-0 items-center bg-indigo-600">
         <Link
           href="/"
           className="w-full bg-indigo-600 text-center text-2xl font-bold text-white"
@@ -70,89 +19,15 @@ export default function Sidebar() {
           Next-app
         </Link>
       </div>
-      <nav className="flex flex-1 flex-col">
-        <ul role="list" className="flex flex-1 flex-col gap-y-7">
-          <li>
-            <ul role="list" className="-mx-2 space-y-1">
-              {navigation.map((item) => (
-                <li key={item.name}>
-                  <a
-                    href={item.href}
-                    className={classNames(
-                      item.current
-                        ? 'bg-gray-50 text-indigo-600'
-                        : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600',
-                      'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6',
-                    )}
-                  >
-                    <item.icon
-                      className={classNames(
-                        item.current
-                          ? 'text-indigo-600'
-                          : 'text-gray-400 group-hover:text-indigo-600',
-                        'h-6 w-6 shrink-0',
-                      )}
-                      aria-hidden="true"
-                    />
-                    {item.name}
-                    {item.count ? (
-                      <span
-                        className="ml-auto w-9 min-w-max whitespace-nowrap rounded-full bg-white px-2.5 py-0.5 text-center text-xs font-medium leading-5 text-gray-600 ring-1 ring-inset ring-gray-200"
-                        aria-hidden="true"
-                      >
-                        {item.count}
-                      </span>
-                    ) : null}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </li>
-          <li>
-            <div className="text-xs font-semibold leading-6 text-gray-400">
-              Menu
-            </div>
-            <ul role="list" className="-mx-2 mt-2 space-y-1">
-              {subMenus.map((team) => (
-                <li key={team.name}>
-                  <a
-                    href={team.href}
-                    className={classNames(
-                      team.current
-                        ? 'bg-gray-50 text-indigo-600'
-                        : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600',
-                      'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6',
-                    )}
-                  >
-                    <span
-                      className={classNames(
-                        team.current
-                          ? 'border-indigo-600 text-indigo-600'
-                          : 'border-gray-200 text-gray-400 group-hover:border-indigo-600 group-hover:text-indigo-600',
-                        'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border bg-white text-[0.625rem] font-medium',
-                      )}
-                    >
-                      {team.initial}
-                    </span>
-                    <span className="truncate">{team.name}</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </li>
-          <li className="-mx-6 mb-2 mt-auto">
-            {/* TODO: Improve signout UI */}
-            <form className="flex items-center justify-center" action={logout}>
-              <button type="submit">
-                <div className="flex items-center gap-2">
-                  <PowerIcon className="h-6 w-6" aria-hidden="true" />
-                  <span>Sign out</span>
-                </div>
-              </button>
-            </form>
-          </li>
-        </ul>
+      <nav className="flex flex-1 flex-col overflow-y-auto px-2">
+        <NavLink />
       </nav>
+      <form action={logout}>
+        <button className="flex h-[48px] w-full grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3">
+          <PowerIcon className="w-6" />
+          <div className="hidden md:block">Sign Out</div>
+        </button>
+      </form>
     </div>
   );
 }
