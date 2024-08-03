@@ -2,6 +2,7 @@ import Link from 'next/link';
 import NavLink from '../nav-links';
 import { signOut } from '@/auth';
 import { PowerIcon } from '@heroicons/react/24/outline';
+import { AppLogo } from '@/components';
 
 const logout = async () => {
   'use server';
@@ -14,9 +15,9 @@ export default function Sidebar() {
       <div className="-mx-2 mt-auto flex h-16 shrink-0 items-center bg-indigo-600">
         <Link
           href="/"
-          className="w-full bg-indigo-600 text-center text-2xl font-bold text-white"
+          className="flex w-full items-center justify-center bg-indigo-600"
         >
-          Next-app
+          <AppLogo />
         </Link>
       </div>
       <nav className="flex flex-1 flex-col overflow-y-auto px-2">
