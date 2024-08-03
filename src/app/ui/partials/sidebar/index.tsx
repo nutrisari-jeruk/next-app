@@ -1,12 +1,9 @@
 import { auth, signOut } from '@/auth';
 import {
-  CalendarIcon,
-  ChartPieIcon,
-  DocumentDuplicateIcon,
-  FolderIcon,
   HomeIcon,
   UsersIcon,
   PowerIcon,
+  CodeBracketSquareIcon,
 } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -18,6 +15,12 @@ const navigation = [
     icon: HomeIcon,
     count: '1',
     current: true,
+  },
+  {
+    name: 'Base Template',
+    href: '/base-template',
+    icon: CodeBracketSquareIcon,
+    current: false,
   },
   { name: 'Users', href: '/user', icon: UsersIcon, current: false },
 ];
