@@ -1,4 +1,4 @@
 export interface Record {
-    columns: string[];
-    data: (string | number)[][] | null | undefined;
+  columns: string[];
+  data: (string | number)[][] | null | undefined;
 }

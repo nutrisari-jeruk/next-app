@@ -1,37 +1,53 @@
-import { auth, signOut } from '@/auth';
-import {
-  CalendarIcon,
-  ChartPieIcon,
-  DocumentDuplicateIcon,
-  FolderIcon,
-  HomeIcon,
-  UsersIcon,
-  PowerIcon,
-} from '@heroicons/react/24/outline';
-import Image from 'next/image';
+import { signOut } from '@/auth';
+import { HomeIcon, UsersIcon, PowerIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 
-const navigation = [
+import type { Menu } from '@/types/menu';
+
+const navigation: Menu[] = [
   {
     name: 'Dashboard',
     href: '/',
     icon: HomeIcon,
-    count: '1',
+    count: 1,
     current: true,
   },
-  { name: 'Users', href: '/user', icon: UsersIcon, current: false },
+  {
+    name: 'Users',
+    href: '/user',
+    icon: UsersIcon,
+    count: 2,
+    current: false,
+  },
 ];
-const teams = [
-  { id: 1, name: 'Heroicons', href: '#', initial: 'H', current: false },
-  { id: 2, name: 'Tailwind Labs', href: '#', initial: 'T', current: false },
-  { id: 3, name: 'Workcation', href: '#', initial: 'W', current: false },
+
+const subMenus: Menu[] = [
+  {
+    id: 1,
+    name: 'Sub Menu 1',
+    href: '#',
+    initial: 'M1',
+    current: false,
+  },
+  {
+    id: 2,
+    name: 'Sub Menu 2',
+    href: '#',
+    initial: 'M2',
+    current: false,
+  },
 ];
 
 function classNames(...classes: string[]): string {
   return classes.filter(Boolean).join(' ');
 }
 
-export default async function Sidebar() {
+const logout = async () => {
+  'use server';
+  await signOut();
+};
+
+export default function Sidebar() {
   return (
     <div className="flex h-svh w-72 grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6 shadow">
       <div className="-mx-6 mt-auto flex h-16 shrink-0 items-center bg-indigo-600">
@@ -82,10 +98,10 @@ export default async function Sidebar() {
           </li>
           <li>
             <div className="text-xs font-semibold leading-6 text-gray-400">
-              Your teams
+              Menu
             </div>
             <ul role="list" className="-mx-2 mt-2 space-y-1">
-              {teams.map((team) => (
+              {subMenus.map((team) => (
                 <li key={team.name}>
                   <a
                     href={team.href}
@@ -114,13 +130,7 @@ export default async function Sidebar() {
           </li>
           <li className="-mx-6 mb-2 mt-auto">
             {/* TODO: Improve signout UI */}
-            <form
-              className="flex items-center justify-center"
-              action={async () => {
-                'use server';
-                await signOut();
-              }}
-            >
+            <form className="flex items-center justify-center" action={logout}>
               <button type="submit">
                 <div className="flex items-center gap-2">
                   <PowerIcon className="h-6 w-6" aria-hidden="true" />
