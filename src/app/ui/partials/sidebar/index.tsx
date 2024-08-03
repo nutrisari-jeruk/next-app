@@ -4,7 +4,7 @@ import {
   UsersIcon,
   PowerIcon,
   CodeBracketSquareIcon,
-  CircleStackIcon,
+  AdjustmentsHorizontalIcon,
 } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -24,6 +24,12 @@ const navigation = [
     current: false,
   },
   { name: 'Users', href: '/user', icon: UsersIcon, current: false },
+  {
+    name: 'Jurnal Penyesuaian',
+    href: '/master/penyesuaian',
+    icon: AdjustmentsHorizontalIcon,
+    current: false,
+  },
   { name: 'Jurnal Umum', href: '/master/umum', icon: CircleStackIcon, current: false },
 ];
 const teams = [
