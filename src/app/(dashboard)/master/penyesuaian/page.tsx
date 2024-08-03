@@ -1,5 +1,6 @@
 import { TwButton, TwHeader } from '@/components';
 import { PlusCircleIcon, PrinterIcon } from '@heroicons/react/24/outline';
+import Table from './components/table';
 import type { Action } from '@/types/header';
 
 export default function page() {
@@ -8,7 +9,7 @@ export default function page() {
       title: 'Add',
       icon: <PlusCircleIcon className="h-5 w-5" aria-hidden="true" />,
       href: '/master/penyesuaian/create',
-      variant: 'primary',
+      variant: 'success',
     },
     {
       title: 'Print',
@@ -20,6 +21,9 @@ export default function page() {
   return (
     <>
       <TwHeader title="Jurnal Penyesuaian" button={actions} />
+      <div className="mt-4 flex flex-col gap-4">
+        <Table />
+      </div>
     </>
   );
 }
