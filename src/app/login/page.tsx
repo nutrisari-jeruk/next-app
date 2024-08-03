@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Input } from '@/components';
+import { TwButton, Input } from '@/components';
 import { useFormState, useFormStatus } from 'react-dom';
 import { authenticate } from '@/app/login/_actions/authenticate';
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
@@ -16,7 +16,7 @@ export default function Login() {
           <Input name="email" />
           <Input name="password" type="password" />
 
-          <Button
+          <TwButton
             title="Login"
             type="submit"
             aria-disabled={pending}
