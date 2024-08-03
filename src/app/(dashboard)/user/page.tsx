@@ -2,8 +2,11 @@ import Table from './components/table';
 import { TwButton } from '@/components';
 import Link from 'next/link';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
+import { fetchUser } from './actions';
 
 export default async function Page() {
+  const users = await fetchUser();
+
   return (
     <>
       <div className="flex items-center justify-between">
@@ -20,7 +23,7 @@ export default async function Page() {
       </div>
 
       <div className="mt-4 flex flex-col gap-4">
-        <Table />
+        <Table users={users} />
       </div>
     </>
   );
