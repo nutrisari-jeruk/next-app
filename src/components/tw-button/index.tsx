@@ -32,6 +32,9 @@ export default function TwButton(props: TwButton) {
       'bg-red-600 text-white hover:bg-red-500 focus-visible:outline-red-600',
     success:
       'bg-green-600 text-white hover:bg-green-500 focus-visible:outline-green-600',
+    warning:
+      'bg-yellow-600 text-white hover:bg-yellow-500 focus-visible:outline-yellow-600',
+    info: 'bg-blue-600 text-white hover:bg-blue-500 focus-visible:outline-blue-600',
   };
 
   const sizeClass: { [key: string]: string } = {
