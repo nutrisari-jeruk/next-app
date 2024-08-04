@@ -2,10 +2,10 @@ import Table from './components/table';
 import { TwButton } from '@/components';
 import Link from 'next/link';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
-import { fetchUser } from './actions';
+import useUser from '@/hooks/user';
 
 export default async function Page() {
-  const users = await fetchUser();
+  const user = await useUser();
 
   return (
     <>
@@ -23,7 +23,7 @@ export default async function Page() {
       </div>
 
       <div className="mt-4 flex flex-col gap-4">
-        <Table users={users} />
+        <Table users={user} />
       </div>
     </>
   );

@@ -1,4 +1,4 @@
-import { Button as HeadlessUIButton } from '@headlessui/react';
+import { Button } from '@headlessui/react';
 import clsx from 'clsx';
 import React from 'react';
 
@@ -47,7 +47,7 @@ export default function TwButton(props: TwButton) {
 
   return (
     <div>
-      <HeadlessUIButton
+      <Button
         className={clsx(
           'inline-lex items-center text- gap-x-1.5 rounded-md font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2',
           sizeClass[size],
@@ -61,7 +61,7 @@ export default function TwButton(props: TwButton) {
           <span>{title}</span>
           {iconPosition === 'right' && icon}
         </div>
-      </HeadlessUIButton>
+      </Button>
     </div>
   );
 }

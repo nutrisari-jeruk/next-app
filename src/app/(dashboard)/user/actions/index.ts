@@ -6,21 +6,11 @@ import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import $http from '@/lib/axios';
 import type { User } from '@/types/user';
+import { BaseResponse } from '@/types/api';
 
 export async function fetchUser() {
-  const { data } = await $http.get<User[]>(
-    'https://jsonplaceholder.typicode.com/users',
-  );
-
-  const mappedUser = data?.map((item) => {
-    return {
-      id: item.id,
-      name: item.name,
-      email: item.email,
-    } as User;
-  });
-
-  return mappedUser ;
+  const { data } = await $http.get<BaseResponse<User[]>>('/v1/user');
+  return data?.data!;
 }
 
 export async function createUser(_prevState: unknown, formData: FormData) {
