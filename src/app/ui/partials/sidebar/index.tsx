@@ -5,6 +5,7 @@ import {
   PowerIcon,
   CodeBracketSquareIcon,
   AdjustmentsHorizontalIcon,
+  CircleStackIcon,
   AdjustmentsVerticalIcon,
   ArrowDownCircleIcon,
 } from '@heroicons/react/24/outline';
@@ -32,6 +33,7 @@ const navigation = [
     icon: AdjustmentsHorizontalIcon,
     current: false,
   },
+  { name: 'Jurnal Umum', href: '/master/umum', icon: CircleStackIcon, current: false },
   {
     name: 'Jurnal Koreksi',
     href: '/master/koreksi',
