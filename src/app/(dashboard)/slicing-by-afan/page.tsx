@@ -5,9 +5,21 @@ import {
   CalendarIcon,
   CommandLineIcon,
   MegaphoneIcon,
+  CursorArrowRaysIcon,
+  EnvelopeOpenIcon,
+  UsersIcon,
 } from '@heroicons/react/24/outline';
 import ListSection, { ListItem } from '@/components/list-section';
 import FAQAccordion, { FAQItem } from '@/components/faq-accordion';
+import Footer, { FooterLink } from '@/components/footer-simple-centered';
+import StatsWithIconCards from '@/components/stats-with-icon-cards';
+
+interface StatItem {
+  id: number;
+  name: string;
+  stat: string;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+}
 
 const items: ListItem[] = [
   {
@@ -24,45 +36,59 @@ const items: ListItem[] = [
     iconColor: 'bg-purple-500',
     icon: CommandLineIcon,
   },
-  {
-    name: 'Contoh 3',
-    description: 'Contoh 3',
-    href: '/Contoh-3',
-    iconColor: 'bg-yellow-500',
-    icon: CalendarIcon,
-  },
 ];
 
 const faqs: FAQItem[] = [
   {
-    question: "What's the best thing about Switzerland?",
-    answer:
-      "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+    question: 'Pertanyaan ?',
+    answer: 'Jawaban.',
   },
+];
+
+const navigation = {
+  main: [
+    { name: 'Link', href: '#' },
+    { name: 'Link', href: '#' },
+    { name: 'Link', href: '#' },
+  ],
+  social: [
+    {
+      name: 'Socmed / Icon Link',
+      href: '#',
+      icon: CalendarIcon,
+    },
+    {
+      name: 'Socmed / Icon Link',
+      href: '#',
+      icon: CommandLineIcon,
+    },
+  ],
+};
+
+const stats: StatItem[] = [
+  { id: 1, name: 'Total Statistik Card 1', stat: '71', icon: UsersIcon },
+  { id: 2, name: 'Total Statistik Card 2', stat: '58', icon: EnvelopeOpenIcon },
   {
-    question: "What's the best thing about Switzerland?",
-    answer:
-      "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
-  },
-  {
-    question: "What's the best thing about Switzerland?",
-    answer:
-      "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+    id: 3,
+    name: 'Total Statistik Card 3',
+    stat: '24',
+    icon: CursorArrowRaysIcon,
   },
 ];
 
 const Home: React.FC = () => {
+  const otherDept = 'Instalasi Penjaminan';
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="mx-auto mt-10 max-w-lg">
-        <h2 className="text-center text-base font-semibold leading-6 text-gray-900">
-          by Afan
-        </h2>
-        <p className="mt-1 text-sm text-gray-500">N.B.: Kontribusi AFAN</p>
-        <ListSection items={items} />
-        {/* Taruh FAQ Accordion disini */}
-        <FAQAccordion faqs={faqs} />
-      </div>
+      <h2 className="text-center text-base font-semibold leading-6 text-gray-900">
+        by Afan
+      </h2>
+      <p className="mt-1 text-sm text-gray-500">N.B.: Kontribusi AFAN</p>
+      <StatsWithIconCards stats={stats} />
+      {/* <ListSection items={items} /> */}
+      {/* <FAQAccordion faqs={faqs} /> */}
+      {/* <Footer navigation={navigation} otherDept={otherDept} /> */}
     </main>
   );
 };
