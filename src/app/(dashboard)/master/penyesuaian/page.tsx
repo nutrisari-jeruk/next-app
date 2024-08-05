@@ -3,7 +3,7 @@ import { PlusCircleIcon, PrinterIcon } from '@heroicons/react/24/outline';
 import Table from './components/table';
 import Link from 'next/link';
 
-export default function page() {
+export default function Page() {
   return (
     <>
       <div className="flex items-center justify-between">
