@@ -4,11 +4,11 @@ import {
   HomeIcon,
   UsersIcon,
   CodeBracketSquareIcon,
-  FolderIcon,
 } from '@heroicons/react/24/outline';
 import type { Menu } from '@/types/menu';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import clsx from 'clsx';
 
 const navigation: Menu[] = [
   {
@@ -29,19 +29,7 @@ const navigation: Menu[] = [
   },
 ];
 
-// for (let index = 1; index < 25; index++) {
-//   navigation.push({
-//     name: 'Menu-' + index,
-//     href: '#',
-//     icon: FolderIcon,
-//   });
-// }
-
-function classNames(...classes: string[]): string {
-  return classes.filter(Boolean).join(' ');
-}
-
-export default function NavLink() {
+export default function NavLink(): JSX.Element {
   const pathname = usePathname();
 
   return (
@@ -49,20 +37,21 @@ export default function NavLink() {
       <ul role="list" className="flex flex-1 flex-col gap-y-7">
         <li>
           <ul role="list" className="-mx-2 space-y-1">
-            {navigation.map((item) => (
-              <li key={item.name}>
+            {navigation.map((item, index) => (
+              <li key={index}>
                 <Link
                   href={item.href}
-                  className={classNames(
-                    item.href === pathname
-                      ? 'bg-indigo-50 text-indigo-600'
+                  className={clsx(
+                    item.name !== 'Dashboard' && pathname.startsWith(item.href)
+                      ? 'bg-indigo-100 text-indigo-600'
                       : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600',
                     'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6',
                   )}
                 >
                   <item.icon
-                    className={classNames(
-                      item.href === pathname
+                    className={clsx(
+                      item.name !== 'Dashboard' &&
+                        pathname.startsWith(item.href)
                         ? 'text-indigo-600'
                         : 'text-gray-400 group-hover:text-indigo-600',
                       'h-6 w-6 shrink-0',
