@@ -6,10 +6,8 @@ import {
   CodeBracketSquareIcon,
   AdjustmentsHorizontalIcon,
   CircleStackIcon,
-  AdjustmentsVerticalIcon,
   ArrowDownCircleIcon,
 } from '@heroicons/react/24/outline';
-import Image from 'next/image';
 import Link from 'next/link';
 
 const navigation = [
@@ -37,7 +35,6 @@ const navigation = [
   {
     name: 'Jurnal Koreksi',
     href: '/master/koreksi',
-    // icon: AdjustmentsHorizontalIcon,
     icon: ArrowDownCircleIcon,
     current: false,
   },
