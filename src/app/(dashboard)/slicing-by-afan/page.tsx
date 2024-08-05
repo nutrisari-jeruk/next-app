@@ -7,11 +7,12 @@ import {
   MegaphoneIcon,
 } from '@heroicons/react/24/outline';
 import ListSection, { ListItem } from '@/components/list-section';
+import FAQAccordion, { FAQItem } from '@/components/faq-accordion';
 
 const items: ListItem[] = [
   {
     name: 'Contoh 1',
-    description: 'Contoh 1',
+    description: 'Lorem Ipsum',
     href: '/Contoh-1',
     iconColor: 'bg-pink-500',
     icon: MegaphoneIcon,
@@ -32,6 +33,24 @@ const items: ListItem[] = [
   },
 ];
 
+const faqs: FAQItem[] = [
+  {
+    question: "What's the best thing about Switzerland?",
+    answer:
+      "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+  },
+  {
+    question: "What's the best thing about Switzerland?",
+    answer:
+      "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+  },
+  {
+    question: "What's the best thing about Switzerland?",
+    answer:
+      "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+  },
+];
+
 const Home: React.FC = () => {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
@@ -41,6 +60,8 @@ const Home: React.FC = () => {
         </h2>
         <p className="mt-1 text-sm text-gray-500">N.B.: Kontribusi AFAN</p>
         <ListSection items={items} />
+        {/* Taruh FAQ Accordion disini */}
+        <FAQAccordion faqs={faqs} />
       </div>
     </main>
   );
