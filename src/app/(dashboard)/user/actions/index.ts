@@ -7,9 +7,26 @@ import { revalidatePath } from 'next/cache';
 import $http from '@/lib/axios';
 import type { User } from '@/types/user';
 import { BaseResponse } from '@/types/api';
+import type { Params } from '@/types/params';
 
-export async function fetchUser() {
-  const { data } = await $http.get<BaseResponse<User[]>>('/v1/user');
+export async function fetchUser({
+  query = '',
+  page = 1,
+  perPage = 10,
+}: Params): Promise<User[]> {
+  const params = { query, page, perPage };
+
+  const { data } = await $http.get<BaseResponse<User[]>>(
+    'http://localhost:3000/users',
+    { params },
+  );
+  return data?.data!;
+}
+
+export async function fetchUserById(id: string): Promise<User> {
+  const { data } = await $http.get<BaseResponse<User>>(
+    `http://localhost:3000/users/${id}`,
+  );
   return data?.data!;
 }
 

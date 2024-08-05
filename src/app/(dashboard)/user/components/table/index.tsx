@@ -1,33 +1,32 @@
-'use client';
-
 import Link from 'next/link';
-import { useState } from 'react';
 import { Input } from '@/components';
 import type { User } from '@/types/user';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import { fetchUser } from '../../actions';
+import type { Params } from '@/types/params';
 
-export default function Table({ users }: { users: User[] }) {
-  const [search, setSearch] = useState('');
+export default async function Table({ query, page, perPage }: Params) {
+  const users = await fetchUser({ query, page, perPage });
   let filteredUsers = users;
 
-  if (search.length > 0) {
-    filteredUsers = users.filter((v) => {
-      return v?.name!.toLowerCase().includes(search.toLowerCase());
-    });
-  }
+  // if (search.length > 0) {
+  //   filteredUsers = users?.filter((v) => {
+  //     return v?.name!.toLowerCase().includes(search.toLowerCase());
+  //   });
+  // }
 
-  function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
-    setSearch(e.target.value);
-  }
+  // function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
+  //   setSearch(e.target.value);
+  // }
 
   return (
     <div className="flow-root">
       <div className="mb-2 w-1/4">
-        <Input
+        {/* <Input
           placeholder="Search here..."
           onChange={handleSearch}
           leftIcon={<MagnifyingGlassIcon />}
-        />
+        /> */}
       </div>
       <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
@@ -56,19 +55,37 @@ export default function Table({ users }: { users: User[] }) {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {filteredUsers?.map((person, index) => (
-                  <tr key={index} className="hover:bg-gray-100">
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      <Link href={'#'}>{index + 1}.</Link>
-                    </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      <Link href={'#'}>{person.name}</Link>
-                    </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      <Link href={'#'}>{person.email}</Link>
+                {!!filteredUsers.length &&
+                  filteredUsers?.map((person, index) => (
+                    <tr key={index} className="hover:bg-gray-100">
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                        <Link href={`/user/${person.id}/edit`}>
+                          {index + 1}.
+                        </Link>
+                      </td>
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                        <Link href={`/user/${person.id}/edit`}>
+                          {person.name}
+                        </Link>
+                      </td>
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                        <Link href={`/user/${person.id}/edit`}>
+                          {person.email}
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
+
+                {!filteredUsers.length && (
+                  <tr>
+                    <td
+                      colSpan={3}
+                      className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
+                    >
+                      No user found
                     </td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
           </div>

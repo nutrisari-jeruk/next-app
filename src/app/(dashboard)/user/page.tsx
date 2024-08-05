@@ -1,11 +1,14 @@
 import Table from './components/table';
-import { TwButton } from '@/components';
 import Link from 'next/link';
+import { Suspense } from 'react';
+import { TwButton } from '@/components';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
-import useUser from '@/hooks/user';
+import type { Params } from '@/types/params';
 
-export default async function Page() {
-  const user = await useUser();
+export default async function Page(params: Params) {
+  const query = params?.query || '';
+  const currentPage = Number(params?.page) || 1;
+  const perPage = Number(params?.perPage) || 10;
 
   return (
     <>
@@ -23,7 +26,9 @@ export default async function Page() {
       </div>
 
       <div className="mt-4 flex flex-col gap-4">
-        <Table users={user} />
+        <Suspense key={query + currentPage} fallback={<div>Loading...</div>}>
+          <Table query={query} page={currentPage} perPage={perPage}  />
+        </Suspense>
       </div>
     </>
   );
