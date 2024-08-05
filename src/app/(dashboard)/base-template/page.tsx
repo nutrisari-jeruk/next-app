@@ -1,34 +1,12 @@
 import { TwButton, TwHeader } from '@/components';
-import {
-  ArrowUturnLeftIcon,
-  PlusCircleIcon,
-} from '@heroicons/react/24/outline';
+import { PlusCircleIcon } from '@heroicons/react/24/outline';
 
 export default async function Page() {
   return (
     <>
       <div className="divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow">
         <div className="px-4 py-5 sm:px-6">
-          <TwHeader
-            button={[
-              <TwButton
-                key="add"
-                type="button"
-                title="Add"
-                icon={<PlusCircleIcon className="h-5 w-5" aria-hidden="true" />}
-              />,
-              <TwButton
-                key="back"
-                type="button"
-                title="Back"
-                variant="secondary"
-                className="ml-2"
-                icon={
-                  <ArrowUturnLeftIcon className="h-5 w-5" aria-hidden="true" />
-                }
-              />,
-            ]}
-          />
+          <TwHeader title="Base Template Rsud R.T. Notopuro" />
         </div>
         <div className="px-4 py-5 sm:p-6">
           <h2 className="mb-2 text-lg">Button Size</h2>

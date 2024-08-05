@@ -88,18 +88,12 @@ export default function Table() {
                       <Link href={'#'}>{penyesuaian.kredit}</Link>
                     </td>
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      <Link href={`master/penyesuaian/edit/${penyesuaian.id}`}>
-                        <TwButton
-                          title="Edit"
-                          size="sm"
-                          variant="info"
-                          icon={
-                            <PencilSquareIcon
-                              className="h-5 w-5"
-                              aria-hidden="true"
-                            />
-                          }
-                        />
+                      <Link
+                        className="text-indigo-600 hover:text-indigo-900"
+                        href={`master/penyesuaian/edit/${penyesuaian.id}`}
+                      >
+                        Edit
+                        <span className="sr-only">, {penyesuaian.kode}</span>
                       </Link>
                     </td>
                   </tr>
