@@ -5,21 +5,17 @@ import type { User } from '@/types/user';
 import $http from '@/lib/axios';
 
 export default async function useUser() {
-  const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  let user: User[];
 
   try {
-    const { data } = await $http.get<BaseResponse<User>>('/v1/user');
-    setUser(data?.data!);
+    const { data } = await $http.get<BaseResponse<User[]>>('/v1/user');
+    user = data?.data!;
   } catch (error) {
     if (error instanceof AxiosError) {
-      setError(error.message);
+      return error.response?.data;
     }
     throw error;
-  } finally {
-    setIsLoading(false);
   }
 
-  return { user, isLoading, error };
+  return user;
 }
