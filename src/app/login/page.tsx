@@ -2,8 +2,8 @@
 
 import { TwButton, Input } from '@/components';
 import { useFormState, useFormStatus } from 'react-dom';
-import { authenticate } from '@/app/login/_actions/authenticate';
-import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
+import { authenticate } from '@/app/login/actions/authenticate';
+import { CheckBadgeIcon, ExclamationCircleIcon, PaperAirplaneIcon, PlayPauseIcon } from '@heroicons/react/24/outline';
 
 export default function Login() {
   const { pending } = useFormStatus();
@@ -17,15 +17,18 @@ export default function Login() {
           <Input name="password" type="password" />
 
           <TwButton
-            title="Login"
             type="submit"
+            title="Login"
+            className="w-full"
+            size="lg"
             aria-disabled={pending}
             disabled={pending}
+            icon={<PaperAirplaneIcon className="w-5" />}
           />
         </form>
         {errorMessage && (
-          <p className="flex text-sm text-red-500 items-center gap-1">
-            <ExclamationCircleIcon />
+          <p className="flex items-center gap-1 text-sm text-red-500">
+            <ExclamationCircleIcon className="w-5" />
             {errorMessage}
           </p>
         )}
