@@ -16,7 +16,7 @@ export default async function Layout({
   return (
     <AuthProvider session={session}>
       <div className="flex">
-        <Sidebar />
+        <Sidebar session={session} />
 
         <main className="h-svh w-full overflow-y-auto px-8 py-8 space-y-4">
           {children}

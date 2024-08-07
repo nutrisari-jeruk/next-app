@@ -4,12 +4,14 @@ import type { DefaultSession } from 'next-auth';
 declare module 'next-auth' {
   interface Session {
     user: {
-      access_token: string;
+      accessToken: string;
+      role: string;
     } & DefaultSession['user'];
   }
 
   interface User {
     access_token?: string;
+    role?: string;
   }
 }
 
@@ -26,14 +28,15 @@ export const authConfig: NextAuthConfig = {
     jwt: ({ token, user }) => {
       if (user) {
         token.accessToken = user.access_token;
+        token.role = user.role;
       }
 
       return token;
     },
     session: ({ session, token }) => {
       if (token) {
-        session.user.access_token =
-          token.accessToken as Session['user']['access_token'];
+        session.user.accessToken = token.accessToken as string;
+        session.user.role = token.role as string;
       }
       return session;
     },
