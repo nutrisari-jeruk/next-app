@@ -1482,7 +1482,7 @@ export default function Page() {
                 label="Rekening Debit"
                 type="text"
                 readOnly
-                placeholder="Kode Rekening Debit!"
+                placeholder="Kode Rekening Debit"
               />
 
               <div className="flex w-full items-end justify-between space-x-2">
@@ -1511,7 +1511,7 @@ export default function Page() {
                 label="Rekening Kredit"
                 type="text"
                 readOnly
-                placeholder="Kode Rekening Kredit!"
+                placeholder="Kode Rekening Kredit"
               />
 
               <div className="flex w-full items-end justify-between space-x-2">
