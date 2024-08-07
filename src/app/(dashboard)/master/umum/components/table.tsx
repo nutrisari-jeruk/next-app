@@ -3,7 +3,7 @@ import type { List } from '@/types/umum';
 import { PencilSquareIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 
-const penyesuaianList: List[] = [
+const umumList: List[] = [
   {
     id: 1,
     kode: 'JP/001',
@@ -70,36 +70,30 @@ export default function Table() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {penyesuaianList.map((penyesuaian) => (
-                  <tr key={penyesuaian.id} className="hover:bg-gray-100">
+                {umumList.map((umum) => (
+                  <tr key={umum.id} className="hover:bg-gray-100">
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      <Link href={'#'}>{penyesuaian.kode}</Link>
+                      <Link href={'#'}>{umum.kode}</Link>
                     </td>
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      <Link href={'#'}>{penyesuaian.jenis}</Link>
+                      <Link href={'#'}>{umum.jenis}</Link>
                     </td>
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      <Link href={'#'}>{penyesuaian.rekening}</Link>
+                      <Link href={'#'}>{umum.rekening}</Link>
                     </td>
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      <Link href={'#'}>{penyesuaian.debit}</Link>
+                      <Link href={'#'}>{umum.debit}</Link>
                     </td>
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      <Link href={'#'}>{penyesuaian.kredit}</Link>
+                      <Link href={'#'}>{umum.kredit}</Link>
                     </td>
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      <Link href={`master/penyesuaian/edit/${penyesuaian.id}`}>
-                        <TwButton
-                          title="Edit"
-                          size="sm"
-                          variant="info"
-                          icon={
-                            <PencilSquareIcon
-                              className="h-5 w-5"
-                              aria-hidden="true"
-                            />
-                          }
-                        />
+                      <Link
+                        className="text-indigo-600 hover:text-indigo-900"
+                        href={`master/umum/edit/${umum.id}`}
+                      >
+                        Edit
+                        <span className="sr-only">, {umum.kode}</span>
                       </Link>
                     </td>
                   </tr>
