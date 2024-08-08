@@ -80,7 +80,7 @@ export default function Sap13Modal(props: Sap13Modal) {
                       as="h3"
                       className="text-base font-semibold leading-6 text-gray-900"
                     >
-                      Pilih Kode Rekening
+                      Pilih SAP 13
                     </DialogTitle>
                     <div className="space-y-2">
                       <div className="flex w-full items-end justify-between space-x-2">

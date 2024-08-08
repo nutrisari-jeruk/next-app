@@ -7,13 +7,18 @@ import { Button } from '@headlessui/react';
 
 interface TwTreeView {
   treeData: TreeNode[];
-  searchValue: string;
+  searchValue?: string;
   className?: string;
   onNodeSelect?: (node: TreeNode) => void;
 }
 
 export default function TwTreeView(props: TwTreeView) {
-  const { treeData, searchValue, className, onNodeSelect = () => {} } = props;
+  const {
+    treeData = [],
+    searchValue = '',
+    className = '',
+    onNodeSelect = () => {},
+  } = props;
   const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set());
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
 
@@ -63,7 +68,6 @@ export default function TwTreeView(props: TwTreeView) {
 
       const allNodes = flattenNodes(treeData);
 
-      // Start search from top level nodes
       searchNodes(treeData, allNodes);
 
       setExpandedNodes(expanded);
@@ -110,19 +114,16 @@ export default function TwTreeView(props: TwTreeView) {
     return nodes.map((node) => {
       const isExpanded = expandedNodes.has(node.id);
       const isSelected = node.id === selectedNodeId;
-      console.log(isSelected, node.id, selectedNodeId);
+
       return (
         <div key={node.id}>
           <Button
             onClick={handleNodeClick(node)}
             className={clsx(
-              'flex w-full items-center space-x-3 rounded-lg p-2 shadow-md transition-colors',
+              'flex w-full items-center space-x-3 rounded-lg p-2 shadow-md transition-colors hover:bg-gray-50',
               className,
               'mb-2',
-              node.is_selectable && 'cursor-grab',
-              isSelected
-                ? 'bg-blue-500 hover:bg-blue-600'
-                : 'bg-white hover:bg-gray-100',
+              node.is_selectable && 'cursor-grab bg-gray-200 hover:bg-gray-500',
             )}
           >
             {node.nodes && (
@@ -136,8 +137,8 @@ export default function TwTreeView(props: TwTreeView) {
             )}
             <span
               className={clsx(
-                'ml-2 font-medium',
-                isSelected ? 'text-white' : 'text-gray-800',
+                'ml-2 text-left font-medium text-gray-800',
+                node.is_selectable && 'hover:text-white',
               )}
             >
               {highlightText(node.text, searchValue)}
@@ -153,6 +154,5 @@ export default function TwTreeView(props: TwTreeView) {
     });
   };
 
-  // Perform the search when searchValue changes
   return <div>{renderTreeNodes(treeData)}</div>;
 }
