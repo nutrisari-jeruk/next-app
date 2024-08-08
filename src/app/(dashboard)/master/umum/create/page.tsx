@@ -1,11 +1,11 @@
 'use client';
 
 import { TwButton, TwHeader, TwInput, TwTreeView } from '@/components';
+import { TreeNode } from '@/types/tree-view';
 import {
   Dialog,
   DialogPanel,
   DialogTitle,
-  Field,
   Transition,
   TransitionChild,
 } from '@headlessui/react';
@@ -19,7 +19,15 @@ import Link from 'next/link';
 import { useState } from 'react';
 
 export default function Page() {
+  const [debit, setDebit] = useState('');
+  const [kredit, setKredit] = useState('');
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [kodeRekeningSearchQuery, setKodeRekeningSearchQuery] = useState('');
+  const [searchKodeRekeningValue, setKodeRekeningSearchValue] = useState('');
+  const [kodeRekeningSelectedNode, setKodeRekeningSelectedNode] = useState(
+    {} as TreeNode,
+  );
+  const [activeInput, setActiveInput] = useState<'debit' | 'kredit' | ''>('');
   const treeData = [
     {
       id: '4.1',
@@ -1462,23 +1470,57 @@ export default function Page() {
       ],
     },
   ];
+
+  const handleKodeRekeningSearch = () => {
+    setKodeRekeningSearchValue(kodeRekeningSearchQuery);
+  };
+
+  const handleKodeRekeningChoose = () => {
+    handleModalClose();
+    switch (activeInput) {
+      case 'debit':
+        setDebit(kodeRekeningSelectedNode?.text);
+        break;
+      case 'kredit':
+        setKredit(kodeRekeningSelectedNode?.text);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleKodeRekeningNodeSelect = (node: TreeNode) => {
+    setKodeRekeningSelectedNode(node);
+  };
+
+  const handleInputFocus = (inputName: 'debit' | 'kredit') => {
+    setActiveInput(inputName);
+    setModalIsOpen(true);
+  };
+  const handleModalClose = () => {
+    setModalIsOpen(false);
+    setKodeRekeningSearchValue('');
+    setKodeRekeningSearchQuery('');
+  };
+
   return (
     <>
-      <TwHeader title="Tambah Penyesuaian" />
+      <TwHeader title="Tambah Umum" />
       <form className="mt-4 rounded-lg bg-white p-4 shadow">
         <div className="space-y-12">
           <div className="border-b border-gray-900/10 pb-12">
             <div className="flex flex-col space-y-4">
               <TwInput
                 name="jenis"
-                label="Jenis Penyesuaian"
+                label="Jenis Umum"
                 type="text"
                 required
-                placeholder="Masukkan Jenis Penyesuaian"
+                placeholder="Masukkan Jenis Umum"
               />
 
               <TwInput
                 name="rekeningDebit"
+                value={debit}
                 label="Rekening Debit"
                 type="text"
                 readOnly
@@ -1488,6 +1530,7 @@ export default function Page() {
               <div className="flex w-full items-end justify-between space-x-2">
                 <div className="w-full">
                   <TwInput
+                    value={debit}
                     name="debit"
                     label="Debit"
                     type="text"
@@ -1499,9 +1542,9 @@ export default function Page() {
                   <TwButton
                     icon={<FolderPlusIcon className="h-5 w-5" />}
                     type="button"
-                    size="lg"
+                    size="md"
                     title="Pilih"
-                    onClick={() => setModalIsOpen(true)}
+                    onClick={() => handleInputFocus('debit')}
                   />
                 </div>
               </div>
@@ -1509,6 +1552,7 @@ export default function Page() {
               <TwInput
                 name="rekeningKredit"
                 label="Rekening Kredit"
+                value={kredit}
                 type="text"
                 readOnly
                 placeholder="Kode Rekening Kredit"
@@ -1518,6 +1562,7 @@ export default function Page() {
                 <div className="w-full">
                   <TwInput
                     name="kredit"
+                    value={kredit}
                     label="Kredit"
                     type="text"
                     readOnly
@@ -1528,9 +1573,9 @@ export default function Page() {
                   <TwButton
                     icon={<FolderPlusIcon className="h-5 w-5" />}
                     type="button"
-                    size="lg"
+                    size="md"
                     title="Pilih"
-                    onClick={() => setModalIsOpen(true)}
+                    onClick={() => handleInputFocus('kredit')}
                   />
                 </div>
               </div>
@@ -1539,7 +1584,7 @@ export default function Page() {
         </div>
 
         <div className="mt-6 flex items-center justify-end gap-x-6">
-          <Link href="/master/penyesuaian">
+          <Link href="/master/umum">
             <TwButton
               type="button"
               title="Cancel"
@@ -1549,17 +1594,18 @@ export default function Page() {
               }
             />
           </Link>
-
-          <TwButton
-            type="submit"
-            title="Save"
-            variant="success"
-            icon={<CheckIcon className="h-5 w-5" aria-hidden="true" />}
-          />
+          <Link href="/master/umum">
+            <TwButton
+              type="submit"
+              title="Save"
+              variant="success"
+              icon={<CheckIcon className="h-5 w-5" aria-hidden="true" />}
+            />
+          </Link>
         </div>
       </form>
       <Transition show={modalIsOpen}>
-        <Dialog className="relative z-10" onClose={setModalIsOpen}>
+        <Dialog className="relative z-10" onClose={() => {}}>
           <TransitionChild
             enter="ease-out duration-300"
             enterFrom="opacity-0"
@@ -1574,10 +1620,10 @@ export default function Page() {
           <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
             <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center">
               <TransitionChild
-                enter="ease-out duration-300"
+                enter="ease-out duration-100"
                 enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                 enterTo="opacity-100 translate-y-0 sm:scale-100"
-                leave="ease-in duration-200"
+                leave="ease-in duration-100"
                 leaveFrom="opacity-100 translate-y-0 sm:scale-100"
                 leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
               >
@@ -1597,18 +1643,27 @@ export default function Page() {
                               name="searchModal"
                               type="text"
                               placeholder="Cari Kode SAP 13 level 5"
+                              value={kodeRekeningSearchQuery}
+                              onChange={(e) =>
+                                setKodeRekeningSearchQuery(e.target.value)
+                              }
                             />
                           </div>
                           <div>
                             <TwButton
                               icon={<MagnifyingGlassIcon className="h-5 w-5" />}
                               type="button"
-                              size="lg"
+                              size="md"
                               title="Cari"
+                              onClick={handleKodeRekeningSearch}
                             />
                           </div>
                         </div>
-                        <TwTreeView treeData={treeData} />
+                        <TwTreeView
+                          treeData={treeData}
+                          searchValue={searchKodeRekeningValue}
+                          onNodeSelect={handleKodeRekeningNodeSelect}
+                        />
                       </div>
                     </div>
                   </div>
@@ -1617,13 +1672,13 @@ export default function Page() {
                       title="Pilih"
                       variant="success"
                       icon={<CheckIcon className="h-5 w-5" />}
-                      onClick={() => setModalIsOpen(false)}
+                      onClick={handleKodeRekeningChoose}
                     />
                     <TwButton
                       title="Batal"
                       variant="secondary"
                       icon={<ArrowUturnLeftIcon className="h-5 w-5" />}
-                      onClick={() => setModalIsOpen(false)}
+                      onClick={handleModalClose}
                     />
                   </div>
                 </DialogPanel>
