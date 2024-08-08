@@ -2,6 +2,6 @@ export interface TreeNode {
   id: string;
   text: string;
   parent_id: string;
-  selectable: boolean;
+  is_selectable: boolean;
   nodes?: TreeNode[];
 }

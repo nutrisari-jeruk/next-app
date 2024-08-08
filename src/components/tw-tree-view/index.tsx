@@ -89,7 +89,7 @@ export default function TwTreeView(props: TwTreeView) {
   // Handle click to expand or collapse node
   const handleNodeClick = (node: TreeNode) => {
     return () => {
-      if (node.selectable) {
+      if (node.is_selectable) {
         setSelectedNodeId(node.id); // Set ID node yang terpilih
         onNodeSelect(node); // Panggil handler yang di-passing dari props
       } else {
@@ -110,16 +110,19 @@ export default function TwTreeView(props: TwTreeView) {
     return nodes.map((node) => {
       const isExpanded = expandedNodes.has(node.id);
       const isSelected = node.id === selectedNodeId;
+      console.log(isSelected, node.id, selectedNodeId);
       return (
         <div key={node.id}>
           <Button
             onClick={handleNodeClick(node)}
             className={clsx(
-              'flex w-full items-center space-x-3 rounded-lg bg-white p-2 shadow-md transition-colors hover:bg-gray-100',
+              'flex w-full items-center space-x-3 rounded-lg p-2 shadow-md transition-colors',
               className,
               'mb-2',
-              node.selectable && 'cursor-grab',
-              isSelected ? 'bg-blue-500 hover:bg-blue-600' : '',
+              node.is_selectable && 'cursor-grab',
+              isSelected
+                ? 'bg-blue-500 hover:bg-blue-600'
+                : 'bg-white hover:bg-gray-100',
             )}
           >
             {node.nodes && (
