@@ -1,25 +1,48 @@
+'use client';
+
 import Link from 'next/link';
 import NavLink from '../nav-links';
 import UserProfile from '../user-profile';
-import { AppLogo } from '@/components';
+import { useState } from 'react';
 import { Session } from 'next-auth';
+import { AppLogo, TwConfirm } from '@/components';
+import { ArrowRightEndOnRectangleIcon } from '@heroicons/react/24/outline';
+import Logout from '../logout';
 
-export default function Sidebar({session}: {session: Session}) {
+export default function Sidebar({ session }: { session: Session }) {
+  const [isOpen, setIsOpen] = useState(false);
   return (
-    <div className="flex h-svh w-80 grow flex-col gap-y-5 border-r border-gray-200 bg-white px-2 shadow">
-      <div className="-mx-2 mt-auto flex h-16 shrink-0 items-center bg-indigo-600">
-        <Link
-          href="/"
-          className="flex w-full items-center justify-center bg-indigo-600"
-        >
-          <AppLogo />
-        </Link>
-      </div>
-      <nav className="flex flex-1 flex-col overflow-y-auto px-2">
-        <NavLink />
-      </nav>
+    <>
+      <div className="flex h-svh w-80 grow flex-col gap-y-5 border-r border-gray-200 bg-white px-2 shadow">
+        <div className="-mx-2 mt-auto flex h-16 shrink-0 items-center bg-indigo-600">
+          <Link
+            href="/"
+            className="flex w-full items-center justify-center bg-indigo-600"
+          >
+            <AppLogo />
+          </Link>
+        </div>
+        <nav className="flex flex-1 flex-col overflow-y-auto px-2">
+          <NavLink />
+        </nav>
 
-      <UserProfile user={session?.user}/>
-    </div>
+        <div className="-mx-2 flex items-center justify-between bg-indigo-600 px-4 py-2 text-white">
+          <UserProfile user={session?.user} />
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-900">
+            {/* <Logout /> */}
+            <button type="button" onClick={() => setIsOpen(!isOpen)}>
+              <ArrowRightEndOnRectangleIcon className="w-6" />
+            </button>
+          </div>
+        </div>
+      </div>
+      <TwConfirm
+        isOpen={isOpen}
+        title="Logout"
+        description="Are you sure you want to logout?"
+        handleClose={() => setIsOpen(false)}
+        handleSubmit={() => setIsOpen(false)}
+      />
+    </>
   );
 }
