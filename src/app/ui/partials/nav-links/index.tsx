@@ -7,6 +7,7 @@ import {
   AdjustmentsHorizontalIcon,
   CircleStackIcon,
   ArrowDownCircleIcon,
+  ArchiveBoxXMarkIcon,
 } from '@heroicons/react/24/outline';
 import type { Menu } from '@/types/menu';
 import { usePathname, useRouter } from 'next/navigation';
@@ -39,6 +40,12 @@ const navigation = [
     name: 'Jurnal Koreksi',
     href: '/master/koreksi',
     icon: ArrowDownCircleIcon,
+    current: false,
+  },
+  {
+    name: 'Jurnal Penutup',
+    href: '/master/penutup',
+    icon: ArchiveBoxXMarkIcon,
     current: false,
   },
 ];
