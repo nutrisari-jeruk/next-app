@@ -14,6 +14,8 @@ import TwButton from '../tw-button';
 interface TwConfirmProps {
   isOpen: boolean;
   title?: string;
+  btnLabelPrimary?: string;
+  btnLabelSecondary?: string;
   description?: string;
   handleClose: () => void;
   handleSubmit: () => void;
@@ -23,6 +25,8 @@ export default function TwConfirm({
   isOpen = false,
   title = 'Title',
   description = 'Description',
+  btnLabelPrimary = 'Yes',
+  btnLabelSecondary = 'Cancel',
   handleClose = () => {},
   handleSubmit = () => {},
 }: TwConfirmProps) {
@@ -77,14 +81,14 @@ export default function TwConfirm({
                     className="ml-2"
                     onClick={handleSubmit}
                     isLoading={false}
-                    title="Ok, sure!"
+                    title={btnLabelPrimary}
                   />
 
                   <TwButton
                     variant="secondary"
-                    onClick={handleSubmit}
+                    onClick={handleClose}
                     isLoading={false}
-                    title="Cancel"
+                    title={btnLabelSecondary}
                     size="md"
                   />
                 </div>

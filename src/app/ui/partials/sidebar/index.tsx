@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { Session } from 'next-auth';
 import { AppLogo, TwConfirm } from '@/components';
 import { ArrowRightEndOnRectangleIcon } from '@heroicons/react/24/outline';
-import Logout from '../logout';
+import { signOut } from 'next-auth/react';
 
 export default function Sidebar({ session }: { session: Session }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,7 +29,6 @@ export default function Sidebar({ session }: { session: Session }) {
         <div className="-mx-2 flex items-center justify-between bg-indigo-600 px-4 py-2 text-white">
           <UserProfile user={session?.user} />
           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-900">
-            {/* <Logout /> */}
             <button type="button" onClick={() => setIsOpen(!isOpen)}>
               <ArrowRightEndOnRectangleIcon className="w-6" />
             </button>
@@ -38,10 +37,12 @@ export default function Sidebar({ session }: { session: Session }) {
       </div>
       <TwConfirm
         isOpen={isOpen}
-        title="Logout"
-        description="Are you sure you want to logout?"
+        title="Signing out"
+        description="Are you sure you want to sign out?"
         handleClose={() => setIsOpen(false)}
-        handleSubmit={() => setIsOpen(false)}
+        handleSubmit={() => {
+          signOut();
+        }}
       />
     </>
   );
