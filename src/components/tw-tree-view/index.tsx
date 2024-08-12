@@ -124,27 +124,24 @@ export default function TwTreeView(props: TwTreeView) {
   const renderTreeNodes = (nodes: TreeNode[]): JSX.Element[] => {
     return nodes.map((node) => {
       const isExpanded = expandedNodes.has(node.id);
-      const isSelected = node.id === selectedNodeId; // TODO: remove unused variable
 
       return (
         <div key={node.id}>
           <Button
             onClick={handleNodeClick(node)}
             className={clsx(
-              'mb-1 flex w-full items-center rounded-sm border px-2 py-1 shadow-sm',
+              'mb-1 flex w-full rounded-sm border px-2 py-1 shadow-sm',
               className,
             )}
           >
             {node.nodes && (
-              <div>
-                <span>
-                  {isExpanded ? (
-                    <ChevronDownIcon className="h-4 w-4 text-gray-500" />
-                  ) : (
-                    <ChevronRightIcon className="h-4 w-4 text-gray-500" />
-                  )}
-                </span>
-              </div>
+              <span>
+                {isExpanded ? (
+                  <ChevronDownIcon className="h-4 w-4 text-gray-500" />
+                ) : (
+                  <ChevronRightIcon className="h-4 w-4 text-gray-500" />
+                )}
+              </span>
             )}
             <span
               className={clsx(
