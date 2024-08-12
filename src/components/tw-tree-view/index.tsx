@@ -23,65 +23,65 @@ export default function TwTreeView(props: TwTreeView) {
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
 
   useEffect(() => {
-    handleSearchClick();
-  }, [searchValue]);
+    const handleSearchClick = () => {
+      if (searchValue) {
+        const expanded = new Set<string>();
 
-  const handleSearchClick = () => {
-    if (searchValue) {
-      const expanded = new Set<string>();
+        const searchNodes = (nodes: TreeNode[], allNodes: TreeNode[]) => {
+          for (const node of nodes) {
+            if (node.text.toLowerCase().includes(searchValue.toLowerCase())) {
+              expanded.add(node.id);
 
-      const searchNodes = (nodes: TreeNode[], allNodes: TreeNode[]) => {
-        for (const node of nodes) {
-          if (node.text.toLowerCase().includes(searchValue.toLowerCase())) {
-            expanded.add(node.id);
-
-            // Expand all parent nodes
-            let parent_id = node.parent_id;
-            while (parent_id) {
-              expanded.add(parent_id);
-              const parentNode = allNodes.find((n) => n.id === parent_id);
-              if (parentNode) {
-                parent_id = parentNode.parent_id;
-              } else {
-                break;
+              // Expand all parent nodes
+              let parent_id = node.parent_id;
+              while (parent_id) {
+                expanded.add(parent_id);
+                const parentNode = allNodes.find((n) => n.id === parent_id);
+                if (parentNode) {
+                  parent_id = parentNode.parent_id;
+                } else {
+                  break;
+                }
               }
             }
+
+            // Recursively search child nodes
+            if (node.nodes) {
+              searchNodes(node.nodes, allNodes);
+            }
           }
+        };
 
-          // Recursively search child nodes
-          if (node.nodes) {
-            searchNodes(node.nodes, allNodes);
-          }
-        }
-      };
+        // Flatten the tree structure to get a list of all nodes
+        const flattenNodes = (nodes: TreeNode[]): TreeNode[] => {
+          return nodes.reduce<TreeNode[]>((acc, node) => {
+            acc.push(node);
+            if (node.nodes) {
+              acc.push(...flattenNodes(node.nodes));
+            }
+            return acc;
+          }, []);
+        };
 
-      // Flatten the tree structure to get a list of all nodes
-      const flattenNodes = (nodes: TreeNode[]): TreeNode[] => {
-        return nodes.reduce<TreeNode[]>((acc, node) => {
-          acc.push(node);
-          if (node.nodes) {
-            acc.push(...flattenNodes(node.nodes));
-          }
-          return acc;
-        }, []);
-      };
+        const allNodes = flattenNodes(treeData);
 
-      const allNodes = flattenNodes(treeData);
+        searchNodes(treeData, allNodes);
 
-      searchNodes(treeData, allNodes);
+        setExpandedNodes(expanded);
+      } else {
+        setExpandedNodes(new Set());
+      }
+    };
 
-      setExpandedNodes(expanded);
-    } else {
-      setExpandedNodes(new Set());
-    }
-  };
+    handleSearchClick();
+  }, [searchValue, treeData]);
 
   const highlightText = (text: string, highlight: string) => {
     if (!highlight) return text;
     const parts = text.split(new RegExp(`(${highlight})`, 'gi'));
     return parts.map((part, index) =>
       part.toLowerCase() === highlight.toLowerCase() ? (
-        <span key={index} className="bg-blue-500 text-white">
+        <span key={index} className="rounded-sm bg-indigo-500 px-1 text-white">
           {part}
         </span>
       ) : (
@@ -110,42 +110,53 @@ export default function TwTreeView(props: TwTreeView) {
     };
   };
 
+  const resolveNodeText = (text: string) => {
+    const textSplitted = text.split(' - ');
+    return (
+      <div className="flex space-x-2">
+        <span>{highlightText(textSplitted[0], searchValue)}</span>
+        <span>-</span>
+        <span>{highlightText(textSplitted[1], searchValue)}</span>
+      </div>
+    );
+  };
+
   const renderTreeNodes = (nodes: TreeNode[]): JSX.Element[] => {
     return nodes.map((node) => {
       const isExpanded = expandedNodes.has(node.id);
-      const isSelected = node.id === selectedNodeId;
+      const isSelected = node.id === selectedNodeId; // TODO: remove unused variable
 
       return (
         <div key={node.id}>
           <Button
             onClick={handleNodeClick(node)}
             className={clsx(
-              'flex w-full items-center space-x-3 rounded-lg p-2 shadow-md transition-colors hover:bg-gray-50',
+              'mb-1 flex w-full items-center rounded-sm border px-2 py-1 shadow-sm',
               className,
-              'mb-2',
-              node.is_selectable && 'cursor-grab bg-gray-200 hover:bg-gray-500',
             )}
           >
             {node.nodes && (
-              <span>
-                {isExpanded ? (
-                  <ChevronDownIcon className="h-6 w-6 text-gray-700" />
-                ) : (
-                  <ChevronRightIcon className="h-6 w-6 text-gray-700" />
-                )}
-              </span>
+              <div>
+                <span>
+                  {isExpanded ? (
+                    <ChevronDownIcon className="h-4 w-4 text-gray-500" />
+                  ) : (
+                    <ChevronRightIcon className="h-4 w-4 text-gray-500" />
+                  )}
+                </span>
+              </div>
             )}
             <span
               className={clsx(
-                'ml-2 text-left font-medium text-gray-800',
-                node.is_selectable && 'hover:text-white',
+                'ml-2 text-left font-mono text-sm text-gray-500',
+                node.is_selectable && 'font-bold text-gray-600 underline',
               )}
             >
-              {highlightText(node.text, searchValue)}
+              {resolveNodeText(node.text)}
             </span>
           </Button>
           {node.nodes && isExpanded && (
-            <div className="ml-4 mt-4 border-l border-gray-200 pl-4">
+            <div className="ml-4 border-l border-l-gray-200 pl-4">
               {renderTreeNodes(node.nodes)}
             </div>
           )}
