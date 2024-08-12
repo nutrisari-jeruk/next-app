@@ -3,7 +3,10 @@
 import { TwButton, Input } from '@/components';
 import { useFormState, useFormStatus } from 'react-dom';
 import { authenticate } from '@/app/login/actions/authenticate';
-import { CheckBadgeIcon, ExclamationCircleIcon, PaperAirplaneIcon, PlayPauseIcon } from '@heroicons/react/24/outline';
+import {
+  ArrowRightEndOnRectangleIcon,
+  ExclamationCircleIcon,
+} from '@heroicons/react/24/outline';
 
 export default function Login() {
   const { pending } = useFormStatus();
@@ -15,7 +18,6 @@ export default function Login() {
         <form action={formAction} className="w-80 space-y-2">
           <Input name="email" />
           <Input name="password" type="password" />
-
           <TwButton
             type="submit"
             title="Login"
@@ -23,7 +25,8 @@ export default function Login() {
             size="lg"
             aria-disabled={pending}
             disabled={pending}
-            icon={<PaperAirplaneIcon className="w-5" />}
+            isLoading={false}
+            icon={<ArrowRightEndOnRectangleIcon className="w-5" />}
           />
         </form>
         {errorMessage && (

@@ -21,12 +21,7 @@ const navigation: Menu[] = [
     href: '/user',
     icon: UsersIcon,
     count: 2,
-  },
-  {
-    name: 'Base Template',
-    href: '/base-template',
-    icon: CodeBracketSquareIcon,
-  },
+  }
 ];
 
 export default function NavLink(): JSX.Element {
