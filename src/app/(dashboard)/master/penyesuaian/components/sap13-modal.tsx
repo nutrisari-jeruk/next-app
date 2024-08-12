@@ -1,8 +1,9 @@
 'use client';
-import { TwButton, TwInput, TwTreeView } from '@/components';
+import { TwButton, TwInput, TwKbd, TwTreeView } from '@/components';
 import { TreeNode } from '@/types/tree-view';
 import {
   Button,
+  Description,
   Dialog,
   DialogPanel,
   DialogTitle,
@@ -25,11 +26,17 @@ interface Sap13Modal {
 export default function Sap13Modal(props: Sap13Modal) {
   const { treeData, isModalOpen, onNodeSelect, onClose } = props;
 
-  const [searchKodeRekeningValue, setKodeRekeningSearchValue] = useState('');
+  const [searchKodeRekeningValue, setKodeRekeningSearchValue] = useState(''); // TODO: change variable name
   const [kodeRekeningSearchQuery, setKodeRekeningSearchQuery] = useState('');
 
   const handleKodeRekeningSearch = () => {
     setKodeRekeningSearchValue(kodeRekeningSearchQuery);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
+    if (e.key === 'Enter') {
+      handleKodeRekeningSearch();
+    }
   };
 
   useEffect(() => {
@@ -74,44 +81,47 @@ export default function Sap13Modal(props: Sap13Modal) {
                     <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                   </Button>
                 </div>
-                <div>
-                  <div className="mt-3 text-center">
-                    <DialogTitle
-                      as="h3"
-                      className="text-base font-semibold leading-6 text-gray-900"
-                    >
-                      Pilih SAP 13
-                    </DialogTitle>
-                    <div className="space-y-2">
-                      <div className="flex w-full items-end justify-between space-x-2">
-                        <div className="w-full">
-                          <TwInput
-                            name="searchModal"
-                            type="text"
-                            placeholder="Cari Kode SAP 13 level 5"
-                            value={kodeRekeningSearchQuery}
-                            onChange={(e) =>
-                              setKodeRekeningSearchQuery(e.target.value)
-                            }
-                          />
-                        </div>
-                        <div>
-                          <TwButton
-                            icon={<MagnifyingGlassIcon className="h-5 w-5" />}
-                            type="button"
-                            size="md"
-                            title="Cari"
-                            onClick={handleKodeRekeningSearch}
-                          />
-                        </div>
+                <div className="mt-3">
+                  <DialogTitle
+                    as="h3"
+                    className="flex justify-center text-base font-semibold leading-6 text-gray-900"
+                  >
+                    Pilih SAP 13
+                  </DialogTitle>
+                  <Description className="mb-2">
+                    <div className="mb-2 flex items-end justify-between space-x-2">
+                      <div className="w-full">
+                        <TwInput
+                          name="searchModal"
+                          type="text"
+                          placeholder="Cari Kode SAP 13 level 5"
+                          value={kodeRekeningSearchQuery}
+                          onChange={(e) =>
+                            setKodeRekeningSearchQuery(e.target.value)
+                          }
+                          onKeyDown={handleKeyDown}
+                          autoFocus={true}
+                        />
                       </div>
-                      <TwTreeView
-                        treeData={treeData}
-                        searchValue={searchKodeRekeningValue}
-                        onNodeSelect={onNodeSelect}
+
+                      <TwButton
+                        icon={<MagnifyingGlassIcon className="h-5 w-5" />}
+                        type="button"
+                        size="md"
+                        title="Cari"
+                        onClick={handleKodeRekeningSearch}
                       />
                     </div>
-                  </div>
+                    <p className="mb-2 text-xs text-gray-500">
+                      Tekan <TwKbd>Enter</TwKbd> untuk mencari
+                    </p>
+                  </Description>
+
+                  <TwTreeView
+                    treeData={treeData}
+                    searchValue={searchKodeRekeningValue}
+                    onNodeSelect={onNodeSelect}
+                  />
                 </div>
               </DialogPanel>
             </TransitionChild>
