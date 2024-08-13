@@ -19,13 +19,13 @@ export default function TwTreeView(props: TwTreeView) {
     className = '',
     onNodeSelect = () => {},
   } = props;
-  const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set());
-  const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
+  const [expandedNodes, setExpandedNodes] = useState<Set<number>>(new Set());
+  const [selectedNodeId, setSelectedNodeId] = useState<number | null>(null);
 
   useEffect(() => {
     const handleSearchClick = () => {
       if (searchValue) {
-        const expanded = new Set<string>();
+        const expanded = new Set<number>();
 
         const searchNodes = (nodes: TreeNode[], allNodes: TreeNode[]) => {
           for (const node of nodes) {
