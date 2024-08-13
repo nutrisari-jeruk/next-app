@@ -10,6 +10,7 @@ import {
 import Link from 'next/link';
 import { useState } from 'react';
 import Sap13Modal from '../../components/sap13-modal';
+import { createUmum } from '../../actions';
 
 interface CreateUmumForm {
   treeData: TreeNode[];
@@ -20,9 +21,12 @@ export default function CreateUmumForm(props: CreateUmumForm) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [activeInput, setActiveInput] = useState<'debit' | 'kredit' | ''>('');
 
+  const [jenisUmum, setJenisUmum] = useState('');
   const [debit, setDebit] = useState('');
   const [kredit, setKredit] = useState('');
 
+  const [kreditSap13Id, setKreditSap13Id] = useState(0);
+  const [debitSap13Id, setDebitSap13Id] = useState(0);
   const handleInputFocus = (inputName: 'debit' | 'kredit') => {
     setActiveInput(inputName);
     setModalIsOpen(true);
@@ -34,22 +38,34 @@ export default function CreateUmumForm(props: CreateUmumForm) {
 
   const handleKodeRekeningNodeSelect = (node: TreeNode) => {
     handleModalClose();
-    console.log(node);
+    
     switch (activeInput) {
       case 'debit':
         setDebit(node?.text);
+        setDebitSap13Id(node?.id);
         break;
       case 'kredit':
         setKredit(node?.text);
+        setKreditSap13Id(node?.id);
         break;
       default:
         break;
     }
   };
 
+  const handleSubmit = () => {
+    createUmum({
+      jenis_jurnal: jenisUmum,
+      kode_rekening_id: { debit: 12, kredit: 21 },
+    });
+  };
+
   return (
     <div>
-      <form className="mt-4 rounded-lg bg-white p-4 shadow">
+      <form
+        action={handleSubmit}
+        className="mt-4 rounded-lg bg-white p-4 shadow"
+      >
         <div className="space-y-12">
           <div className="border-b border-gray-900/10 pb-12">
             <div className="flex flex-col space-y-4">
@@ -57,6 +73,8 @@ export default function CreateUmumForm(props: CreateUmumForm) {
                 name="jenis"
                 label="Jenis Umum"
                 type="text"
+                value={jenisUmum}
+                onChange={(e) => setJenisUmum(e.target.value)}
                 required
                 placeholder="Masukkan Jenis Umum"
               />
@@ -118,14 +136,12 @@ export default function CreateUmumForm(props: CreateUmumForm) {
               }
             />
           </Link>
-          <Link href="/master/umum">
-            <TwButton
-              type="submit"
-              title="Save"
-              variant="success"
-              icon={<CheckIcon className="h-5 w-5" aria-hidden="true" />}
-            />
-          </Link>
+          <TwButton
+            type="submit"
+            title="Save"
+            variant="success"
+            icon={<CheckIcon className="h-5 w-5" aria-hidden="true" />}
+          />
         </div>
       </form>
       <Sap13Modal

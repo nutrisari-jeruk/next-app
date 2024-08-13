@@ -6,16 +6,16 @@ import Link from 'next/link';
 const umumList: List[] = [
   {
     id: 1,
-    kode: 'JP/001',
-    jenis: 'Penyusutan',
+    kode: 'JU/001',
+    jenis: 'Bunga Deposito',
     rekening: '1.1.1.1.1.1 - Penyusutan Laba/Rugi',
     debit: 'SAP 13 level 4',
     kredit: 'SAP 13 level 4',
   },
   {
     id: 2,
-    kode: 'JP/002',
-    jenis: 'Penyusutan',
+    kode: 'JU/002',
+    jenis: 'Bunga Deposito',
     rekening: '2.2.2.2.2.2 - Penambahan Laba/Rugi',
     debit: 'SAP 13 level 2',
     kredit: 'SAP 13 level 2',

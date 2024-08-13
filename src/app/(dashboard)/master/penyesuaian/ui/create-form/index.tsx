@@ -27,7 +27,6 @@ export default function CreatePenyesuaianForm(props: CreatePenyesuaianForm) {
 
   const [kreditSap13Id, setKreditSap13Id] = useState(0);
   const [debitSap13Id, setDebitSap13Id] = useState(0);
-
   const handleInputFocus = (inputName: 'debit' | 'kredit') => {
     setActiveInput(inputName);
     setModalIsOpen(true);
