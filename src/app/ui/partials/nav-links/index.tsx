@@ -28,6 +28,7 @@ const journals = [
   { id: 1, name: 'Jurnal Penyesuaian', href: '/master/penyesuaian', initial: 'JP', current: false },
   { id: 2, name: 'Jurnal Umum', href: '/master/umum', initial: 'JU', current: false },
   { id: 3, name: 'Jurnal Koreksi', href: '/master/koreksi', initial: 'JK', current: false },
+  { id: 4, name: 'Jurnal Penutup', href: '/master/penutup', initial: 'JPP', current: false },
 ];
 
 export default function NavLink(): JSX.Element {
