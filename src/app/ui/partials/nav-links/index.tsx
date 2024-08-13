@@ -63,7 +63,7 @@ export default function NavLink(): JSX.Element {
                   className={clsx(
                     item.name !== 'Dashboard' && pathname.startsWith(item.href)
                       ? 'bg-indigo-100 text-indigo-600'
-                      : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600',
+                      : 'text-gray-500 hover:bg-gray-50 hover:text-indigo-600',
                     'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6',
                   )}
                 >

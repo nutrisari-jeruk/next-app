@@ -1,9 +1,9 @@
 import $http from '@/lib/axios';
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
+import { signInSchema } from '@/lib/zod';
+import { authConfig } from '@/auth.config';
 import type { Credentials as ResponseCredentials } from '@/types/auth';
-import { signInSchema } from './lib/zod';
-import { authConfig } from './auth.config';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   ...authConfig,

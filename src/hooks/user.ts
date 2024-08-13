@@ -1,5 +1,4 @@
 import { AxiosError } from 'axios';
-import { useState } from 'react';
 import type { BaseResponse } from '@/types/api';
 import type { User } from '@/types/user';
 import $http from '@/lib/axios';
@@ -17,5 +16,5 @@ export default async function useUser() {
     throw error;
   }
 
-  return user;
+  return [user];
 }

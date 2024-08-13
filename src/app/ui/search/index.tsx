@@ -25,6 +25,7 @@ export default function Search({ placeholder }: { placeholder: string }) {
   return (
     <div className="w-1/4">
       <Input
+        id="search"
         placeholder={placeholder}
         onChange={(e) => {
           handleSearch(e.target.value);

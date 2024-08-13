@@ -1,7 +1,7 @@
 import { auth } from '@/auth';
-import { AuthProvider } from '@/components/auth-provider';
 import { Sidebar } from '../ui/partials';
 import { redirect } from 'next/navigation';
+import { SessionProvider } from 'next-auth/react';
 
 export default async function Layout({
   children,
@@ -14,14 +14,14 @@ export default async function Layout({
   }
 
   return (
-    <AuthProvider session={session}>
+    <SessionProvider session={session}>
       <div className="flex">
-        <Sidebar />
+        <Sidebar session={session} />
 
         <main className="h-svh w-full overflow-y-auto px-8 py-8 space-y-4">
           {children}
         </main>
       </div>
-    </AuthProvider>
+    </SessionProvider>
   );
 }
