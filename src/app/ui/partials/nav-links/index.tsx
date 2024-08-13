@@ -7,7 +7,6 @@ import {
   AdjustmentsHorizontalIcon,
   CircleStackIcon,
   ArrowDownCircleIcon,
-  ArchiveBoxXMarkIcon,
 } from '@heroicons/react/24/outline';
 import type { Menu } from '@/types/menu';
 import { usePathname, useRouter } from 'next/navigation';
@@ -22,37 +21,13 @@ const navigation = [
     count: '1',
     current: true,
   },
-  {
-    name: 'Base Template',
-    href: '/base-template',
-    icon: CodeBracketSquareIcon,
-    current: false,
-  },
   { name: 'Users', href: '/user', icon: UsersIcon, current: false },
-  {
-    name: 'Jurnal Penyesuaian',
-    href: '/master/penyesuaian',
-    icon: AdjustmentsHorizontalIcon,
-    current: false,
-  },
-  { name: 'Jurnal Umum', href: '/master/umum', icon: CircleStackIcon, current: false },
-  {
-    name: 'Jurnal Koreksi',
-    href: '/master/koreksi',
-    icon: ArrowDownCircleIcon,
-    current: false,
-  },
-  {
-    name: 'Jurnal Penutup',
-    href: '/master/penutup',
-    icon: ArchiveBoxXMarkIcon,
-    current: false,
-  },
 ];
-const teams = [
-  { id: 1, name: 'Heroicons', href: '#', initial: 'H', current: false },
-  { id: 2, name: 'Tailwind Labs', href: '#', initial: 'T', current: false },
-  { id: 3, name: 'Workcation', href: '#', initial: 'W', current: false },
+
+const journals = [
+  { id: 1, name: 'Jurnal Penyesuaian', href: '/master/penyesuaian', initial: 'JP', current: false },
+  { id: 2, name: 'Jurnal Umum', href: '/master/umum', initial: 'JU', current: false },
+  { id: 3, name: 'Jurnal Koreksi', href: '/master/koreksi', initial: 'JK', current: false },
 ];
 
 export default function NavLink(): JSX.Element {
@@ -98,6 +73,36 @@ export default function NavLink(): JSX.Element {
             ))}
           </ul>
         </li>
+        <li>
+            <div className="text-xs font-semibold leading-6 text-gray-400">Jurnal</div>
+            <ul role="list" className="-mx-2 mt-2 space-y-1">
+              {journals.map((item) => (
+                <li key={item.name}>
+                  <a
+                    href={item.href}
+                    className={clsx(
+                      item.name !== 'Dashboard' && pathname.startsWith(item.href)
+                        ? 'bg-indigo-100 text-indigo-600'
+                        : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50',
+                      'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
+                    )}
+                  >
+                    <span
+                      className={clsx(
+                        item.name !== 'Dashboard' && pathname.startsWith(item.href)
+                          ? 'text-indigo-600 border-indigo-600'
+                          : 'text-gray-400 border-gray-200 group-hover:border-indigo-600 group-hover:text-indigo-600',
+                        'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-medium bg-white'
+                      )}
+                    >
+                      {item.initial}
+                    </span>
+                    <span className="truncate">{item.name}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </li>
       </ul>
     </>
   );

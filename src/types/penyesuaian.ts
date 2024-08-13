@@ -7,9 +7,10 @@ export interface List {
   kredit: string;
 }
 
-export interface request {
-  kode: 'JP';
-  jenis: string;
-  debit: number;
-  kredit: number;
+export interface Request {
+  jenis_jurnal: string;
+  kode_rekening_id: {
+    debit: number;
+    kredit: number;
+  };
 }
