@@ -1,11 +1,11 @@
 import Table from './components/table';
 import Link from 'next/link';
+import Search from '@/app/ui/search';
 import { Suspense } from 'react';
 import { TwButton } from '@/components';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
-import type { Params } from '@/types/params';
 import { Metadata } from 'next';
-import Search from '@/app/ui/search';
+import type { Params } from '@/types/params';
 
 export const metadata: Metadata = {
   title: 'User',

@@ -12,11 +12,11 @@ interface Input extends React.InputHTMLAttributes<HTMLInputElement> {
 }
 
 export default function Input(props: Input) {
-  const randomId = Math.random().toString(36).slice(2);
+  const randomId = `input-${Math.random().toString(36).slice(2)}`;
 
   const {
-    id = randomId,
     name = undefined,
+    id = randomId,
     placeholder = 'Enter here',
     type = 'text',
     isError = false,
@@ -53,7 +53,7 @@ export default function Input(props: Input) {
         )}
 
         <input
-          id={id}
+          id={id ? name : undefined}
           name={name}
           className={`${className} ${!!leftIcon && 'pl-10'} w-full rounded-md border border-slate-300 p-3 text-sm shadow-sm ${isError && textError} ${isError && borderError} placeholder:${isError && textError}`}
           type={type}
