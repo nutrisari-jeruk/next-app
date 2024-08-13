@@ -13,7 +13,7 @@ export default function Sidebar({ session }: { session: Session }) {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div>
-      <div className="flex h-svh w-80 grow flex-col gap-y-5 border-r border-gray-200 bg-white px-2 shadow">
+      <div className="flex h-svh w-72 grow flex-col gap-y-5 border-r border-gray-200 bg-white px-2 shadow">
         <div className="-mx-2 mt-auto flex h-16 shrink-0 items-center bg-indigo-600">
           <Link
             href="/"
@@ -26,7 +26,7 @@ export default function Sidebar({ session }: { session: Session }) {
           <NavLink />
         </nav>
 
-        <div className="-mx-2 flex items-center justify-between px-4 py-2 border-t">
+        <div className="-mx-2 flex items-center justify-between border-t px-4 py-2">
           <UserProfile user={session?.user} />
           <div className="flex h-10 w-10 items-center justify-center">
             <button type="button" onClick={() => setIsOpen(!isOpen)}>
