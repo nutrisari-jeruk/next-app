@@ -5,12 +5,11 @@ export interface List {
     rekening: string;
     debit: string;
     kredit: string;
-}
+  }
   
-  export interface Request {
-    jenis_jurnal: string;
-    kode_rekening_id: {
-      debit: number;
-      kredit: number;
-    };
+  export interface request {
+    kode: 'JU';
+    jenis: string;
+    debit: number;
+    kredit: number;
   }

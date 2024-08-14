@@ -1,12 +1,12 @@
 import { TwButton } from '@/components';
-import type { List } from '@/types/umum';
+import type { List } from '@/types/penutup';
 import { PencilSquareIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 
-const umumList: List[] = [
+const penutupList: List[] = [
   {
     id: 1,
-    kode: 'JU/001',
+    kode: 'JP/001',
     jenis: 'Bunga Deposito',
     rekening: '1.1.1.1.1.1 - Penyusutan Laba/Rugi',
     debit: 'SAP 13 level 4',
@@ -14,7 +14,7 @@ const umumList: List[] = [
   },
   {
     id: 2,
-    kode: 'JU/002',
+    kode: 'JP/002',
     jenis: 'Bunga Deposito',
     rekening: '2.2.2.2.2.2 - Penambahan Laba/Rugi',
     debit: 'SAP 13 level 2',
@@ -70,30 +70,30 @@ export default function Table() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {umumList.map((umum) => (
-                  <tr key={umum.id} className="hover:bg-gray-100">
+                {penutupList.map((penutup) => (
+                  <tr key={penutup.id} className="hover:bg-gray-100">
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      <Link href={'#'}>{umum.kode}</Link>
+                      <Link href={'#'}>{penutup.kode}</Link>
                     </td>
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      <Link href={'#'}>{umum.jenis}</Link>
+                      <Link href={'#'}>{penutup.jenis}</Link>
                     </td>
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      <Link href={'#'}>{umum.rekening}</Link>
+                      <Link href={'#'}>{penutup.rekening}</Link>
                     </td>
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      <Link href={'#'}>{umum.debit}</Link>
+                      <Link href={'#'}>{penutup.debit}</Link>
                     </td>
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      <Link href={'#'}>{umum.kredit}</Link>
+                      <Link href={'#'}>{penutup.kredit}</Link>
                     </td>
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                       <Link
                         className="text-indigo-600 hover:text-indigo-900"
-                        href={`master/umum/edit/${umum.id}`}
+                        href={`master/penutup/edit/${penutup.id}`}
                       >
                         Edit
-                        <span className="sr-only">, {umum.kode}</span>
+                        <span className="sr-only">, {penutup.kode}</span>
                       </Link>
                     </td>
                   </tr>
