@@ -37,6 +37,7 @@ export default function CreateUserForm() {
             </div>
 
             <div className="w-full">
+              {/* TODO: Create select component */}
               <label
                 htmlFor="role"
                 className="flex items-center gap-2 text-sm font-medium leading-6 text-gray-900"
@@ -55,6 +56,7 @@ export default function CreateUserForm() {
             </div>
 
             <div className="flex flex-col space-y-2">
+              {/* TODO: Create radio button component */}
               <label
                 htmlFor="active"
                 className="flex items-center gap-2 text-sm font-medium leading-6 text-gray-900"
