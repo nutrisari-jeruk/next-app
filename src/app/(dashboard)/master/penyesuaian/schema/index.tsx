@@ -7,12 +7,10 @@ export const PenyesuaianSchema = z.object({
       invalid_type_error: 'Jenis Penyesuaian must be a string',
     })
     .min(1, 'Jenis Penyesuaian is required'),
-  kode_rekening_id: z.object({
-    debit: z.number({
-      required_error: 'Debit is required',
-    }),
-    credit: z.number({
-      required_error: 'Kredit is required',
-    }),
+  debit: z.number({
+    required_error: 'Debit is required',
+  }),
+  credit: z.number({
+    required_error: 'Kredit is required',
   }),
 });

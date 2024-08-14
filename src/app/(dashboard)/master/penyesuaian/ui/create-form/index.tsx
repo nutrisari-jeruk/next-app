@@ -1,6 +1,6 @@
 'use client';
 
-import { TwButton, TwConfirm, TwInput } from '@/components';
+import { TwButton, TwComboBox, TwConfirm, TwInput } from '@/components';
 import { TreeNode } from '@/types/tree-view';
 import {
   ArrowUturnLeftIcon,
@@ -12,7 +12,8 @@ import { useState } from 'react';
 import Sap13Modal from '../../components/sap13-modal';
 import { createPenyesuaian } from '../../actions';
 import clsx from 'clsx';
-import { readdirSync } from 'fs';
+import { useFormState } from 'react-dom';
+import type { Option } from '@/types/option';
 
 interface CreatePenyesuaianForm {
   treeData: TreeNode[];
@@ -21,7 +22,6 @@ interface CreatePenyesuaianForm {
 export default function CreatePenyesuaianForm(props: CreatePenyesuaianForm) {
   const { treeData } = props;
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [confirmIsOpen, setconfirmIsOpen] = useState(false);
   const [activeInput, setActiveInput] = useState<'debit' | 'credit' | ''>('');
 
   const [jenisPenyesuaian, setJenisPenyesuaian] = useState('');
@@ -31,11 +31,10 @@ export default function CreatePenyesuaianForm(props: CreatePenyesuaianForm) {
   const [creditSap13Id, setCreditSap13Id] = useState<number>();
   const [debitSap13Id, setDebitSap13Id] = useState<number>();
 
-  const [errorMessage, setErrorMessage] = useState({
-    jenis: '',
-    debit: '',
-    credit: '',
-  });
+  const [state, formAction] = useFormState(createPenyesuaian, undefined);
+
+  const [debitAccount, setDebitAccount] = useState<Option[]>([]);
+  const [creditAccount, setCreditAccount] = useState<Option[]>([]);
 
   const handleInputFocus = (inputName: 'debit' | 'credit') => {
     setActiveInput(inputName);
@@ -46,81 +45,67 @@ export default function CreatePenyesuaianForm(props: CreatePenyesuaianForm) {
     setModalIsOpen(false);
   };
 
-  const handleConfirmClose = () => {
-    setconfirmIsOpen(false);
-  };
-
-  const handleConfirmOpen = () => {
-    setconfirmIsOpen(true);
-  };
-
   const handleKodeRekeningNodeSelect = (node: TreeNode) => {
     handleModalClose();
+
+    const option: Option = {
+      label: node.text,
+      value: node.id,
+      selected: true,
+    };
 
     switch (activeInput) {
       case 'debit':
         setDebit(node?.text);
         setDebitSap13Id(node?.id);
+        setDebitAccount([option]);
         break;
       case 'credit':
         setKredit(node?.text);
         setCreditSap13Id(node?.id);
+        setCreditAccount([option]);
         break;
       default:
         break;
     }
   };
 
-  const handleSubmit = async () => {
-    let error = '';
-    handleConfirmClose();
-    const result = await createPenyesuaian({
-      jenis_jurnal: jenisPenyesuaian,
-      kode_rekening_id: { debit: debitSap13Id!, credit: creditSap13Id! },
-    });
-
-    if (result?.errors) {
-      console.log(result.errors.jenis);
-    }
-  };
-
   return (
     <div>
-      <form
-        action={handleConfirmOpen}
-        className="mt-4 rounded-lg bg-white p-4 shadow"
-      >
+      <form action={formAction} className="mt-4 rounded-lg bg-white p-4 shadow">
         <div className="space-y-12">
           <div className="border-b border-gray-900/10 pb-12">
             <div className="flex flex-col space-y-4">
               <TwInput
-                name="jenis"
+                name="jenis_jurnal"
                 label="Jenis Penyesuaian"
                 type="text"
                 value={jenisPenyesuaian}
                 onChange={(e) => setJenisPenyesuaian(e.target.value)}
                 required
                 placeholder="Masukkan Jenis Penyesuaian"
-                isError={errorMessage.jenis !== ''}
-                errorMessage={errorMessage.jenis}
+                isError={!!state?.validationErrors.jenis_jurnal}
+                errorMessage={state?.validationErrors.jenis_jurnal}
               />
 
               <div
                 className={clsx(
                   'flex w-full justify-between space-x-2',
-                  errorMessage.debit !== '' ? 'items-center' : 'items-end',
+                  !!state?.validationErrors.debit
+                    ? 'items-center'
+                    : 'items-end',
                 )}
               >
                 <div className="w-full">
-                  <TwInput
-                    value={debit}
-                    name="debit"
+                  <TwComboBox
+                    options={debitAccount}
                     label="Debit"
-                    type="text"
-                    readOnly
-                    placeholder="Kode SAP 13 level 5"
-                    isError={errorMessage.debit !== ''}
-                    errorMessage={errorMessage.debit}
+                    name="debit"
+                    placeHolder="Kode SAP 13 level 5"
+                    selectedData={debitAccount[0]}
+                    disabled
+                    isError={!!state?.validationErrors.debit}
+                    errorMessage={state?.validationErrors.debit}
                   />
                 </div>
                 <div>
@@ -136,19 +121,21 @@ export default function CreatePenyesuaianForm(props: CreatePenyesuaianForm) {
               <div
                 className={clsx(
                   'flex w-full justify-between space-x-2',
-                  errorMessage.debit !== '' ? 'items-center' : 'items-end',
+                  !!state?.validationErrors.credit
+                    ? 'items-center'
+                    : 'items-end',
                 )}
               >
                 <div className="w-full">
-                  <TwInput
-                    name="credit"
-                    value={credit}
+                  <TwComboBox
+                    options={creditAccount}
                     label="Kredit"
-                    type="text"
-                    readOnly
-                    placeholder="Kode SAP 13 level 5"
-                    isError={errorMessage.credit !== ''}
-                    errorMessage={errorMessage.credit}
+                    name="credit"
+                    placeHolder="Kode SAP 13 level 5"
+                    selectedData={creditAccount[0]}
+                    disabled
+                    isError={!!state?.validationErrors.credit}
+                    errorMessage={state?.validationErrors.credit}
                   />
                 </div>
                 <div>
@@ -190,13 +177,6 @@ export default function CreatePenyesuaianForm(props: CreatePenyesuaianForm) {
         activeInput={activeInput}
         onClose={handleModalClose}
         onNodeSelect={handleKodeRekeningNodeSelect}
-      />
-      <TwConfirm
-        title="Menyimpan Data"
-        description="Apakah anda yakin ingin menyimpan data ini?"
-        isOpen={confirmIsOpen}
-        handleClose={handleConfirmClose}
-        handleSubmit={handleSubmit}
       />
     </div>
   );
