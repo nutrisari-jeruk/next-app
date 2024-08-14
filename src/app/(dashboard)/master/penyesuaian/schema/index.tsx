@@ -11,7 +11,7 @@ export const PenyesuaianSchema = z.object({
     debit: z.number({
       required_error: 'Debit is required',
     }),
-    kredit: z.number({
+    credit: z.number({
       required_error: 'Kredit is required',
     }),
   }),

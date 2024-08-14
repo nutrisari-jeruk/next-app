@@ -1,6 +1,6 @@
 'use client';
 
-import { TwButton, TwInput } from '@/components';
+import { TwButton, TwConfirm, TwInput } from '@/components';
 import { TreeNode } from '@/types/tree-view';
 import {
   ArrowUturnLeftIcon,
@@ -11,6 +11,8 @@ import Link from 'next/link';
 import { useState } from 'react';
 import Sap13Modal from '../../components/sap13-modal';
 import { createPenyesuaian } from '../../actions';
+import clsx from 'clsx';
+import { readdirSync } from 'fs';
 
 interface CreatePenyesuaianForm {
   treeData: TreeNode[];
@@ -19,22 +21,37 @@ interface CreatePenyesuaianForm {
 export default function CreatePenyesuaianForm(props: CreatePenyesuaianForm) {
   const { treeData } = props;
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [activeInput, setActiveInput] = useState<'debit' | 'kredit' | ''>('');
+  const [confirmIsOpen, setconfirmIsOpen] = useState(false);
+  const [activeInput, setActiveInput] = useState<'debit' | 'credit' | ''>('');
 
   const [jenisPenyesuaian, setJenisPenyesuaian] = useState('');
   const [debit, setDebit] = useState('');
-  const [kredit, setKredit] = useState('');
+  const [credit, setKredit] = useState('');
 
-  const [kreditSap13Id, setKreditSap13Id] = useState(0);
-  const [debitSap13Id, setDebitSap13Id] = useState(0);
+  const [creditSap13Id, setCreditSap13Id] = useState<number>();
+  const [debitSap13Id, setDebitSap13Id] = useState<number>();
 
-  const handleInputFocus = (inputName: 'debit' | 'kredit') => {
+  const [errorMessage, setErrorMessage] = useState({
+    jenis: '',
+    debit: '',
+    credit: '',
+  });
+
+  const handleInputFocus = (inputName: 'debit' | 'credit') => {
     setActiveInput(inputName);
     setModalIsOpen(true);
   };
 
   const handleModalClose = () => {
     setModalIsOpen(false);
+  };
+
+  const handleConfirmClose = () => {
+    setconfirmIsOpen(false);
+  };
+
+  const handleConfirmOpen = () => {
+    setconfirmIsOpen(true);
   };
 
   const handleKodeRekeningNodeSelect = (node: TreeNode) => {
@@ -45,26 +62,32 @@ export default function CreatePenyesuaianForm(props: CreatePenyesuaianForm) {
         setDebit(node?.text);
         setDebitSap13Id(node?.id);
         break;
-      case 'kredit':
+      case 'credit':
         setKredit(node?.text);
-        setKreditSap13Id(node?.id);
+        setCreditSap13Id(node?.id);
         break;
       default:
         break;
     }
   };
 
-  const handleSubmit = () => {
-    createPenyesuaian({
+  const handleSubmit = async () => {
+    let error = '';
+    handleConfirmClose();
+    const result = await createPenyesuaian({
       jenis_jurnal: jenisPenyesuaian,
-      kode_rekening_id: { debit: 12, kredit: 21 },
+      kode_rekening_id: { debit: debitSap13Id!, credit: creditSap13Id! },
     });
+
+    if (result?.errors) {
+      console.log(result.errors.jenis);
+    }
   };
 
   return (
     <div>
       <form
-        action={handleSubmit}
+        action={handleConfirmOpen}
         className="mt-4 rounded-lg bg-white p-4 shadow"
       >
         <div className="space-y-12">
@@ -78,9 +101,16 @@ export default function CreatePenyesuaianForm(props: CreatePenyesuaianForm) {
                 onChange={(e) => setJenisPenyesuaian(e.target.value)}
                 required
                 placeholder="Masukkan Jenis Penyesuaian"
+                isError={errorMessage.jenis !== ''}
+                errorMessage={errorMessage.jenis}
               />
 
-              <div className="flex w-full items-end justify-between space-x-2">
+              <div
+                className={clsx(
+                  'flex w-full justify-between space-x-2',
+                  errorMessage.debit !== '' ? 'items-center' : 'items-end',
+                )}
+              >
                 <div className="w-full">
                   <TwInput
                     value={debit}
@@ -89,6 +119,8 @@ export default function CreatePenyesuaianForm(props: CreatePenyesuaianForm) {
                     type="text"
                     readOnly
                     placeholder="Kode SAP 13 level 5"
+                    isError={errorMessage.debit !== ''}
+                    errorMessage={errorMessage.debit}
                   />
                 </div>
                 <div>
@@ -101,15 +133,22 @@ export default function CreatePenyesuaianForm(props: CreatePenyesuaianForm) {
                   />
                 </div>
               </div>
-              <div className="flex w-full items-end justify-between space-x-2">
+              <div
+                className={clsx(
+                  'flex w-full justify-between space-x-2',
+                  errorMessage.debit !== '' ? 'items-center' : 'items-end',
+                )}
+              >
                 <div className="w-full">
                   <TwInput
-                    name="kredit"
-                    value={kredit}
+                    name="credit"
+                    value={credit}
                     label="Kredit"
                     type="text"
                     readOnly
                     placeholder="Kode SAP 13 level 5"
+                    isError={errorMessage.credit !== ''}
+                    errorMessage={errorMessage.credit}
                   />
                 </div>
                 <div>
@@ -118,7 +157,7 @@ export default function CreatePenyesuaianForm(props: CreatePenyesuaianForm) {
                     type="button"
                     size="md"
                     title="Pilih"
-                    onClick={() => handleInputFocus('kredit')}
+                    onClick={() => handleInputFocus('credit')}
                   />
                 </div>
               </div>
@@ -151,6 +190,13 @@ export default function CreatePenyesuaianForm(props: CreatePenyesuaianForm) {
         activeInput={activeInput}
         onClose={handleModalClose}
         onNodeSelect={handleKodeRekeningNodeSelect}
+      />
+      <TwConfirm
+        title="Menyimpan Data"
+        description="Apakah anda yakin ingin menyimpan data ini?"
+        isOpen={confirmIsOpen}
+        handleClose={handleConfirmClose}
+        handleSubmit={handleSubmit}
       />
     </div>
   );

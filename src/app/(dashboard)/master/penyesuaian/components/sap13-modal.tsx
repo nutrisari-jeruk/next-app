@@ -18,7 +18,7 @@ interface Sap13Modal {
   isModalOpen?: boolean;
   searchValue?: string;
   className?: string;
-  activeInput: 'debit' | 'kredit' | '';
+  activeInput: 'debit' | 'credit' | '';
   onNodeSelect: (node: TreeNode) => void;
   onClose: () => void;
 }
@@ -26,23 +26,23 @@ interface Sap13Modal {
 export default function Sap13Modal(props: Sap13Modal) {
   const { treeData, isModalOpen, onNodeSelect, onClose } = props;
 
-  const [searchKodeRekeningValue, setKodeRekeningSearchValue] = useState(''); // TODO: change variable name
-  const [kodeRekeningSearchQuery, setKodeRekeningSearchQuery] = useState('');
+  const [searchValue, setSearchValue] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
 
-  const handleKodeRekeningSearch = () => {
-    setKodeRekeningSearchValue(kodeRekeningSearchQuery);
+  const handleSearch = () => {
+    setSearchValue(searchQuery);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
     if (e.key === 'Enter') {
-      handleKodeRekeningSearch();
+      handleSearch();
     }
   };
 
   useEffect(() => {
     if (!isModalOpen) {
-      setKodeRekeningSearchValue('');
-      setKodeRekeningSearchQuery('');
+      setSearchValue('');
+      setSearchQuery('');
     }
   }, [isModalOpen]);
 
@@ -95,10 +95,8 @@ export default function Sap13Modal(props: Sap13Modal) {
                           name="searchModal"
                           type="text"
                           placeholder="Cari Kode SAP 13 level 5"
-                          value={kodeRekeningSearchQuery}
-                          onChange={(e) =>
-                            setKodeRekeningSearchQuery(e.target.value)
-                          }
+                          value={searchQuery}
+                          onChange={(e) => setSearchQuery(e.target.value)}
                           onKeyDown={handleKeyDown}
                           autoFocus={true}
                         />
@@ -109,7 +107,7 @@ export default function Sap13Modal(props: Sap13Modal) {
                         type="button"
                         size="md"
                         title="Cari"
-                        onClick={handleKodeRekeningSearch}
+                        onClick={handleSearch}
                       />
                     </div>
                     <p className="mb-2 text-xs text-gray-500">
@@ -119,7 +117,7 @@ export default function Sap13Modal(props: Sap13Modal) {
 
                   <TwTreeView
                     treeData={treeData}
-                    searchValue={searchKodeRekeningValue}
+                    searchValue={searchValue}
                     onNodeSelect={onNodeSelect}
                   />
                 </div>
