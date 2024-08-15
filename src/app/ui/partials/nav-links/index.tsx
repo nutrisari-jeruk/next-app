@@ -25,10 +25,43 @@ const navigation = [
 ];
 
 const journals = [
-  { name: 'Jurnal Umum', href: '/master/jurnal/umum', initial: 'JU', current: false },
-  { name: 'Jurnal Penyesuaian', href: '/master/jurnal/penyesuaian', initial: 'JP', current: false },
-  { name: 'Jurnal Koreksi', href: '/master/jurnal/koreksi', initial: 'JK', current: false },
-  { name: 'Jurnal Penutup', href: '/master/jurnal/penutup', initial: 'JPP', current: false },
+  {
+    id: 1,
+    name: 'Jurnal Penyesuaian',
+    href: '/master/penyesuaian',
+    initial: 'JP',
+    current: false,
+  },
+  {
+    id: 2,
+    name: 'Jurnal Umum',
+    href: '/master/umum',
+    initial: 'JU',
+    current: false,
+  },
+  {
+    id: 3,
+    name: 'Jurnal Koreksi',
+    href: '/master/koreksi',
+    initial: 'JK',
+    current: false,
+  },
+  {
+    id: 4,
+    name: 'Jurnal Penutup',
+    href: '/master/penutup',
+    initial: 'JPP',
+    current: false,
+  },
+];
+
+const maps = [
+  {
+    name: 'Mapping 1',
+    href: '/mapping/to-sap-13/expenditure-050',
+    initial: 'MP',
+    current: false,
+  },
 ];
 
 export default function NavLink(): JSX.Element {
@@ -75,35 +108,71 @@ export default function NavLink(): JSX.Element {
           </ul>
         </li>
         <li>
-            <div className="text-xs font-semibold leading-6 text-gray-400">Jurnal</div>
-            <ul role="list" className="-mx-2 mt-2 space-y-1">
-              {journals.map((item) => (
-                <li key={item.name}>
-                  <a
-                    href={item.href}
+          <div className="text-xs font-semibold leading-6 text-gray-400">
+            Jurnal
+          </div>
+          <ul role="list" className="-mx-2 mt-2 space-y-1">
+            {journals.map((item) => (
+              <li key={item.name}>
+                <a
+                  href={item.href}
+                  className={clsx(
+                    item.name !== 'Dashboard' && pathname.startsWith(item.href)
+                      ? 'bg-indigo-100 text-indigo-600'
+                      : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600',
+                    'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6',
+                  )}
+                >
+                  <span
                     className={clsx(
-                      item.name !== 'Dashboard' && pathname.startsWith(item.href)
-                        ? 'bg-indigo-100 text-indigo-600'
-                        : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50',
-                      'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
+                      item.name !== 'Dashboard' &&
+                        pathname.startsWith(item.href)
+                        ? 'border-indigo-600 text-indigo-600'
+                        : 'border-gray-200 text-gray-400 group-hover:border-indigo-600 group-hover:text-indigo-600',
+                      'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border bg-white text-[0.625rem] font-medium',
                     )}
                   >
-                    <span
-                      className={clsx(
-                        item.name !== 'Dashboard' && pathname.startsWith(item.href)
-                          ? 'text-indigo-600 border-indigo-600'
-                          : 'text-gray-400 border-gray-200 group-hover:border-indigo-600 group-hover:text-indigo-600',
-                        'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-medium bg-white'
-                      )}
-                    >
-                      {item.initial}
-                    </span>
-                    <span className="truncate">{item.name}</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </li>
+                    {item.initial}
+                  </span>
+                  <span className="truncate">{item.name}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </li>
+        <li>
+          <div className="text-xs font-semibold leading-6 text-gray-400">
+            Mapping
+          </div>
+          <ul role="list" className="-mx-2 mt-2 space-y-1">
+            {maps.map((item) => (
+              <li key={item.name}>
+                <a
+                  href={item.href}
+                  className={clsx(
+                    item.name !== 'Dashboard' && pathname.startsWith(item.href)
+                      ? 'bg-indigo-100 text-indigo-600'
+                      : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600',
+                    'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6',
+                  )}
+                >
+                  <span
+                    className={clsx(
+                      item.name !== 'Dashboard' &&
+                        pathname.startsWith(item.href)
+                        ? 'border-indigo-600 text-indigo-600'
+                        : 'border-gray-200 text-gray-400 group-hover:border-indigo-600 group-hover:text-indigo-600',
+                      'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border bg-white text-[0.625rem] font-medium',
+                    )}
+                  >
+                    {item.initial}
+                  </span>
+                  <span className="truncate">{item.name}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </li>
       </ul>
     </>
   );

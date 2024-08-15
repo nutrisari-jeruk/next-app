@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input } from '@headlessui/react';
+import { Field, Input, Label } from '@headlessui/react';
 import clsx from 'clsx';
 
 interface TwInput extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -22,19 +22,19 @@ export default function TwInput(props: TwInput) {
     icon = null,
     iconPosition = 'left',
     errorMessage = 'Error message',
+    className = '',
     ...attr
   } = props;
 
   return (
-    <div>
-      <label
+    <Field className={clsx('w-full space-y-1', className)}>
+      <Label
         htmlFor={name}
         className="block text-sm font-medium leading-6 text-gray-900"
       >
-        {attr.required && <span className="text-red-500">* </span>}
-        {label}
-      </label>
-      <div className={clsx('relative mt-2 rounded-md shadow-sm')}>
+        {label} {attr.required && <span className="text-red-500">*</span>}
+      </Label>
+      <div className={clsx('relative rounded-md shadow-sm')}>
         <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2">
           {iconPosition === 'left' && icon}
         </div>
@@ -63,6 +63,6 @@ export default function TwInput(props: TwInput) {
           {errorMessage}
         </p>
       )}
-    </div>
+    </Field>
   );
 }
