@@ -57,8 +57,8 @@ const journals = [
 
 const maps = [
   {
-    name: 'Mapping 1',
-    href: '/mapping/to-sap-13/expenditure-050',
+    name: 'Kode Rekening Belanja',
+    href: '/mapping/expenditure-050/to-sap-13',
     initial: 'MP',
     current: false,
   },

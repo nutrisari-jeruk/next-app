@@ -2,7 +2,7 @@ import React from 'react';
 import { Field, Input, Label } from '@headlessui/react';
 import clsx from 'clsx';
 
-interface TwInput extends React.InputHTMLAttributes<HTMLInputElement> {
+interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   name?: string;
   label?: string;
   icon?: React.ReactNode;
@@ -13,7 +13,7 @@ interface TwInput extends React.InputHTMLAttributes<HTMLInputElement> {
   className?: string;
 }
 
-export default function TwInput(props: TwInput) {
+export default function TwInput(props: Props) {
   const randomId = Math.random().toString(36).slice(2);
   const {
     name = `input-${randomId}`,
@@ -36,7 +36,7 @@ export default function TwInput(props: TwInput) {
       </Label>
       <div className={clsx('relative rounded-md shadow-sm')}>
         <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2">
-          {iconPosition === 'left' && icon}
+          <div className='pointer-events-none w-4 h-4'>{iconPosition === 'left' && icon}</div>
         </div>
         <Input
           name={name}
@@ -46,7 +46,7 @@ export default function TwInput(props: TwInput) {
               'text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500',
             attr.disabled ||
               (attr.readOnly && 'cursor-not-allowed bg-gray-100'),
-            icon && (iconPosition === 'left' ? 'pl-10' : 'pr-10'),
+            icon && (iconPosition === 'left' ? 'pl-8' : 'pr-8'),
             'block w-full rounded-md border-0 py-1.5 ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6',
           )}
           aria-invalid={isError}

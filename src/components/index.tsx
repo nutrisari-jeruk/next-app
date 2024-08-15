@@ -6,6 +6,7 @@ import TwInput from './tw-input';
 import TwKbd from './tw-kbd';
 import Input from './input';
 import TwConfirm from './tw-confirm';
+import TwTable from './tw-table';
 
 export {
   AppLogo,
@@ -16,4 +17,5 @@ export {
   Input,
   TwKbd,
   TwConfirm,
+  TwTable
 };

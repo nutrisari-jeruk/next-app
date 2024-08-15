@@ -3,7 +3,7 @@ import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import React from 'react';
 
-interface TwButton extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   title?: string;
   size?: string;
   variant?: string;
@@ -22,7 +22,7 @@ export default function TwButton({
   isLoading,
   icon = null,
   ...attr
-}: TwButton) {
+}: Props) {
   const variantClass: { [key: string]: string } = {
     primary:
       'bg-indigo-600 text-white hover:bg-indigo-500 focus-visible:outline-indigo-600 disabled:bg-indigo-800',
