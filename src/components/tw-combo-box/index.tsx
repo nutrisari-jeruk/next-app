@@ -6,10 +6,10 @@ import {
   ComboboxInput,
   ComboboxOption,
   ComboboxOptions,
-  Input,
+  Field,
   Label,
 } from '@headlessui/react';
-import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/24/outline';
+import { ChevronUpDownIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import { useState, useEffect } from 'react';
 
@@ -36,7 +36,7 @@ export default function TwComboBox(props: TwComboBox) {
   const [query, setQuery] = useState('');
   const [selectedOption, setSelectedOption] = useState(selectedData);
 
-  const filteredPeople =
+  const filteredOptions =
     query === ''
       ? options
       : options.filter((option) => {
@@ -49,10 +49,9 @@ export default function TwComboBox(props: TwComboBox) {
     }
   }, [selectedData]);
   return (
-    <div>
+    <Field className={clsx(attr.disabled && 'cursor-not-allowed')}>
       <Combobox
         as="div"
-        disabled={attr.disabled}
         value={selectedOption}
         defaultValue={selectedData}
         onChange={(option) => {
@@ -61,7 +60,7 @@ export default function TwComboBox(props: TwComboBox) {
         }}
       >
         <Label
-          htmlFor={attr.name}
+          htmlFor={!attr.disabled ? attr.name : ''}
           className="block text-sm font-medium leading-6 text-gray-900"
         >
           {label}
@@ -72,9 +71,8 @@ export default function TwComboBox(props: TwComboBox) {
           </div>
           <ComboboxInput
             name={attr.name}
-            id={attr.name}
             className={clsx(
-              attr.disabled ? 'cursor-not-allowed bg-gray-100' : 'bg-white',
+              attr.disabled ? 'pointer-events-none bg-gray-100' : 'bg-white',
               isError &&
                 'text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500',
               icon ? 'pl-10' : 'pl-3',
@@ -92,9 +90,9 @@ export default function TwComboBox(props: TwComboBox) {
             />
           </ComboboxButton>
 
-          {filteredPeople.length > 0 && (
+          {filteredOptions.length > 0 && (
             <ComboboxOptions className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-              {filteredPeople.map((option) => (
+              {filteredOptions.map((option) => (
                 <ComboboxOption
                   key={option.value}
                   value={option}
@@ -139,6 +137,6 @@ export default function TwComboBox(props: TwComboBox) {
           {errorMessage}
         </p>
       )}
-    </div>
+    </Field>
   );
 }

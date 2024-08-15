@@ -31,8 +31,8 @@ export default function TwInput(props: TwInput) {
         htmlFor={name}
         className="block text-sm font-medium leading-6 text-gray-900"
       >
-        {attr.required && <span className="text-red-500">* </span>}
         {label}
+        {attr.required && <span className="text-red-500"> *</span>}
       </label>
       <div className={clsx('relative mt-2 rounded-md shadow-sm')}>
         <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2">

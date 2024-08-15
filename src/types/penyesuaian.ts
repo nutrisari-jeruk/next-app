@@ -7,7 +7,7 @@ export interface List {
   credit: string;
 }
 
-export interface Request {
+export interface PostRequest {
   jenis_jurnal: string;
   kode_rekening_id: {
     debit: number;

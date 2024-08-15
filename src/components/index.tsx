@@ -7,6 +7,7 @@ import TwKbd from './tw-kbd';
 import Input from './input';
 import TwConfirm from './tw-confirm';
 import TwComboBox from './tw-combo-box';
+import TwToast from './tw-toast';
 
 export {
   AppLogo,
@@ -18,4 +19,5 @@ export {
   TwKbd,
   TwConfirm,
   TwComboBox,
+  TwToast,
 };
