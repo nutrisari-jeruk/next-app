@@ -3,4 +3,6 @@ export interface Params {
   rowsPerPage?: number;
   searchField?: string | string[];
   searchValue?: string;
+  toastMessage?: string;
+  toastStatus?: string;
 }
