@@ -6,6 +6,7 @@ import clsx from 'clsx';
 
 interface Props {
   columns: Column[];
+  // eslint-disable-next-line no-unused-vars
   handleSorting: (accessor: string, sortOrder: string) => void;
 }
 
@@ -26,26 +27,33 @@ export default function THead({ columns, handleSorting }: Props) {
       <tr>
         {!!columns &&
           columns.map(({ label, accessor, sortable }) => {
-            const icon = sortable ? (
-              sortField === accessor && order === 'asc' ? (
-                <div>
-                  <span className="text-gray-200">↑</span>
-                  <span className="text-gray-600">↓</span>
-                </div>
-              ) : sortField === accessor && order === 'desc' ? (
-                <div>
-                  <span className="text-gray-600">↑</span>
-                  <span className="text-gray-200">↓</span>
-                </div>
-              ) : (
-                <div>
-                  <span className="text-gray-600">↑</span>
-                  <span className="text-gray-600">↓</span>
-                </div>
-              )
-            ) : (
-              ''
+            let iconElement = (
+              <div>
+                <span className="text-gray-600">↑</span>
+                <span className="text-gray-600">↓</span>
+              </div>
             );
+
+            if (sortable) {
+              if (sortField === accessor && order === 'asc') {
+                iconElement = (
+                  <div>
+                    <span className="text-gray-200">↑</span>
+                    <span className="text-gray-600">↓</span>
+                  </div>
+                );
+              } else if (sortField === accessor && order === 'desc') {
+                iconElement = (
+                  <div>
+                    <span className="text-gray-600">↑</span>
+                    <span className="text-gray-200">↓</span>
+                  </div>
+                );
+              }
+            }
+
+            const icon = iconElement;
+
             return (
               <th
                 key={accessor}
@@ -62,6 +70,7 @@ export default function THead({ columns, handleSorting }: Props) {
                   {sortable && (
                     <button
                       type="button"
+                      className="select-none"
                       onClick={
                         sortable
                           ? () => handleSortingChange(accessor)

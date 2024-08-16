@@ -1,6 +1,6 @@
 export interface Params {
   page?: number;
   rowsPerPage?: number;
-  searchField?: string | string[];
+  searchField?: string;
   searchValue?: string;
 }

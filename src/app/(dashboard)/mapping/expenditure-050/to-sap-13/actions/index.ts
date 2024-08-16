@@ -4,30 +4,35 @@ import { AxiosError } from 'axios';
 import type { BaseResponse } from '@/types/api';
 import type { List } from '@/types/mapping';
 import type { Params } from '@/types/params';
+import type { Pagination } from '@/types/pagination';
 
-const fetchList = async ({
+export default async function fetchList({
   page,
   rowsPerPage,
   searchField,
   searchValue,
-}: Params): Promise<List[] | []> => {
-  let list: List[] = [
-    {
-      kr050_id: 1,
-      account_050: 'asd',
-      sap13_id: 1,
-      account_sap13: 'zxc',
+}: Params): Promise<Pagination<List[]>> {
+  let list: Pagination<List[]> = {
+    data: [],
+    links: {
+      first: '',
+      last: '',
+      prev: '',
+      next: '',
     },
-    {
-      kr050_id: 2,
-      account_050: 'qwe',
-      sap13_id: 2,
-      account_sap13: 'uio',
+    meta: {
+      current_page: 0,
+      from: 0,
+      last_page: 0,
+      path: '',
+      per_page: 0,
+      to: 0,
+      total: 0,
     },
-  ];
+  };
 
   try {
-    const { data } = await $http.get<BaseResponse<List[]>>(
+    const { data } = await $http.get<BaseResponse<Pagination<List[]>>>(
       '/v1/mappings/expenditure-050/expenditure-sap13',
       {
         params: {
@@ -49,6 +54,4 @@ const fetchList = async ({
   }
 
   return list;
-};
-
-export { fetchList };
+}
