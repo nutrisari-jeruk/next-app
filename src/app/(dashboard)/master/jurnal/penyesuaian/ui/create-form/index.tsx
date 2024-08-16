@@ -165,7 +165,7 @@ export default function CreatePenyesuaianForm(props: CreatePenyesuaianForm) {
         </div>
 
         <div className="mt-6 flex items-center justify-end gap-x-6">
-          <Link href="/master/penyesuaian">
+          <Link href="/master/jurnal/penyesuaian">
             <TwButton
               type="button"
               title="Cancel"
