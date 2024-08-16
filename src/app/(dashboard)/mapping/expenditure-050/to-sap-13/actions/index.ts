@@ -14,12 +14,7 @@ export default async function fetchList({
 }: Params): Promise<Pagination<List[]>> {
   let list: Pagination<List[]> = {
     data: [],
-    links: {
-      first: '',
-      last: '',
-      prev: '',
-      next: '',
-    },
+    links: [],
     meta: {
       current_page: 0,
       from: 0,

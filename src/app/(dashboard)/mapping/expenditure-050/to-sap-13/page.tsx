@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import Search from '@/app/ui/search';
-import { Suspense } from 'react';
 import { TwButton, TwHeader, TwTable } from '@/components';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import { Metadata } from 'next';
@@ -13,11 +12,11 @@ export const metadata: Metadata = {
   title: 'Mapping',
 };
 
-export default async function Page({ params }: { params: Params }) {
-  const searchValue = params?.searchValue || '';
-  const searchField = params?.searchField || '';
-  const currentPage = Number(params?.page) || 1;
-  const perPage = Number(params?.rowsPerPage) || 10;
+export default async function Page({ searchParams }: { searchParams: Params }) {
+  const searchValue = searchParams?.searchValue || '';
+  const searchField = searchParams?.searchField || 'account_050';
+  const currentPage = Number(searchParams?.page) || 1;
+  const perPage = Number(searchParams?.rowsPerPage) || 200;
 
   const columns: Column[] = [
     {
@@ -52,7 +51,7 @@ export default async function Page({ params }: { params: Params }) {
   return (
     <div>
       <div className="flex items-center justify-between">
-        <TwHeader title="Jurnal Penyesuaian" />
+        <TwHeader title="Mapping Kode Rekening" />
 
         <Link href="to-sap-13/create">
           <TwButton
@@ -66,14 +65,8 @@ export default async function Page({ params }: { params: Params }) {
 
       <div className="mt-4 flex flex-col space-y-2">
         <Search placeholder="Cari kode rekening" searchField={searchField} />
-
-        <Suspense
-          key={searchValue + currentPage + perPage}
-          fallback={<div>Loading...</div>}
-        >
-          <TwTable {...{ columns, rows }} />
-          <Pagination {...{ links, meta }} />
-        </Suspense>
+        <TwTable {...{ columns, rows }} />
+        <Pagination {...{ links, meta }} />
       </div>
     </div>
   );

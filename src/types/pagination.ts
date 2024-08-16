@@ -1,14 +1,13 @@
 export interface Pagination<T> {
   data: T;
-  links: Links;
+  links: Links[];
   meta: Meta;
 }
 
 export interface Links {
-  first: string;
-  last: string;
-  prev: string | null;
-  next: string | null;
+  url: string;
+  label: string;
+  active: boolean;
 }
 
 export interface Meta {
