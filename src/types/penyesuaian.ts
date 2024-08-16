@@ -1,10 +1,15 @@
 export interface List {
   id: number;
-  kode: string;
-  jenis: string;
-  rekening: string;
-  debit: string;
-  credit: string;
+  jurnal_kode: string;
+  jurnal_jenis: string;
+  kode_rekening: kodeRekening[];
+}
+
+export interface kodeRekening {
+  id: number;
+  code: string;
+  debit?: string | null;
+  credit?: string | null;
 }
 
 export interface PostRequest {
