@@ -4,13 +4,13 @@ export interface List {
   jenis: string;
   rekening: string;
   debit: string;
-  kredit: string;
+  credit: string;
 }
 
-export interface Request {
+export interface PostRequest {
   jenis_jurnal: string;
   kode_rekening_id: {
     debit: number;
-    kredit: number;
+    credit: number;
   };
 }

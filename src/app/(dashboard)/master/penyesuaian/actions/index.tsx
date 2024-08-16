@@ -1,34 +1,64 @@
 'use server';
 
 import $http from '@/lib/axios';
-import { ZodError } from 'zod';
 import { PenyesuaianSchema } from '../schema';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
-import type { Request as PenyesuaianRequest } from '@/types/penyesuaian';
+import { PostRequest } from '@/types/penyesuaian';
+import { AxiosError } from 'axios';
 
-export async function createPenyesuaian(requestData: PenyesuaianRequest) {
+export async function createPenyesuaian(
+  _prevState: unknown,
+  formData: FormData,
+) {
+  const validatedFields = PenyesuaianSchema.safeParse({
+    jenis_jurnal: formData.get('jenis_jurnal'),
+    debit: formData.get('debit'),
+    credit: formData.get('credit'),
+  });
+
+  if (!validatedFields.success) {
+    return {
+      validationErrors: validatedFields.error.flatten().fieldErrors,
+    };
+  }
+
+  const requestPenyesuaian: PostRequest = {
+    jenis_jurnal: validatedFields.data.jenis_jurnal,
+    kode_rekening_id: {
+      debit: Number(validatedFields.data.debit),
+      credit: Number(validatedFields.data.credit),
+    },
+  };
+
   try {
-    console.log(requestData);
-    const validatedFields = PenyesuaianSchema.safeParse({
-      jenis_jurnal: requestData.jenis_jurnal,
-      kode_rekening: requestData.kode_rekening_id,
-    });
-    console.log(validatedFields);
-    if (!validatedFields.success) {
+    const { data: result } = await $http.post(
+      'http://10.10.12.26:8000/api/v1/masters/journals/adjustment',
+      requestPenyesuaian,
+    );
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      if (error.response?.data?.message) {
+        return {
+          message: error.response?.data?.message,
+          status: 'error',
+        };
+      }
+
       return {
-        errors: validatedFields.error.flatten().fieldErrors,
-        message: 'Missing Fields. Failed to Create Penyesuaian.',
+        message: error.message,
+        status: 'error',
       };
     }
 
-    // TODO: Add API call to create user
-    // TODO: redirect to /user when succeed
-    revalidatePath('/master/penyesuaian');
-    redirect('/master/penyesuaian');
-  } catch (error) {
-    if (error instanceof ZodError) {
-      return null;
-    }
+    return {
+      message: 'Something Went Wrong!',
+      status: 'error',
+    };
   }
+
+  revalidatePath('/master/penyesuaian');
+  redirect(
+    `/master/penyesuaian?message=${encodeURIComponent('Penyesuaian Created Successfully')}&status=success`,
+  );
 }

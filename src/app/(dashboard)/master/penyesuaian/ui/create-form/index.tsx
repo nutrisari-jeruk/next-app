@@ -1,6 +1,6 @@
 'use client';
 
-import { TwButton, TwInput } from '@/components';
+import { TwButton, TwInput, TwToast } from '@/components';
 import { TreeNode } from '@/types/tree-view';
 import {
   ArrowUturnLeftIcon,
@@ -8,9 +8,11 @@ import {
   FolderPlusIcon,
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Sap13Modal from '../../components/sap13-modal';
 import { createPenyesuaian } from '../../actions';
+import clsx from 'clsx';
+import { useFormState, useFormStatus } from 'react-dom';
 
 interface CreatePenyesuaianForm {
   treeData: TreeNode[];
@@ -18,16 +20,19 @@ interface CreatePenyesuaianForm {
 
 export default function CreatePenyesuaianForm(props: CreatePenyesuaianForm) {
   const { treeData } = props;
+  const [activeInput, setActiveInput] = useState<'debit' | 'credit' | ''>('');
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [activeInput, setActiveInput] = useState<'debit' | 'kredit' | ''>('');
 
   const [jenisPenyesuaian, setJenisPenyesuaian] = useState('');
   const [debit, setDebit] = useState('');
-  const [kredit, setKredit] = useState('');
+  const [debitId, setDebitId] = useState<number>();
+  const [credit, setKredit] = useState('');
+  const [creditId, setCreditId] = useState<number>();
 
-  const [kreditSap13Id, setKreditSap13Id] = useState(0);
-  const [debitSap13Id, setDebitSap13Id] = useState(0);
-  const handleInputFocus = (inputName: 'debit' | 'kredit') => {
+  const { pending } = useFormStatus();
+  const [state, formAction] = useFormState(createPenyesuaian, undefined);
+
+  const handleInputFocus = (inputName: 'debit' | 'credit') => {
     setActiveInput(inputName);
     setModalIsOpen(true);
   };
@@ -42,52 +47,78 @@ export default function CreatePenyesuaianForm(props: CreatePenyesuaianForm) {
     switch (activeInput) {
       case 'debit':
         setDebit(node?.text);
-        setDebitSap13Id(node?.id);
+        setDebitId(node?.id);
         break;
-      case 'kredit':
+      case 'credit':
         setKredit(node?.text);
-        setKreditSap13Id(node?.id);
+        setCreditId(node?.id);
         break;
       default:
         break;
     }
   };
 
-  const handleSubmit = () => {
-    createPenyesuaian({
-      jenis_jurnal: jenisPenyesuaian,
-      kode_rekening_id: { debit: 12, kredit: 21 },
-    });
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const formData = new FormData();
+    formData.append('jenis_jurnal', jenisPenyesuaian);
+    debitId && formData.append('debit', debitId!.toString());
+    creditId && formData.append('credit', creditId!.toString());
+
+    return formAction(formData);
+  };
+
+  const clearMessage = () => {
+    state!.message = undefined;
+    state!.status = undefined;
   };
 
   return (
     <div>
+      {state?.status && state?.message && (
+        <TwToast
+          message={state.message}
+          status={state.status}
+          onClose={clearMessage}
+        />
+      )}
       <form
-        action={handleSubmit}
+        onSubmit={handleSubmit}
         className="mt-4 rounded-lg bg-white p-4 shadow"
       >
         <div className="space-y-12">
           <div className="border-b border-gray-900/10 pb-12">
             <div className="flex flex-col space-y-4">
               <TwInput
-                name="jenis"
+                name="jenis_jurnal"
                 label="Jenis Penyesuaian"
                 type="text"
                 value={jenisPenyesuaian}
                 onChange={(e) => setJenisPenyesuaian(e.target.value)}
                 required
                 placeholder="Masukkan Jenis Penyesuaian"
+                isError={!!state?.validationErrors?.jenis_jurnal}
+                errorMessage={state?.validationErrors?.jenis_jurnal}
               />
 
-              <div className="flex w-full items-end justify-between space-x-2">
+              <div
+                className={clsx(
+                  'flex w-full justify-between space-x-2',
+                  !!state?.validationErrors?.debit
+                    ? 'items-center'
+                    : 'items-end',
+                )}
+              >
                 <div className="w-full">
                   <TwInput
-                    value={debit}
-                    name="debit"
                     label="Debit"
-                    type="text"
+                    name="debit"
                     readOnly
                     placeholder="Kode SAP 13 level 5"
+                    value={debit}
+                    isError={!!state?.validationErrors?.debit}
+                    errorMessage={state?.validationErrors?.debit}
                   />
                 </div>
                 <div>
@@ -100,15 +131,23 @@ export default function CreatePenyesuaianForm(props: CreatePenyesuaianForm) {
                   />
                 </div>
               </div>
-              <div className="flex w-full items-end justify-between space-x-2">
+              <div
+                className={clsx(
+                  'flex w-full justify-between space-x-2',
+                  !!state?.validationErrors?.credit
+                    ? 'items-center'
+                    : 'items-end',
+                )}
+              >
                 <div className="w-full">
                   <TwInput
-                    name="kredit"
-                    value={kredit}
                     label="Kredit"
-                    type="text"
+                    name="credit"
                     readOnly
                     placeholder="Kode SAP 13 level 5"
+                    value={credit}
+                    isError={!!state?.validationErrors?.credit}
+                    errorMessage={state?.validationErrors?.credit}
                   />
                 </div>
                 <div>
@@ -117,7 +156,7 @@ export default function CreatePenyesuaianForm(props: CreatePenyesuaianForm) {
                     type="button"
                     size="md"
                     title="Pilih"
-                    onClick={() => handleInputFocus('kredit')}
+                    onClick={() => handleInputFocus('credit')}
                   />
                 </div>
               </div>
@@ -139,6 +178,7 @@ export default function CreatePenyesuaianForm(props: CreatePenyesuaianForm) {
           <TwButton
             type="submit"
             title="Save"
+            isLoading={pending}
             variant="success"
             icon={<CheckIcon className="h-5 w-5" aria-hidden="true" />}
           />
