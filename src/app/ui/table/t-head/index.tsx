@@ -1,13 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import Sort from '../../sort';
 import type { Column } from '@/types/table';
 import clsx from 'clsx';
 
 interface Props {
   columns: Column[];
-  handleSorting: (field: string, dir: string) => void;
+  handleSorting: (accessor: string, sortOrder: string) => void;
 }
 
 export default function THead({ columns, handleSorting }: Props) {
