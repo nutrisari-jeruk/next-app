@@ -6,6 +6,8 @@ import TwInput from './tw-input';
 import TwKbd from './tw-kbd';
 import Input from './input';
 import TwConfirm from './tw-confirm';
+import TwComboBox from './tw-combo-box';
+import TwToast from './tw-toast';
 import TwTable from './tw-table';
 
 export {
@@ -17,5 +19,7 @@ export {
   Input,
   TwKbd,
   TwConfirm,
+  TwComboBox,
+  TwToast,
   TwTable
 };
