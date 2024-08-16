@@ -1,12 +1,13 @@
 import Link from 'next/link';
 import Search from '@/app/ui/search';
-import { TwButton, TwHeader, TwTable } from '@/components';
-import { PlusIcon } from '@heroicons/react/24/outline';
+import fetchList from './actions';
 import { Metadata } from 'next';
+import { PlusIcon } from '@heroicons/react/24/outline';
+import { TwButton, TwHeader, TwTable } from '@/components';
+import { Pagination } from '@/app/ui/table';
 import type { Params } from '@/types/params';
 import type { Column, Row } from '@/types/table';
-import fetchList from './actions';
-import { Pagination } from '@/app/ui/table';
+import type { Links, Meta } from '@/types/pagination';
 
 export const metadata: Metadata = {
   title: 'Mapping',
@@ -17,19 +18,6 @@ export default async function Page({ searchParams }: { searchParams: Params }) {
   const searchField = searchParams?.searchField || 'account_050';
   const currentPage = Number(searchParams?.page) || 1;
   const perPage = Number(searchParams?.rowsPerPage) || 200;
-
-  const columns: Column[] = [
-    {
-      label: 'Uraian',
-      accessor: 'account_050',
-      sortable: true,
-    },
-    {
-      label: 'Uraian',
-      accessor: 'account_sap13',
-      sortable: true,
-    },
-  ];
 
   const data = await fetchList({
     page: currentPage,
@@ -45,8 +33,21 @@ export default async function Page({ searchParams }: { searchParams: Params }) {
     };
   }) as Row[];
 
-  const links = data.links;
-  const meta = data.meta;
+  const columns: Column[] = [
+    {
+      label: 'Uraian',
+      accessor: 'account_050',
+      sortable: true,
+    },
+    {
+      label: 'Uraian',
+      accessor: 'account_sap13',
+      sortable: true,
+    },
+  ];
+
+  const links: Links[] = data.links;
+  const meta: Meta = data.meta;
 
   return (
     <div>

@@ -12,6 +12,7 @@ export default async function fetchList({
   searchField,
   searchValue,
 }: Params): Promise<Pagination<List[]>> {
+
   let list: Pagination<List[]> = {
     data: [],
     links: [],
@@ -24,6 +25,7 @@ export default async function fetchList({
       to: 0,
       total: 0,
     },
+
   };
 
   try {
