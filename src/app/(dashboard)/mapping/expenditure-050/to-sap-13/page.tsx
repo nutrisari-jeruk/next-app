@@ -1,60 +1,23 @@
 import Link from 'next/link';
-import fetchList from './actions';
-import DataTable from '@/app/ui/data-table';
+import Table from './ui/table';
 import { Metadata } from 'next';
-import { PlusIcon } from '@heroicons/react/24/outline';
+import { Suspense } from 'react';
 import { TwButton, TwHeader } from '@/components';
-import type { Column, Row } from '@/types/table';
+import { ArrowPathIcon, PlusIcon } from '@heroicons/react/24/outline';
 import type { Params } from '@/types/params';
+import Skeletons from '@/app/ui/skeletons';
 
 export const metadata: Metadata = {
   title: 'Mapping',
 };
 
-interface Props {
-  searchParams: Params;
-}
+export const dynamic = 'force-dynamic';
 
-export default async function Page({ searchParams }: Props) {
-  const searchValue = searchParams?.searchValue || '';
-  const searchField = searchParams?.searchField || 'account_050';
-  const currentPage = Number(searchParams?.page) || 1;
-  const perPage = Number(searchParams?.rowsPerPage) || 200;
-
-  const columns: Column[] = [
-    {
-      label: '#',
-      accessor: 'id',
-    },
-    {
-      label: 'Uraian',
-      accessor: 'account_050',
-      sortable: true,
-    },
-    {
-      label: 'Uraian',
-      accessor: 'account_sap13',
-      sortable: true,
-    },
-  ];
-
-  const data = await fetchList({
-    page: currentPage,
-    rowsPerPage: perPage,
-    searchField: searchField,
-    searchValue: searchValue,
-  });
-
-  const rows = data.data.map((row) => {
-    return {
-      id: row.id,
-      account_050: row.account_050,
-      account_sap13: row.account_sap13,
-    };
-  }) as Row[];
-
-  const links = data.links;
-  const meta = data.meta;
+export default function Page({ searchParams }: { searchParams: Params }) {
+  const page = searchParams.page || '1';
+  const rowsPerPage = searchParams.rowsPerPage || '10';
+  const searchField = searchParams.searchField || 'account_050';
+  const searchValue = searchParams.searchValue || '';
 
   return (
     <div>
@@ -72,7 +35,14 @@ export default async function Page({ searchParams }: Props) {
       </div>
 
       <div className="mt-4">
-        <DataTable {...{ rows, columns, searchField, links, meta }} />
+        <Suspense fallback={<Skeletons />}>
+          <Table
+            page={page}
+            rowsPerPage={rowsPerPage}
+            searchField={searchField}
+            searchValue={searchValue}
+          />
+        </Suspense>
       </div>
     </div>
   );

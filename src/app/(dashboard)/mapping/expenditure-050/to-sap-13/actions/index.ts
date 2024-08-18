@@ -1,6 +1,5 @@
 import $http from '@/lib/axios';
 import { AxiosError } from 'axios';
-
 import type { BaseResponse } from '@/types/api';
 import type { List } from '@/types/mapping';
 import type { Params } from '@/types/params';

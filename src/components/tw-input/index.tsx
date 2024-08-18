@@ -36,7 +36,9 @@ export default function TwInput(props: Props) {
       </Label>
       <div className={clsx('relative rounded-md shadow-sm')}>
         <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2">
-          <div className='pointer-events-none w-4 h-4'>{iconPosition === 'left' && icon}</div>
+          <div className="pointer-events-none h-4 w-4">
+            {iconPosition === 'left' && icon}
+          </div>
         </div>
         <Input
           name={name}

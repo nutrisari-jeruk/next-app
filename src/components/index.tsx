@@ -9,6 +9,7 @@ import TwConfirm from './tw-confirm';
 import TwComboBox from './tw-combo-box';
 import TwToast from './tw-toast';
 import TwTable from './tw-table';
+import TwSearch from './tw-search';
 
 export {
   AppLogo,
@@ -21,5 +22,6 @@ export {
   TwConfirm,
   TwComboBox,
   TwToast,
-  TwTable
+  TwTable,
+  TwSearch,
 };

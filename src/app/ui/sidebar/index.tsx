@@ -1,13 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import NavLink from '../nav-links';
-import UserProfile from '../user-profile';
 import { useState } from 'react';
 import { Session } from 'next-auth';
-import { AppLogo, TwConfirm } from '@/components';
-import { ArrowRightEndOnRectangleIcon } from '@heroicons/react/24/outline';
 import { signOut } from 'next-auth/react';
+import { AppLogo, TwConfirm } from '@/components';
+import { NavLink, UserProfile } from './partials';
+import { ArrowRightEndOnRectangleIcon } from '@heroicons/react/24/outline';
 
 export default function Sidebar({ session }: { session: Session }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -35,7 +34,7 @@ export default function Sidebar({ session }: { session: Session }) {
           </div>
         </div>
       </div>
-      
+
       <TwConfirm
         isOpen={isOpen}
         title="Signing out"
