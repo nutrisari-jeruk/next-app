@@ -1,39 +1,31 @@
 import Link from 'next/link';
-import Search from '@/app/ui/search';
 import fetchList from './actions';
+import DataTable from '@/app/ui/data-table';
 import { Metadata } from 'next';
 import { PlusIcon } from '@heroicons/react/24/outline';
-import { TwButton, TwHeader, TwTable } from '@/components';
-import { Pagination } from '@/app/ui/table';
-import type { Params } from '@/types/params';
+import { TwButton, TwHeader } from '@/components';
 import type { Column, Row } from '@/types/table';
-import type { Links, Meta } from '@/types/pagination';
+import type { Params } from '@/types/params';
 
 export const metadata: Metadata = {
   title: 'Mapping',
 };
 
-export default async function Page({ searchParams }: { searchParams: Params }) {
+interface Props {
+  searchParams: Params;
+}
+
+export default async function Page({ searchParams }: Props) {
   const searchValue = searchParams?.searchValue || '';
   const searchField = searchParams?.searchField || 'account_050';
   const currentPage = Number(searchParams?.page) || 1;
   const perPage = Number(searchParams?.rowsPerPage) || 200;
 
-  const data = await fetchList({
-    page: currentPage,
-    rowsPerPage: perPage,
-    searchField: searchField,
-    searchValue: searchValue,
-  });
-
-  const rows = data.data.map((item) => {
-    return {
-      account_050: item.account_050,
-      account_sap13: item.account_sap13,
-    };
-  }) as Row[];
-
   const columns: Column[] = [
+    {
+      label: '#',
+      accessor: 'id',
+    },
     {
       label: 'Uraian',
       accessor: 'account_050',
@@ -46,8 +38,23 @@ export default async function Page({ searchParams }: { searchParams: Params }) {
     },
   ];
 
-  const links: Links[] = data.links;
-  const meta: Meta = data.meta;
+  const data = await fetchList({
+    page: currentPage,
+    rowsPerPage: perPage,
+    searchField: searchField,
+    searchValue: searchValue,
+  });
+
+  const rows = data.data.map((row) => {
+    return {
+      id: row.id,
+      account_050: row.account_050,
+      account_sap13: row.account_sap13,
+    };
+  }) as Row[];
+
+  const links = data.links;
+  const meta = data.meta;
 
   return (
     <div>
@@ -64,10 +71,8 @@ export default async function Page({ searchParams }: { searchParams: Params }) {
         </Link>
       </div>
 
-      <div className="mt-4 flex flex-col space-y-2">
-        <Search placeholder="Cari kode rekening" searchField={searchField} />
-        <TwTable {...{ columns, rows }} />
-        <Pagination {...{ links, meta }} />
+      <div className="mt-4">
+        <DataTable {...{ rows, columns, searchField, links, meta }} />
       </div>
     </div>
   );

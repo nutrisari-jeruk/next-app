@@ -1,6 +1,5 @@
 import { TwButton, TwHeader, TwTable, TwToast } from '@/components';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
-import Table from './components/table';
 import Link from 'next/link';
 import { Metadata } from 'next';
 import type { Params } from '@/types/params';
@@ -13,7 +12,7 @@ export const metadata: Metadata = {
 };
 export default async function Page({ searchParams }: { searchParams: Params }) {
   const searchValue = searchParams?.searchValue || '';
-  const searchField = searchParams?.searchField || ['jurnal_kode'];
+  const searchField = searchParams?.searchField || 'jurnal_kode';
   const currentPage = Number(searchParams?.page) || 1;
   const perPage = Number(searchParams?.rowsPerPage) || 10;
 
@@ -63,7 +62,7 @@ export default async function Page({ searchParams }: { searchParams: Params }) {
     };
   }) as Row[];
   return (
-    <>
+    <div>
       {searchParams.toastMessage && searchParams.toastStatus && (
         <TwToast
           message={searchParams.toastMessage}
@@ -83,7 +82,7 @@ export default async function Page({ searchParams }: { searchParams: Params }) {
       </div>
 
       <div className="mt-4 flex flex-col space-y-2">
-        <Search placeholder="Cari kode rekening" />
+        <Search placeholder="Cari kode rekening" searchField={searchField} />
 
         <Suspense
           key={searchValue + currentPage + perPage}
@@ -92,6 +91,6 @@ export default async function Page({ searchParams }: { searchParams: Params }) {
           <TwTable {...{ columns, rows }} />
         </Suspense>
       </div>
-    </>
+    </div>
   );
 }
