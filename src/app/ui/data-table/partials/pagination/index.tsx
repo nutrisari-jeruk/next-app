@@ -32,17 +32,17 @@ export default function Pagination({
       start = totalLinks - maxVisiblePages + 1;
     }
 
-    const displayedLinks = [];
+    const displayedLinks: Links[] = [];
 
     if (start > 1) {
-      displayedLinks.push(links[0], { label: '...', active: false });
+      displayedLinks.push(links[0], { label: '...', url: '', active: false });
     }
 
     displayedLinks.push(...links.slice(start - 1, end));
 
     if (end < totalLinks) {
       displayedLinks.push(
-        { label: '...', active: false },
+        { label: '...', url: '', active: false },
         links[totalLinks - 1],
       );
     }
@@ -73,7 +73,7 @@ export default function Pagination({
           Previous
         </Button>
         <Button
-          onClick={() => handleClick((meta.current_page + 1).toString())} 
+          onClick={() => handleClick((meta.current_page + 1).toString())}
           className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
         >
           Next

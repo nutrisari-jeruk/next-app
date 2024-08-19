@@ -2,7 +2,7 @@
 
 import clsx from 'clsx';
 import Pagination from './partials/pagination';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Search } from './partials';
 import type { Column, Row } from '@/types/table';
 import type { Links, Meta } from '@/types/pagination';
@@ -22,9 +22,13 @@ export default function DataTable({
   links,
   meta,
 }: Props) {
-  const [tableData, setTableData] = useState(rows);
+  const [tableData, setTableData] = useState<Row[]>(rows);
   const [sortField, setSortField] = useState('');
   const [order, setOrder] = useState('asc');
+
+  useEffect(() => {
+    setTableData(rows);
+  }, [rows]);
 
   const sort = (sortField: string, sortOrder: string) => {
     if (sortField) {

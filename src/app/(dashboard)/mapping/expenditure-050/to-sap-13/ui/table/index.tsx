@@ -4,11 +4,12 @@ import type { Params } from '@/types/params';
 import type { Column, Row } from '@/types/table';
 
 export default async function Table({
-  page = '1',
+  page,
   rowsPerPage = '10',
   searchField = '',
   searchValue = '',
 }: Params) {
+
   const data = await fetchList({
     page: page,
     rowsPerPage: rowsPerPage,

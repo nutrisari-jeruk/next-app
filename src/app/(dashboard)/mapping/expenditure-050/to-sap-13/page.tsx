@@ -3,7 +3,7 @@ import Table from './ui/table';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 import { TwButton, TwHeader } from '@/components';
-import { ArrowPathIcon, PlusIcon } from '@heroicons/react/24/outline';
+import { PlusIcon } from '@heroicons/react/24/outline';
 import type { Params } from '@/types/params';
 import Skeletons from '@/app/ui/skeletons';
 
