@@ -1,5 +1,5 @@
 import { TwButton, TwHeader, TwToast } from '@/components';
-import { PlusCircleIcon, PrinterIcon } from '@heroicons/react/24/outline';
+import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import Table from './components/table';
 import Link from 'next/link';
 

@@ -3,13 +3,8 @@
 import {
   HomeIcon,
   UsersIcon,
-  CodeBracketSquareIcon,
-  AdjustmentsHorizontalIcon,
-  CircleStackIcon,
-  ArrowDownCircleIcon,
 } from '@heroicons/react/24/outline';
-import type { Menu } from '@/types/menu';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname} from 'next/navigation';
 import Link from 'next/link';
 import clsx from 'clsx';
 
@@ -28,28 +23,28 @@ const journals = [
   {
     id: 1,
     name: 'Jurnal Penyesuaian',
-    href: '/master/penyesuaian',
+    href: '/master/jurnal/penyesuaian',
     initial: 'JP',
     current: false,
   },
   {
     id: 2,
     name: 'Jurnal Umum',
-    href: '/master/umum',
+    href: '/master/jurnal/umum',
     initial: 'JU',
     current: false,
   },
   {
     id: 3,
     name: 'Jurnal Koreksi',
-    href: '/master/koreksi',
+    href: '/master/jurnal/koreksi',
     initial: 'JK',
     current: false,
   },
   {
     id: 4,
     name: 'Jurnal Penutup',
-    href: '/master/penutup',
+    href: '/master/jurnal/penutup',
     initial: 'JPP',
     current: false,
   },
