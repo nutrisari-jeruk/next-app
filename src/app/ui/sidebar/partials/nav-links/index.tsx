@@ -1,14 +1,12 @@
 'use client';
 
-import {
-  HomeIcon,
-  UsersIcon,
-} from '@heroicons/react/24/outline';
-import { usePathname} from 'next/navigation';
+import { HomeIcon, UsersIcon } from '@heroicons/react/24/outline';
+import type { Menu } from '@/types/menu';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import clsx from 'clsx';
 
-const navigation = [
+const navigation: Menu[] = [
   {
     name: 'Dashboard',
     href: '/',
@@ -19,7 +17,7 @@ const navigation = [
   { name: 'Users', href: '/user', icon: UsersIcon, current: false },
 ];
 
-const journals = [
+const journals: Menu[] = [
   {
     id: 1,
     name: 'Jurnal Penyesuaian',
@@ -50,7 +48,7 @@ const journals = [
   },
 ];
 
-const maps = [
+const maps: Menu[] = [
   {
     name: 'Kode Rekening Belanja',
     href: '/mapping/expenditure-050/to-sap-13',
@@ -59,7 +57,7 @@ const maps = [
   },
 ];
 
-export default function NavLink(): JSX.Element {
+export default function NavLink() {
   const pathname = usePathname();
 
   return (
@@ -109,7 +107,7 @@ export default function NavLink(): JSX.Element {
           <ul role="list" className="-mx-2 mt-2 space-y-1">
             {journals.map((item) => (
               <li key={item.name}>
-                <a
+                <Link
                   href={item.href}
                   className={clsx(
                     item.name !== 'Dashboard' && pathname.startsWith(item.href)
@@ -130,7 +128,7 @@ export default function NavLink(): JSX.Element {
                     {item.initial}
                   </span>
                   <span className="truncate">{item.name}</span>
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
@@ -142,7 +140,7 @@ export default function NavLink(): JSX.Element {
           <ul role="list" className="-mx-2 mt-2 space-y-1">
             {maps.map((item) => (
               <li key={item.name}>
-                <a
+                <Link
                   href={item.href}
                   className={clsx(
                     item.name !== 'Dashboard' && pathname.startsWith(item.href)
@@ -163,7 +161,7 @@ export default function NavLink(): JSX.Element {
                     {item.initial}
                   </span>
                   <span className="truncate">{item.name}</span>
-                </a>
+                </Link>
               </li>
             ))}
           </ul>

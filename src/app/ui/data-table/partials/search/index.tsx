@@ -18,9 +18,9 @@ export default function Search({
 
   const handleSearch = useDebouncedCallback((term: string) => {
     const params = new URLSearchParams(searchParams);
-    params.set('searchField', searchField);
 
     if (term) {
+      params.set('searchField', searchField);
       params.set('searchValue', term);
     } else {
       params.delete('searchValue');

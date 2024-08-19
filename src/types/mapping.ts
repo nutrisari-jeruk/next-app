@@ -1,4 +1,5 @@
 export interface List {
+  id: number;
   kr050_id: number;
   account_050: string;
   sap13_id: number | null;

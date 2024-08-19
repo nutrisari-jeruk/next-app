@@ -5,12 +5,12 @@ import { useEffect } from 'react';
 
 interface TwToast {
   message: string;
-  status: string;
+  status: string | undefined;
   onClose?: () => void;
 }
 
 export default function TwToast(props: TwToast) {
-  const { message, status, onClose = () => {} } = props;
+  const { message, status = 'success', onClose = () => {} } = props;
 
   useEffect(() => {
     if (message && status) {
