@@ -1,19 +1,20 @@
-import Link from "next/link";
+import Link from 'next/link';
+import { TwButton } from '@/components';
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 text-gray-800">
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 text-gray-800">
       <div className="text-center">
-        <h1 className="text-7xl font-bold text-indigo-600 mb-4">404</h1>
-        <h2 className="text-2xl font-medium mb-2">Halaman Tidak Ditemukan</h2>
-        <p className="text-lg text-gray-500 mb-8">
+        <h1 className="mb-4 text-7xl font-bold text-indigo-600">404</h1>
+        <h2 className="mb-2 text-2xl font-medium">Halaman Tidak Ditemukan</h2>
+        <p className="mb-8 text-lg text-gray-500">
           Halaman yang Anda cari tidak tersedia, silahkan kembali.
         </p>
-        <Link
-          href="/"
-          className="bg-indigo-600 text-white hover:bg-indigo-700 font-medium text-lg py-2 px-4 rounded shadow-md transition-all duration-300"
-        >
-          Kembali ke Dashboard
+        <Link href="/">
+          <TwButton
+            title="Kembali ke Dashboard"
+            className="mx-auto rounded bg-indigo-600 px-4 py-2 text-lg font-medium text-white shadow-md transition-all duration-300 hover:bg-indigo-700"
+          />
         </Link>
       </div>
     </div>
