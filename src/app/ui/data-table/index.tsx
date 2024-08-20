@@ -5,23 +5,17 @@ import Pagination from './partials/pagination';
 import { useEffect, useState } from 'react';
 import { Search } from './partials';
 import type { Column, Row } from '@/types/table';
-import type { Links, Meta } from '@/types/pagination';
+import type { Meta } from '@/types/pagination';
+import Link from 'next/link';
 
 interface Props {
   searchField: string;
   rows: Row[];
   columns: Column[];
-  links: Links[];
   meta: Meta;
 }
 
-export default function DataTable({
-  searchField,
-  rows,
-  columns,
-  links,
-  meta,
-}: Props) {
+export default function DataTable({ searchField, rows, columns, meta }: Props) {
   const [tableData, setTableData] = useState<Row[]>(rows);
   const [sortField, setSortField] = useState('');
   const [order, setOrder] = useState('asc');
@@ -62,11 +56,11 @@ export default function DataTable({
         <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
             <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
-              <table className="min-w-full divide-y divide-gray-300">
+              <table className="min-w-full divide-y divide-gray-300 table-fixed">
                 <thead className="bg-gray-50">
                   <tr>
                     {!!columns &&
-                      columns.map(({ label, accessor, sortable }) => {
+                      columns.map(({ label, accessor, sortable, width }) => {
                         let iconElement = (
                           <div>
                             <span className="text-gray-600">↑</span>
@@ -103,6 +97,7 @@ export default function DataTable({
                             scope="col"
                             className={clsx(
                               'px-3 py-3.5 text-left text-sm font-semibold text-gray-900',
+                              !!width ? `w-[${width}]` : 'w-fit',
                             )}
                             onClick={
                               sortable
@@ -110,7 +105,7 @@ export default function DataTable({
                                 : undefined
                             }
                           >
-                            <div className="flex items-center space-x-2">
+                            <div className="flex w-full flex-wrap items-center space-x-2">
                               <span className="select-none">{label}</span>
                               {sortable && (
                                 <button
@@ -140,9 +135,14 @@ export default function DataTable({
                           return (
                             <td
                               key={accessor}
-                              className="truncate whitespace-nowrap px-3 py-4 text-sm text-gray-500"
+                              className="px-3 py-4 text-sm text-gray-500 hover:underline"
                             >
-                              {data}
+                              <Link
+                                href={`${item['id']}/edit`}
+                                className={clsx('flex flex-nowrap')}
+                              >
+                                {(accessor === 'id' && `${index + 1}.`) || data}
+                              </Link>
                             </td>
                           );
                         })}
@@ -166,7 +166,7 @@ export default function DataTable({
         </div>
       </div>
 
-      <Pagination {...{ links, meta }} />
+      <Pagination {...{ meta }} />
     </div>
   );
 }
