@@ -5,7 +5,12 @@ export default function NotFound() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 text-gray-800">
       <div className="text-center">
-        <h1 className="mb-4 text-7xl font-bold text-indigo-600">404</h1>
+        <img
+          src="/404.svg"
+          alt="404 Error"
+          className="mx-auto mb-4"
+          style={{ width: '300px', height: 'auto' }}
+        />
         <h2 className="mb-2 text-2xl font-medium">Halaman Tidak Ditemukan</h2>
         <p className="mb-8 text-lg text-gray-500">
           Halaman yang Anda cari tidak tersedia, silahkan kembali.
