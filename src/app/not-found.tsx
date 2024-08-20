@@ -1,15 +1,17 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { TwButton } from '@/components';
 
 export default function NotFound() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 text-gray-800">
       <div className="text-center">
-        <img
+        <Image
           src="/404.svg"
+          width={300}
+          height={300}
           alt="404 Error"
           className="mx-auto mb-4"
-          style={{ width: '300px', height: 'auto' }}
         />
         <h2 className="mb-2 text-2xl font-medium">Halaman Tidak Ditemukan</h2>
         <p className="mb-8 text-lg text-gray-500">
