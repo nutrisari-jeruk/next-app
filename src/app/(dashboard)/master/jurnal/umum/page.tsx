@@ -45,11 +45,11 @@ export default async function Page({ searchParams }: { searchParams: Params }) {
     searchField: searchField,
     searchValue: searchValue,
   });
-  const rows = data.map((item) => {
-    const deb = item.kode_rekening.find(
+  const rows = data.data.map((item) => {
+    const deb = item.kode_rekening?.find(
       (rekening) => rekening.debit !== null && rekening.credit === null,
     )?.debit;
-    const cred = item.kode_rekening.find(
+    const cred = item.kode_rekening?.find(
       (rekening) => rekening.credit !== null && rekening.debit === null,
     )?.credit;
 
