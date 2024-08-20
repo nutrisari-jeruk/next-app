@@ -13,8 +13,8 @@ export const metadata: Metadata = {
 export default async function Page({ searchParams }: { searchParams: Params }) {
   const searchValue = searchParams?.searchValue || '';
   const searchField = searchParams?.searchField || 'jurnal_kode';
-  const currentPage = Number(searchParams?.page) || 1;
-  const perPage = Number(searchParams?.rowsPerPage) || 10;
+  const currentPage = searchParams?.page || '1';
+  const perPage = searchParams?.rowsPerPage || '10';
 
   const columns: Column[] = [
     {
