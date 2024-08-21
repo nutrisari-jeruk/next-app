@@ -6,32 +6,33 @@ import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { AxiosError } from 'axios';
 import { cookies } from 'next/headers';
-import type { PaginateList, PostRequest } from '@/types/penyesuaian';
+import type { List, Payload } from '@/types/penyesuaian';
 import type { Params } from '@/types/params';
 import type { BaseResponse } from '@/types/api';
+import { Pagination } from '@/types/pagination';
 
 const fetchPenyesuaianList = async ({
   page,
   rowsPerPage,
   searchField,
   searchValue,
-}: Params): Promise<PaginateList> => {
-  let list: PaginateList = {
+}: Params): Promise<Pagination<List[]>> => {
+  let list: Pagination<List[]> = {
     data: [],
     links: [],
     meta: {
-      current_page: '0',
-      from: '0',
-      last_page: '0',
+      current_page: 0,
+      from: 0,
+      last_page: 0,
       path: '',
-      per_page: '0',
-      to: '0',
-      total: '0',
+      per_page: 0,
+      to: 0,
+      total: 0,
     },
   };
 
   try {
-    const { data } = await $http.get<BaseResponse<PaginateList>>(
+    const { data } = await $http.get<BaseResponse<Pagination<List[]>>>(
       '/v1/masters/journals/adjustment',
       {
         params: {
@@ -68,7 +69,7 @@ const createPenyesuaian = async (_prevState: unknown, formData: FormData) => {
     };
   }
 
-  const requestPenyesuaian: PostRequest = {
+  const requestPenyesuaian: Payload = {
     jenis_jurnal: validatedFields.data.jenis_jurnal,
     kode_rekening_id: {
       debit: Number(validatedFields.data.debit),

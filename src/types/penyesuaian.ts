@@ -1,11 +1,3 @@
-import type { Url } from 'next/dist/shared/lib/router/router';
-
-export interface PaginateList {
-  data: List[];
-  links: Links[];
-  meta: Meta;
-}
-
 export interface List {
   id: number;
   jurnal_kode: string;
@@ -20,23 +12,7 @@ export interface KodeRekening {
   credit?: string | null;
 }
 
-export interface Links {
-  url: Url;
-  label: string;
-  active: boolean;
-}
-
-export interface Meta {
-  current_page: string;
-  from: string;
-  last_page: string;
-  path: Url;
-  per_page: string;
-  to: string;
-  total: string;
-}
-
-export interface PostRequest {
+export interface Payload {
   jenis_jurnal: string;
   kode_rekening_id: {
     debit: number;
