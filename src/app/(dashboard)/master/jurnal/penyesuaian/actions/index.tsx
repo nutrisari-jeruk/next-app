@@ -4,42 +4,34 @@ import $http from '@/lib/axios';
 import { PenyesuaianSchema } from '../schema';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
-import { List, PostRequest } from '@/types/penyesuaian';
 import { AxiosError } from 'axios';
-import { Params } from '@/types/params';
-import { BaseResponse } from '@/types/api';
+import { cookies } from 'next/headers';
+import type { PaginateList, PostRequest } from '@/types/penyesuaian';
+import type { Params } from '@/types/params';
+import type { BaseResponse } from '@/types/api';
 
 const fetchPenyesuaianList = async ({
   page,
   rowsPerPage,
   searchField,
   searchValue,
-}: Params): Promise<List[] | []> => {
-  let list: List[] = [
-    {
-      id: 23,
-      jurnal_kode: 'JP/001',
-      jurnal_jenis: 'Jurnal yang Lain',
-      kode_rekening: [
-        {
-          id: 29,
-          code: '5.2',
-          debit: 'BELANJA MODAL',
-          credit: null,
-        },
-        {
-          id: 30,
-          code: '7.1.02.01.01',
-          debit: null,
-          credit:
-            'Pendapatan Jasa Layanan dari Entitas Akuntansi/Entitas Pelaporan',
-        },
-      ],
+}: Params): Promise<PaginateList> => {
+  let list: PaginateList = {
+    data: [],
+    links: [],
+    meta: {
+      current_page: '0',
+      from: '0',
+      last_page: '0',
+      path: '',
+      per_page: '0',
+      to: '0',
+      total: '0',
     },
-  ];
+  };
 
   try {
-    const { data } = await $http.get<BaseResponse<List[]>>(
+    const { data } = await $http.get<BaseResponse<PaginateList>>(
       '/v1/masters/journals/adjustment',
       {
         params: {
@@ -110,10 +102,12 @@ const createPenyesuaian = async (_prevState: unknown, formData: FormData) => {
     };
   }
 
+  const session = cookies();
+  session.set('toastMessage', 'Data Penyesuaian Berhasil Dibuat');
+  session.set('toastStatus', 'success');
+
   revalidatePath('/master/jurnal/penyesuaian');
-  redirect(
-    `/master/jurnal/penyesuaian?toastMessage=${encodeURIComponent('Data Penyesuaian Berhasil Dibuat')}&toastStatus=success`,
-  );
+  redirect(`/master/jurnal/penyesuaian`);
 };
 
 export { createPenyesuaian, fetchPenyesuaianList };
