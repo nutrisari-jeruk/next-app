@@ -12,7 +12,7 @@ export default function Page({ searchParams }: any) {
       <div className="flex items-center justify-between">
         <TwHeader title="Jurnal Penyesuaian" />
         <div className="flex gap-2">
-          <Link href="/master/penyesuaian/create">
+          <Link href="/master/jurnal/penyesuaian/create">
             <TwButton
               title="Add"
               variant="success"
