@@ -7,6 +7,7 @@ import { Search } from './partials';
 import type { Column, Row } from '@/types/table';
 import type { Meta } from '@/types/pagination';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 interface Props {
   searchField: string;
@@ -19,6 +20,8 @@ export default function DataTable({ searchField, rows, columns, meta }: Props) {
   const [tableData, setTableData] = useState<Row[]>(rows);
   const [sortField, setSortField] = useState('');
   const [order, setOrder] = useState('asc');
+
+  const pathname = usePathname()
 
   useEffect(() => {
     setTableData(rows);
@@ -138,7 +141,7 @@ export default function DataTable({ searchField, rows, columns, meta }: Props) {
                               className="px-3 py-4 text-sm text-gray-500 hover:underline"
                             >
                               <Link
-                                href={`${item['id']}/edit`}
+                                href={`${pathname}/${item['id']}/edit`}
                                 className={clsx('flex flex-nowrap')}
                               >
                                 {(accessor === 'id' && `${index + 1}.`) || data}
