@@ -2,12 +2,12 @@
 
 import clsx from 'clsx';
 import Pagination from './partials/pagination';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { Search } from './partials';
 import type { Column, Row } from '@/types/table';
 import type { Meta } from '@/types/pagination';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 
 interface Props {
   searchField: string;
@@ -21,7 +21,7 @@ export default function DataTable({ searchField, rows, columns, meta }: Props) {
   const [sortField, setSortField] = useState('');
   const [order, setOrder] = useState('asc');
 
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   useEffect(() => {
     setTableData(rows);
@@ -51,6 +51,29 @@ export default function DataTable({ searchField, rows, columns, meta }: Props) {
     sort(accessor, sortOrder);
   };
 
+  const render = (index: number, column: Column, item: Row) => {
+    const data = item[column.accessor] ? item[column.accessor] : '-';
+
+    if (column.accessor === 'id') {
+      return `${index + 1}.`;
+    }
+
+    if (column.label.toLowerCase().includes('edit')) {
+      const id = item[column.accessor];
+
+      return (
+        <Link
+          className="font-semibold text-blue-500 underline"
+          href={`${pathname}/${id}/edit`}
+        >
+          Edit
+        </Link>
+      );
+    }
+
+    return data;
+  };
+
   return (
     <div className="flex w-full flex-col space-y-2">
       <Search placeholder="Cari kode rekening" searchField={searchField} />
@@ -59,7 +82,7 @@ export default function DataTable({ searchField, rows, columns, meta }: Props) {
         <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
             <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
-              <table className="min-w-full divide-y divide-gray-300 table-fixed">
+              <table className="min-w-full table-fixed divide-y divide-gray-300">
                 <thead className="bg-gray-50">
                   <tr>
                     {!!columns &&
@@ -133,19 +156,13 @@ export default function DataTable({ searchField, rows, columns, meta }: Props) {
                   {!!tableData.length &&
                     tableData?.map((item, index) => (
                       <tr key={index} className="hover:bg-gray-100">
-                        {columns.map(({ accessor }: Column) => {
-                          const data = item[accessor] ? item[accessor] : '';
+                        {columns.map((column: Column) => {
                           return (
                             <td
-                              key={accessor}
-                              className="px-3 py-4 text-sm text-gray-500 hover:underline"
+                              key={column.accessor}
+                              className="px-3 py-4 text-sm text-gray-500"
                             >
-                              <Link
-                                href={`${pathname}/${item['id']}/edit`}
-                                className={clsx('flex flex-nowrap')}
-                              >
-                                {(accessor === 'id' && `${index + 1}.`) || data}
-                              </Link>
+                              {render(index, column, item)}
                             </td>
                           );
                         })}
