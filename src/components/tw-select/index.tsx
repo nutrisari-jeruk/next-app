@@ -12,6 +12,7 @@ interface Props extends React.SelectHTMLAttributes<HTMLSelectElement> {
   errorMessage?: string | string[];
   className?: string;
   options?: Option[];
+  placeholder?: string;
 }
 
 export default function TwInput(props: Props) {
@@ -25,6 +26,7 @@ export default function TwInput(props: Props) {
     errorMessage = 'Error message',
     className = '',
     options = [],
+    placeholder = '',
     ...attr
   } = props;
 
@@ -59,6 +61,7 @@ export default function TwInput(props: Props) {
           aria-describedby={`${name}-error`}
           {...attr}
         >
+          {!!placeholder && <option hidden>{placeholder}</option>}
           {!!options.length &&
             options.map((option, index) => (
               <option key={index} value={option.value}>
