@@ -10,6 +10,7 @@ import TwComboBox from './tw-combo-box';
 import TwToast from './tw-toast';
 import TwTable from './tw-table';
 import TwSearch from './tw-search';
+import TwSelect from './tw-select';
 
 export {
   AppLogo,
@@ -24,4 +25,5 @@ export {
   TwToast,
   TwTable,
   TwSearch,
+  TwSelect,
 };
