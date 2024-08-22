@@ -1,16 +1,16 @@
 'use client';
 
-import useAccount from '../_store';
+import useRowStore from '@/store/row';
 import type { Row } from '@/types/table';
 
-export default function Initializer({
+export default function RowProvider({
   rows,
   children,
 }: {
   rows: Row[];
   children: React.ReactNode;
 }) {
-  useAccount.setState({ rows });
+  useRowStore.getState().setRows(rows);
 
   return children;
 }

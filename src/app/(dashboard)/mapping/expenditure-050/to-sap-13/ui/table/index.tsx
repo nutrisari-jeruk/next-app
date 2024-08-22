@@ -2,7 +2,7 @@ import DataTable from '@/app/ui/data-table';
 import { fetchList } from '../../actions';
 import type { Params } from '@/types/params';
 import type { Column, Row } from '@/types/table';
-import Initializer from '../../initializer';
+import RowProvider from '@/providers/row';
 
 export default async function Table({
   page,
@@ -53,8 +53,8 @@ export default async function Table({
   const meta = data.meta;
 
   return (
-    <Initializer rows={rows}>
+    <RowProvider rows={rows}>
       <DataTable {...{ rows, columns, meta, searchField }} />
-    </Initializer>
+    </RowProvider>
   );
 }

@@ -2,7 +2,6 @@
 
 import clsx from 'clsx';
 import Link from 'next/link';
-import useAccountStore from '../../../_store';
 import AccountsTree from '../../accounts-tree';
 import { useState } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
@@ -12,7 +11,7 @@ import {
   CheckIcon,
   FolderPlusIcon,
 } from '@heroicons/react/24/outline';
-
+import useRowStore from '@/store/row';
 import { mapOnAccount } from '../../../actions';
 import { notFound } from 'next/navigation';
 
@@ -32,7 +31,7 @@ export default function Form({ treeData, params }: Props) {
   const [accountSap13, setAccountSap13] = useState<TreeNode>();
   const [isOpen, setIsOpen] = useState(false);
   const [sap13Options, setSap13Options] = useState<Option[]>([]);
-  const { rows } = useAccountStore.getState();
+  const { rows } = useRowStore.getState();
 
   if (!rows.length) {
     notFound();
