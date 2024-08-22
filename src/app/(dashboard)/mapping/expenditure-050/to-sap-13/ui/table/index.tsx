@@ -54,7 +54,7 @@ export default async function Table({
 
   return (
     <Initializer rows={rows}>
-      <DataTable {...{ rows, columns, meta, searchField }} />;
+      <DataTable {...{ rows, columns, meta, searchField }} />
     </Initializer>
   );
 }
