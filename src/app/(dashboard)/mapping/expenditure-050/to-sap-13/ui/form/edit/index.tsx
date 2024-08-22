@@ -2,6 +2,7 @@
 
 import clsx from 'clsx';
 import Link from 'next/link';
+import useAccountStore from '../../../_store';
 import AccountsTree from '../../accounts-tree';
 import { useState } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
@@ -11,29 +12,39 @@ import {
   CheckIcon,
   FolderPlusIcon,
 } from '@heroicons/react/24/outline';
-import type { TreeNode } from '@/types/tree-view';
+
 import { mapOnAccount } from '../../../actions';
+import { notFound } from 'next/navigation';
+
+import type { TreeNode } from '@/types/tree-view';
 import type { Option } from '@/types/option';
 
 interface Props {
   treeData: TreeNode[];
-  account: {
-    kr050_id: number;
-    account_050: string;
+  params: {
+    id: string;
   };
 }
 
-export default function Form({ treeData, account }: Props) {
+export default function Form({ treeData, params }: Props) {
   const { pending } = useFormStatus();
   const [state, formAction] = useFormState(mapOnAccount, undefined);
   const [accountSap13, setAccountSap13] = useState<TreeNode>();
   const [isOpen, setIsOpen] = useState(false);
   const [sap13Options, setSap13Options] = useState<Option[]>([]);
+  const { rows } = useAccountStore.getState();
+
+  if (!rows.length) {
+    notFound();
+  }
+
+  const id = params.id;
+  const account = rows.find((row) => row.kr050_id === Number(id));
 
   const expenditureOptions: Option[] = [
     {
-      label: account.account_050,
-      value: account.kr050_id,
+      label: account?.account_050! as string,
+      value: account?.kr050_id!,
     },
   ];
 
@@ -45,11 +56,12 @@ export default function Form({ treeData, account }: Props) {
     handleClose();
     setAccountSap13(node);
 
-    setSap13Options([{
-      label: node.text,
-      value: node.id,
-    }]);
-
+    setSap13Options([
+      {
+        label: node.text,
+        value: node.id,
+      },
+    ]);
   };
 
   return (
@@ -63,7 +75,7 @@ export default function Form({ treeData, account }: Props) {
                 label="Kode Rekening Belanja 050"
                 required
                 options={expenditureOptions}
-                defaultValue={account.kr050_id}
+                defaultValue={account?.kr050_id}
                 isError={!!state?.errors?.kr050_id}
                 errorMessage={state?.errors?.kr050_id}
               />
@@ -98,7 +110,7 @@ export default function Form({ treeData, account }: Props) {
         </div>
 
         <div className="mt-6 flex items-center justify-end gap-x-6">
-          <Link href="/maping/expenditure-050/to-sap-13">
+          <Link href="/mapping/expenditure-050/to-sap-13">
             <TwButton
               type="button"
               title="Cancel"

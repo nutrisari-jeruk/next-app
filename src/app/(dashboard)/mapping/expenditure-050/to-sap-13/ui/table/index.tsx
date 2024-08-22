@@ -2,6 +2,7 @@ import DataTable from '@/app/ui/data-table';
 import { fetchList } from '../../actions';
 import type { Params } from '@/types/params';
 import type { Column, Row } from '@/types/table';
+import Initializer from '../../initializer';
 
 export default async function Table({
   page,
@@ -51,5 +52,9 @@ export default async function Table({
 
   const meta = data.meta;
 
-  return <DataTable {...{ rows, columns, meta, searchField }} />;
+  return (
+    <Initializer rows={rows}>
+      <DataTable {...{ rows, columns, meta, searchField }} />;
+    </Initializer>
+  );
 }

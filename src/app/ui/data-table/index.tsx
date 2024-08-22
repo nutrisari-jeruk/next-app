@@ -14,9 +14,16 @@ interface Props {
   rows: Row[];
   columns: Column[];
   meta: Meta;
+  children?: React.ReactNode;
 }
 
-export default function DataTable({ searchField, rows, columns, meta }: Props) {
+export default function DataTable({
+  searchField,
+  rows,
+  columns,
+  meta,
+  children,
+}: Props) {
   const [tableData, setTableData] = useState<Row[]>(rows);
   const [sortField, setSortField] = useState('');
   const [order, setOrder] = useState('asc');
@@ -69,6 +76,10 @@ export default function DataTable({ searchField, rows, columns, meta }: Props) {
           Edit
         </Link>
       );
+    }
+
+    if (children) {
+      return children;
     }
 
     return data;
