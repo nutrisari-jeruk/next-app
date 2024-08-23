@@ -4,11 +4,12 @@ import type { Params } from '@/types/params';
 import type { Column, Row } from '@/types/table';
 
 export default async function Table({
-  page = '1',
+  page,
   rowsPerPage = '10',
   searchField = '',
   searchValue = '',
 }: Params) {
+
   const data = await fetchList({
     page: page,
     rowsPerPage: rowsPerPage,
@@ -24,29 +25,26 @@ export default async function Table({
     {
       label: 'Uraian',
       accessor: 'account_050',
+      width: '50px',
       sortable: true,
     },
     {
       label: 'Uraian',
       accessor: 'account_sap13',
+      width: '50px',
       sortable: true,
-    },
-    {
-      label: 'Action',
-      accessor: 'id',
-    },
+    }
   ];
 
   const rows = data.data.map((row) => {
     return {
       id: row.id,
       account_050: row.account_050,
-      account_sap13: row.account_sap13,
+      account_sap13: row.account_sap13 || '-'
     };
   }) as Row[];
 
-  const links = data.links;
   const meta = data.meta;
 
-  return <DataTable {...{ rows, columns, links, meta, searchField }} />;
+  return <DataTable {...{ rows, columns, meta, searchField }} />;
 }
