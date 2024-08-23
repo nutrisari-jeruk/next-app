@@ -4,72 +4,20 @@ import $http from '@/lib/axios';
 import { UmumSchema} from '../schema';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
-import { List, PostRequest } from '@/types/umum';
 import { AxiosError } from 'axios';
-import { Params } from '@/types/params';
-import { BaseResponse } from '@/types/api';
-import type { Pagination } from '@/types/pagination';
+import { cookies } from 'next/headers';
+import type { List, PostRequest } from '@/types/umum';
+import type { Params } from '@/types/params';
+import type { BaseResponse } from '@/types/api';
+import { Pagination } from '@/types/pagination';
 
-// const fetchUmumList = async ({
-//   page,
-//   rowsPerPage,
-//   searchField,
-//   searchValue,
-// }: Params): Promise<List[] | []> => {
-//   let list: List[] = [
-//     {
-//       id: 23,
-//       jurnal_kode: 'JP/001',
-//       jurnal_jenis: 'Jurnal yang Lain',
-//       kode_rekening: [
-//         {
-//           id: 29,
-//           code: '5.2',
-//           debit: 'BELANJA MODAL',
-//           credit: null,
-//         },
-//         {
-//           id: 30,
-//           code: '7.1.02.01.01',
-//           debit: null,
-//           credit:
-//             'Pendapatan Jasa Layanan dari Entitas Akuntansi/Entitas Pelaporan',
-//         },
-//       ],
-//     },
-//   ];
 
-//   try {
-//     const { data } = await $http.get<BaseResponse<List[]>>(
-//       '/v1/masters/journals/general',
-//       {
-//         params: {
-//           page: page,
-//           rowsPerPage: rowsPerPage,
-//           searchField: searchField,
-//           searchValue: searchValue,
-//         },
-//       },
-//     );
-
-//     if (data.success) {
-//       list = data?.data!;
-//     }
-//   } catch (error) {
-//     if (error instanceof AxiosError) {
-//       return list;
-//     }
-//   }
-
-//   return list;
-// };
-
-export default async function fetchUmumList({
+const fetchUmumList = async ({
   page,
   rowsPerPage,
   searchField,
   searchValue,
-}: Params): Promise<Pagination<List[]>> {
+}: Params): Promise<Pagination<List[]>> => {
   let list: Pagination<List[]> = {
     data: [],
     links: [],
@@ -107,7 +55,52 @@ export default async function fetchUmumList({
   }
 
   return list;
-}
+};
+
+// export default async function fetchUmumList({
+//   page,
+//   rowsPerPage,
+//   searchField,
+//   searchValue,
+// }: Params): Promise<Pagination<List[]>> {
+//   let list: Pagination<List[]> = {
+//     data: [],
+//     links: [],
+//     meta: {
+//       current_page: 0,
+//       from: 0,
+//       last_page: 0,
+//       path: '',
+//       per_page: 0,
+//       to: 0,
+//       total: 0,
+//     },
+//   };
+
+//   try {
+//     const { data } = await $http.get<BaseResponse<Pagination<List[]>>>(
+//       '/v1/masters/journals/general',
+//       {
+//         params: {
+//           page: page,
+//           rowsPerPage: rowsPerPage,
+//           searchField: searchField,
+//           searchValue: searchValue,
+//         },
+//       },
+//     );
+
+//     if (data.success) {
+//       list = data?.data!;
+//     }
+//   } catch (error) {
+//     if (error instanceof AxiosError) {
+//       return list;
+//     }
+//   }
+
+//   return list;
+// }
 
 const createUmum = async (_prevState: unknown, formData: FormData) => {
   const validatedFields = UmumSchema.safeParse({
@@ -156,10 +149,12 @@ const createUmum = async (_prevState: unknown, formData: FormData) => {
     };
   }
 
+  const session = cookies();
+  session.set('toastMessage', 'Data Penyesuaian Berhasil Dibuat');
+  session.set('toastStatus', 'success');
+
   revalidatePath('/master/jurnal/umum');
-  redirect(
-    `/master/jurnal/umum?toastMessage=${encodeURIComponent('Data Umum Berhasil Dibuat')}&toastStatus=success`,
-  );
+  redirect(`/master/jurnal/umum`);
 };
 
 export { createUmum, fetchUmumList };
