@@ -10,13 +10,13 @@ import {
 } from '@headlessui/react';
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
-import { useState } from 'react';
 
 interface TwSelect extends React.SelectHTMLAttributes<HTMLSelectElement> {
   options: Option[];
   label: string;
   icon?: React.ReactNode;
-  selectedData?: Option;
+  selectedData: Option | null;
+  setSelectedData: (value: Option) => void;
   placeHolder?: string;
   isError?: boolean;
   errorMessage?: string | string[];
@@ -27,6 +27,7 @@ export default function TwSelect(props: TwSelect) {
     options = [],
     icon = null,
     selectedData = null,
+    setSelectedData,
     label = '',
     isError = false,
     placeHolder = '',
@@ -34,11 +35,9 @@ export default function TwSelect(props: TwSelect) {
     ...attr
   } = props;
 
-  const [selected, setSelected] = useState(options[0]);
-
   return (
     <div>
-      <Listbox value={selected} onChange={setSelected}>
+      <Listbox value={selectedData} onChange={setSelectedData}>
         {({ open }) => (
           <>
             <Label className="block text-sm font-medium leading-6 text-gray-900">
@@ -48,7 +47,9 @@ export default function TwSelect(props: TwSelect) {
               <ListboxButton className="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6">
                 <span className="flex items-center">
                   {icon}
-                  <span className="ml-3 block truncate">{selected.label}</span>
+                  <span className="ml-3 block truncate">
+                    {selectedData?.label || placeHolder}
+                  </span>
                 </span>
                 <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
                   <ChevronUpDownIcon
