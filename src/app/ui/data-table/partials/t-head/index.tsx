@@ -6,7 +6,6 @@ import clsx from 'clsx';
 
 interface Props {
   columns: Column[];
-  // eslint-disable-next-line no-unused-vars
   handleSorting: (accessor: string, sortOrder: string) => void;
 }
 

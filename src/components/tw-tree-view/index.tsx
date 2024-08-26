@@ -5,14 +5,14 @@ import clsx from 'clsx';
 import type { TreeNode } from '@/types/tree-view';
 import { Button } from '@headlessui/react';
 
-interface TwTreeView {
+interface Props {
   treeData: TreeNode[];
   searchValue?: string;
   className?: string;
   onNodeSelect?: (node: TreeNode) => void;
 }
 
-export default function TwTreeView(props: TwTreeView) {
+export default function TwTreeView(props: Props) {
   const {
     treeData = [],
     searchValue = '',

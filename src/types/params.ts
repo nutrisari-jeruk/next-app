@@ -1,6 +1,8 @@
 export interface Params {
-  page?: number;
-  rowsPerPage?: number;
-  searchField?: string | string[];
+  page?: string;
+  rowsPerPage?: string;
+  searchField?: string;
   searchValue?: string;
+  toastMessage?: string;
+  toastStatus?: string;
 }

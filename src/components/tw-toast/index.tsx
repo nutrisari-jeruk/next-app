@@ -2,15 +2,21 @@
 
 import { toast, ToastContainer, Bounce } from 'react-toastify';
 import { useEffect } from 'react';
+import { env } from 'process';
 
 interface TwToast {
   message: string;
-  status: string;
+  status: string | undefined;
   onClose?: () => void;
 }
 
 export default function TwToast(props: TwToast) {
-  const { message, status, onClose = () => {} } = props;
+  const { message, status = 'success', onClose = async () => {} } = props;
+  const clearToast = async () => {
+    await fetch(`/api/clear-toast`, {
+      method: 'POST',
+    });
+  };
 
   useEffect(() => {
     if (message && status) {
@@ -23,6 +29,7 @@ export default function TwToast(props: TwToast) {
           break;
       }
     }
+    clearToast();
 
     onClose();
   }, [message, status, onClose]);

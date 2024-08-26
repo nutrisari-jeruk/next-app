@@ -4,13 +4,58 @@ import $http from '@/lib/axios';
 import { PenyesuaianSchema } from '../schema';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
-import { PostRequest } from '@/types/penyesuaian';
 import { AxiosError } from 'axios';
+import { cookies } from 'next/headers';
+import type { PaginateList, PostRequest } from '@/types/penyesuaian';
+import type { Params } from '@/types/params';
+import type { BaseResponse } from '@/types/api';
 
-export async function createPenyesuaian(
-  _prevState: unknown,
-  formData: FormData,
-) {
+const fetchPenyesuaianList = async ({
+  page,
+  rowsPerPage,
+  searchField,
+  searchValue,
+}: Params): Promise<PaginateList> => {
+  let list: PaginateList = {
+    data: [],
+    links: [],
+    meta: {
+      current_page: '0',
+      from: '0',
+      last_page: '0',
+      path: '',
+      per_page: '0',
+      to: '0',
+      total: '0',
+    },
+  };
+
+  try {
+    const { data } = await $http.get<BaseResponse<PaginateList>>(
+      '/v1/masters/journals/adjustment',
+      {
+        params: {
+          page: page,
+          rowsPerPage: rowsPerPage,
+          searchField: searchField,
+          searchValue: searchValue,
+        },
+      },
+    );
+
+    if (data.success) {
+      list = data?.data!;
+    }
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      return list;
+    }
+  }
+
+  return list;
+};
+
+const createPenyesuaian = async (_prevState: unknown, formData: FormData) => {
   const validatedFields = PenyesuaianSchema.safeParse({
     jenis_jurnal: formData.get('jenis_jurnal'),
     debit: formData.get('debit'),
@@ -33,7 +78,7 @@ export async function createPenyesuaian(
 
   try {
     const { data: result } = await $http.post(
-      'http://10.10.12.26:8000/api/v1/masters/journals/adjustment',
+      '/v1/masters/journals/adjustment',
       requestPenyesuaian,
     );
   } catch (error) {
@@ -52,13 +97,17 @@ export async function createPenyesuaian(
     }
 
     return {
-      message: 'Something Went Wrong!',
+      message: 'Telah Terjadi Kesalahan Silahkan Hubungi Administrator IT!',
       status: 'error',
     };
   }
 
+  const session = cookies();
+  session.set('toastMessage', 'Data Penyesuaian Berhasil Dibuat');
+  session.set('toastStatus', 'success');
+
   revalidatePath('/master/jurnal/penyesuaian');
-  redirect(
-    `/master/penyesuaian?message=${encodeURIComponent('Penyesuaian Created Successfully')}&status=success`,
-  );
-}
+  redirect(`/master/jurnal/penyesuaian`);
+};
+
+export { createPenyesuaian, fetchPenyesuaianList };

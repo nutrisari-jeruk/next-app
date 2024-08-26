@@ -1,7 +1,7 @@
 import { auth } from '@/auth';
-import { Sidebar } from '../ui/partials';
 import { redirect } from 'next/navigation';
 import { SessionProvider } from 'next-auth/react';
+import Sidebar from '../ui/sidebar';
 
 export default async function Layout({
   children,
