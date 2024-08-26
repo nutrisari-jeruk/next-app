@@ -3,8 +3,9 @@ export interface Column {
     accessor: string;
     sortable?: boolean;
     width?: string;
+    render?: (item: Row) => React.ReactNode;
 }
 
 export interface Row {
-    [key: string]: string | number;
+    [key: string]: string | number | boolean | null;
 }
