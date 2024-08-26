@@ -14,7 +14,6 @@ interface Props {
   rows: Row[];
   columns: Column[];
   meta: Meta;
-  children?: React.ReactNode;
 }
 
 export default function DataTable({
@@ -22,7 +21,6 @@ export default function DataTable({
   rows,
   columns,
   meta,
-  children,
 }: Props) {
   const [tableData, setTableData] = useState<Row[]>(rows);
   const [sortField, setSortField] = useState('');
@@ -58,14 +56,12 @@ export default function DataTable({
     sort(accessor, sortOrder);
   };
 
-  const render = (index: number, column: Column, item: Row) => {
-    const data = item[column.accessor] ? item[column.accessor] : '-';
-
+  const renderRow = (index: number, column: Column, item: Row) => {
     if (column.accessor === 'id') {
       return `${index + 1}.`;
     }
 
-    if (column.label.toLowerCase().includes('edit')) {
+    if (column.label.toLowerCase() === 'edit') {
       const id = item[column.accessor];
 
       return (
@@ -78,9 +74,7 @@ export default function DataTable({
       );
     }
 
-    if (children) {
-      return children;
-    }
+    const data = item[column.accessor] ? item[column.accessor] : '-';
 
     return data;
   };
@@ -173,7 +167,7 @@ export default function DataTable({
                               key={column.accessor}
                               className="px-3 py-4 text-sm text-gray-500"
                             >
-                              {render(index, column, item)}
+                              {renderRow(index, column, item)}
                             </td>
                           );
                         })}

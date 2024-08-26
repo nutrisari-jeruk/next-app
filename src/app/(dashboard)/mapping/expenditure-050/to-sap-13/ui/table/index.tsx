@@ -1,8 +1,8 @@
 import DataTable from '@/app/ui/data-table';
+import RowProvider from '@/providers/row';
 import { fetchList } from '../../actions';
 import type { Params } from '@/types/params';
 import type { Column, Row } from '@/types/table';
-import RowProvider from '@/providers/row';
 
 export default async function Table({
   page,
