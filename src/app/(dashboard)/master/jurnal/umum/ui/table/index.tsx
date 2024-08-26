@@ -57,6 +57,11 @@ export default async function Table({
       accessor: 'credit',
       sortable: false,
     },
+    {
+      label: 'Edit',
+      accessor: 'credit',
+      sortable: false,
+    },
   ];
 
 
