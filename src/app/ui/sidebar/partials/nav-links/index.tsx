@@ -20,16 +20,16 @@ const navigation: Menu[] = [
 const journals: Menu[] = [
   {
     id: 1,
-    name: 'Jurnal Penyesuaian',
-    href: '/master/jurnal/penyesuaian',
-    initial: 'JP',
+    name: 'Jurnal Umum',
+    href: '/master/jurnal/umum',
+    initial: 'JU',
     current: false,
   },
   {
     id: 2,
-    name: 'Jurnal Umum',
-    href: '/master/jurnal/umum',
-    initial: 'JU',
+    name: 'Jurnal Penyesuaian',
+    href: '/master/jurnal/penyesuaian',
+    initial: 'JP',
     current: false,
   },
   {

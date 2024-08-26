@@ -61,7 +61,7 @@ export default function DataTable({
       return `${index + 1}.`;
     }
 
-    if (column.label.toLowerCase().includes('edit')) {
+    if (column.label.toLowerCase() === 'edit') {
       const id = item[column.accessor];
 
       return (

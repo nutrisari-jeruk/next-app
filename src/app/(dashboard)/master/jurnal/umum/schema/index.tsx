@@ -7,12 +7,12 @@ export const UmumSchema = z.object({
       invalid_type_error: 'Jenis Umum must be a string',
     })
     .min(1, 'Jenis Umum is required'),
-  kode_rekening_id: z.object({
-    debit: z.number({
+    debit: z.string({
       required_error: 'Debit is required',
+      invalid_type_error: 'Debit is required',
     }),
-    kredit: z.number({
+    credit: z.string({
       required_error: 'Kredit is required',
+      invalid_type_error: 'Kredit is required',
     }),
-  }),
 });
