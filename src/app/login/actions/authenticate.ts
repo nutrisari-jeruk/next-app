@@ -1,6 +1,7 @@
 'use server';
 
 import { signIn } from '@/auth';
+import { selectRoleSchema } from '@/lib/zod';
 import { AuthError } from 'next-auth';
 import { redirect } from 'next/navigation';
 

@@ -25,5 +25,5 @@ export {
   TwToast,
   TwTable,
   TwSearch,
-  TwSelect
+  TwSelect,
 };

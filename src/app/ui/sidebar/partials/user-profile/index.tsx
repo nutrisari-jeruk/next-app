@@ -7,7 +7,7 @@ export default function UserProfile({ user }: { user: User }) {
       <UserCircleIcon className="h-8 w-8" />
       <div className="flex flex-col">
         <span className="text-sm font-semibold">{user.name}</span>
-        <span className="text-sm">{user.user_role}</span>
+        <span className="text-sm">{user.role}</span>
       </div>
     </div>
   );

@@ -4,7 +4,7 @@ import type { JWT } from 'next-auth/jwt';
 
 export const authConfig: NextAuthConfig = {
   pages: {
-    signIn: '/login',
+    signIn: '/role-select',
   },
   callbacks: {
     authorized: ({ auth }) => {
@@ -12,16 +12,23 @@ export const authConfig: NextAuthConfig = {
     },
     jwt: ({ token, user }: { token: JWT; user: User }) => {
       if (user) {
-        token.access_token = user.access_token!;
-        token.user_role = user.user_role!;
+        console.log(user);
+        token.id = user.id as string;
+        token.name = user.name as string;
+        token.role = user.role as string;
+        token.role_id = user.role_id as string;
+        token.token = user.token as string;
       }
 
       return token;
     },
     session: ({ session, token }) => {
       if (token) {
-        session.user.access_token = token.access_token as string;
-        session.user.user_role = token.user_role as string;
+        session.user.id = token.id as string;
+        session.user.name = token.name as string;
+        session.user.role = token.role as string;
+        session.user.role_id = token.role_id as string;
+        session.user.token = token.token as string;
       }
       return session;
     },

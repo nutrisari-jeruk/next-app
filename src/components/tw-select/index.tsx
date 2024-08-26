@@ -1,84 +1,120 @@
+'use client';
+import { Option } from '@/types/option';
+import {
+  Label,
+  Listbox,
+  ListboxButton,
+  ListboxOption,
+  ListboxOptions,
+  Transition,
+} from '@headlessui/react';
+import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
-import { Field, Label, Select } from '@headlessui/react';
-import type { Option } from '@/types/option';
 
-interface Props extends React.SelectHTMLAttributes<HTMLSelectElement> {
-  name?: string;
-  label?: string;
+interface TwSelect extends React.SelectHTMLAttributes<HTMLSelectElement> {
+  options: Option[];
+  label: string;
   icon?: React.ReactNode;
-  iconPosition?: 'left' | 'right';
+  selectedData: Option | null;
+  setSelectedData: (value: Option) => void;
+  placeHolder?: string;
   isError?: boolean;
-  required?: boolean;
   errorMessage?: string | string[];
-  className?: string;
-  options?: Option[];
-  placeholder?: string;
 }
 
-export default function TwInput(props: Props) {
-  const randomId = Math.random().toString(36).slice(2);
+export default function TwSelect(props: TwSelect) {
   const {
-    name = `input-${randomId}`,
+    options = [],
+    icon = null,
+    selectedData = null,
+    setSelectedData,
     label = '',
     isError = false,
-    icon = null,
-    iconPosition = 'left',
-    errorMessage = 'Error message',
-    className = '',
-    options = [],
-    placeholder = '',
+    placeHolder = '',
+    errorMessage = '',
     ...attr
   } = props;
 
   return (
-    <Field className={clsx('w-full space-y-1', className)}>
-      <Label
-        htmlFor={name}
-        className={clsx(
-          'block text-sm font-medium leading-6',
-          isError ? 'text-red-500' : 'text-gray-900',
-        )}
-      >
-        {label} {attr.required && <span className="text-red-500">*</span>}
-      </Label>
-      <div className={clsx('relative rounded-md shadow-sm')}>
-        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2">
-          <div className="pointer-events-none h-4 w-4">
-            {iconPosition === 'left' && icon}
-          </div>
-        </div>
-        <Select
-          name={name}
-          id={name}
-          className={clsx(
-            isError &&
-              'text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500',
-            attr.disabled && 'cursor-not-allowed bg-gray-100',
-            icon && (iconPosition === 'left' ? 'pl-8' : 'pr-8'),
-            'block w-full rounded-md border-0 py-1.5 ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6',
-          )}
-          aria-invalid={isError}
-          aria-describedby={`${name}-error`}
-          {...attr}
-        >
-          {!!placeholder && <option hidden>{placeholder}</option>}
-          {!!options.length &&
-            options.map((option, index) => (
-              <option key={index} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-        </Select>
+    <div>
+      <Listbox value={selectedData} onChange={setSelectedData}>
+        {({ open }) => (
+          <>
+            <Label className="block text-sm font-medium leading-6 text-gray-900">
+              {label}
+            </Label>
+            <div className="relative mt-2">
+              <ListboxButton className="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6">
+                <span className="flex items-center">
+                  {icon}
+                  <span className="ml-3 block truncate">
+                    {selectedData?.label || placeHolder}
+                  </span>
+                </span>
+                <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
+                  <ChevronUpDownIcon
+                    className="h-5 w-5 text-gray-400"
+                    aria-hidden="true"
+                  />
+                </span>
+              </ListboxButton>
 
-        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-          {iconPosition === 'right' && icon}
-        </div>
-      </div>
-      {isError && (
-        <p className="mt-2 text-sm text-red-600" id={`${name}-error`}>
-          {errorMessage}
-        </p>
-      )}
-    </Field>
+              <Transition
+                show={open}
+                leave="transition ease-in duration-100"
+                leaveFrom="opacity-100"
+                leaveTo="opacity-0"
+              >
+                <ListboxOptions className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                  {options.map((option) => (
+                    <ListboxOption
+                      key={option.value}
+                      className={({ focus }) =>
+                        clsx(
+                          focus ? 'bg-indigo-600 text-white' : '',
+                          !focus ? 'text-gray-900' : '',
+                          'relative cursor-default select-none py-2 pl-3 pr-9',
+                        )
+                      }
+                      value={option}
+                    >
+                      {({ selected, focus }) => (
+                        <>
+                          <div className="flex items-center">
+                            {icon}
+                            <span
+                              className={clsx(
+                                selected ? 'font-semibold' : 'font-normal',
+                                'ml-3 block truncate',
+                              )}
+                            >
+                              {option.label}
+                            </span>
+                          </div>
+
+                          {selected ? (
+                            <span
+                              className={clsx(
+                                focus ? 'text-white' : 'text-indigo-600',
+                                'absolute inset-y-0 right-0 flex items-center pr-4',
+                              )}
+                            >
+                              <CheckIcon
+                                className="h-5 w-5"
+                                aria-hidden="true"
+                              />
+                            </span>
+                          ) : null}
+                        </>
+                      )}
+                    </ListboxOption>
+                  ))}
+                </ListboxOptions>
+              </Transition>
+            </div>
+          </>
+        )}
+      </Listbox>
+    </div>
   );
 }
