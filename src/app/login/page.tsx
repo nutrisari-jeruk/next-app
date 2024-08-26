@@ -2,16 +2,28 @@
 
 import { TwButton, Input } from '@/components';
 import { useFormState, useFormStatus } from 'react-dom';
-import { authenticate } from '@/app/login/actions/authenticate';
 import {
   ArrowRightEndOnRectangleIcon,
   ExclamationCircleIcon,
 } from '@heroicons/react/24/outline';
+import { getUserRole } from './actions/getUserRole';
+import { useEffect } from 'react';
+import { useLoggedInUser } from '@/store/user';
+import { useRouter } from 'next/navigation';
 
 export default function Login() {
+  const router = useRouter();
   const { pending } = useFormStatus();
-  const [errorMessage, formAction] = useFormState(authenticate, undefined);
+  const [state, formAction] = useFormState(getUserRole, undefined);
+  const { setLoggedInUser } = useLoggedInUser();
 
+  useEffect(() => {
+    if (state?.user) {
+      console.log(state.user);
+      setLoggedInUser?.(state.user);
+      router.push('/role-select');
+    }
+  }, [state]);
   return (
     <div className="flex min-h-screen flex-col items-center justify-center">
       <div className="flex flex-col items-center justify-center space-y-4 rounded-xl bg-white p-8 shadow-lg">
@@ -29,10 +41,10 @@ export default function Login() {
             icon={<ArrowRightEndOnRectangleIcon className="w-5" />}
           />
         </form>
-        {errorMessage && (
+        {state?.errorMessage && (
           <p className="flex items-center gap-1 text-sm text-red-500">
             <ExclamationCircleIcon className="w-5" />
-            {errorMessage}
+            {state.errorMessage}
           </p>
         )}
       </div>

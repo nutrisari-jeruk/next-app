@@ -5,7 +5,6 @@ import { redirect } from 'next/navigation';
 import { AxiosError } from 'axios';
 import { AuthError } from 'next-auth';
 import { ZodError } from 'zod';
-import { revalidatePath } from 'next/cache';
 import { signInSchema } from '@/lib/zod';
 
 export async function getUserRole(_currentState: unknown, formData: FormData) {
@@ -15,29 +14,29 @@ export async function getUserRole(_currentState: unknown, formData: FormData) {
       password: formData.get('password'),
     });
 
+    if (validatedFields.success === false) {
+      return {
+        errorMessage:
+          validatedFields.error.flatten().fieldErrors.email ||
+          validatedFields.error.flatten().fieldErrors.password,
+      };
+    }
+
     const { data } = await $http.post('/v1/apps/login', {
       ...validatedFields.data,
     });
 
-    console.log(data);
-  } catch (error) {
-    console.log(error);
-    if (error instanceof AuthError) {
-      if (error.cause?.err instanceof AxiosError) {
-        return error.cause?.err.response?.data.message;
-      }
-      if (
-        error?.type === 'CallbackRouteError' &&
-        error.cause?.err instanceof ZodError
-      ) {
-        return (
-          error.cause?.err.flatten().fieldErrors.email ||
-          error.cause?.err.flatten().fieldErrors.password
-        );
-      }
+    if (data?.data) {
+      return { user: data.data };
     }
-    return 'An unknown error occurred';
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      return {
+        errorMessage: error?.response?.data?.message,
+      };
+    }
+    return {
+      errorMessage: 'Something went wrong. Please try again later.',
+    };
   }
-  revalidatePath('/role-select');
-  redirect('/role-select');
 }
