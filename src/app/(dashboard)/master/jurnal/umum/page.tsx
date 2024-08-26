@@ -19,9 +19,6 @@ export default async function Page({ searchParams }: { searchParams: Params }) {
 
   const session = cookies();
 
-
-
-
   return (
     <div>
       {session.get('toastMessage')?.value &&

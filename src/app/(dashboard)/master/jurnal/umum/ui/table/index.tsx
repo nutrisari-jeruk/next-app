@@ -11,7 +11,6 @@ export default async function Table({
   searchField = '',
   searchValue = '',
 }: Params) {
-
   const data = await fetchUmumList({
     page: page,
     rowsPerPage: rowsPerPage,
