@@ -8,17 +8,17 @@ import {
   FolderPlusIcon,
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Sap13Modal from '../../components/sap13-modal';
 import { createPenyesuaian } from '../../actions';
 import clsx from 'clsx';
 import { useFormState, useFormStatus } from 'react-dom';
 
-interface CreatePenyesuaianForm {
+interface Props {
   treeData: TreeNode[];
 }
 
-export default function CreatePenyesuaianForm(props: CreatePenyesuaianForm) {
+export default function CreatePenyesuaianForm(props: Props) {
   const { treeData } = props;
   const [activeInput, setActiveInput] = useState<'debit' | 'credit' | ''>('');
   const [modalIsOpen, setModalIsOpen] = useState(false);
