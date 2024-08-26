@@ -20,7 +20,6 @@ export default function TwTreeView(props: Props) {
     onNodeSelect = () => {},
   } = props;
   const [expandedNodes, setExpandedNodes] = useState<Set<number>>(new Set());
-  const [selectedNodeId, setSelectedNodeId] = useState<number | null>(null);
 
   useEffect(() => {
     const handleSearchClick = () => {
@@ -94,7 +93,6 @@ export default function TwTreeView(props: Props) {
   const handleNodeClick = (node: TreeNode) => {
     return () => {
       if (node.is_selectable) {
-        setSelectedNodeId(node.id); // Set ID node yang terpilih
         onNodeSelect(node); // Panggil handler yang di-passing dari props
       } else {
         setExpandedNodes((prev) => {
