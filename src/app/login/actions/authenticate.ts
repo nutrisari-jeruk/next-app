@@ -1,11 +1,11 @@
 'use server';
 
 import { signIn } from '@/auth';
-import { selectRoleSchema } from '@/lib/zod';
 import { AuthError } from 'next-auth';
 import { redirect } from 'next/navigation';
 
 export async function authenticate(_currentState: unknown, formData: FormData) {
+  const callbackUrl = formData.get('callBackUrl') as string;
   try {
     await signIn('credentials', formData);
   } catch (error) {
@@ -21,5 +21,5 @@ export async function authenticate(_currentState: unknown, formData: FormData) {
     }
   }
 
-  redirect('/');
+  redirect(callbackUrl);
 }

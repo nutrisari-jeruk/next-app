@@ -5,8 +5,23 @@ import type { Menu } from '@/types/menu';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import clsx from 'clsx';
+import { User } from '@/types/user';
 
-const navigation: Menu[] = [
+const userNavigation: Menu[] = [
+  {
+    name: 'Dashboard',
+    href: '/',
+    icon: HomeIcon,
+    count: '1',
+    current: true,
+  },
+];
+
+const userJournals: Menu[] = [];
+
+const userMaps: Menu[] = [];
+
+const adminNavigation: Menu[] = [
   {
     name: 'Dashboard',
     href: '/',
@@ -17,7 +32,7 @@ const navigation: Menu[] = [
   { name: 'Users', href: '/user', icon: UsersIcon, current: false },
 ];
 
-const journals: Menu[] = [
+const adminJournals: Menu[] = [
   {
     id: 1,
     name: 'Jurnal Umum',
@@ -48,7 +63,7 @@ const journals: Menu[] = [
   },
 ];
 
-const maps: Menu[] = [
+const adminMaps: Menu[] = [
   {
     name: 'Kode Rekening Belanja',
     href: '/mapping/expenditure-050/to-sap-13',
@@ -57,9 +72,12 @@ const maps: Menu[] = [
   },
 ];
 
-export default function NavLink() {
+export default function NavLink({ user }: { user: User }) {
   const pathname = usePathname();
 
+  const navigation = user.role === 'admin' ? adminNavigation : userNavigation;
+  const journals = user.role === 'admin' ? adminJournals : userJournals;
+  const maps = user.role === 'admin' ? adminMaps : userMaps;
   return (
     <>
       <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -100,72 +118,78 @@ export default function NavLink() {
             ))}
           </ul>
         </li>
-        <li>
-          <div className="text-xs font-semibold leading-6 text-gray-400">
-            Jurnal
-          </div>
-          <ul role="list" className="-mx-2 mt-2 space-y-1">
-            {journals.map((item) => (
-              <li key={item.name}>
-                <Link
-                  href={item.href}
-                  className={clsx(
-                    item.name !== 'Dashboard' && pathname.startsWith(item.href)
-                      ? 'bg-indigo-100 text-indigo-600'
-                      : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600',
-                    'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6',
-                  )}
-                >
-                  <span
+        {journals.length > 0 && (
+          <li>
+            <div className="text-xs font-semibold leading-6 text-gray-400">
+              Jurnal
+            </div>
+            <ul role="list" className="-mx-2 mt-2 space-y-1">
+              {journals.map((item) => (
+                <li key={item.name}>
+                  <Link
+                    href={item.href}
                     className={clsx(
                       item.name !== 'Dashboard' &&
                         pathname.startsWith(item.href)
-                        ? 'border-indigo-600 text-indigo-600'
-                        : 'border-gray-200 text-gray-400 group-hover:border-indigo-600 group-hover:text-indigo-600',
-                      'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border bg-white text-[0.625rem] font-medium',
+                        ? 'bg-indigo-100 text-indigo-600'
+                        : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600',
+                      'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6',
                     )}
                   >
-                    {item.initial}
-                  </span>
-                  <span className="truncate">{item.name}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </li>
-        <li>
-          <div className="text-xs font-semibold leading-6 text-gray-400">
-            Mapping
-          </div>
-          <ul role="list" className="-mx-2 mt-2 space-y-1">
-            {maps.map((item) => (
-              <li key={item.name}>
-                <Link
-                  href={item.href}
-                  className={clsx(
-                    item.name !== 'Dashboard' && pathname.startsWith(item.href)
-                      ? 'bg-indigo-100 text-indigo-600'
-                      : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600',
-                    'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6',
-                  )}
-                >
-                  <span
+                    <span
+                      className={clsx(
+                        item.name !== 'Dashboard' &&
+                          pathname.startsWith(item.href)
+                          ? 'border-indigo-600 text-indigo-600'
+                          : 'border-gray-200 text-gray-400 group-hover:border-indigo-600 group-hover:text-indigo-600',
+                        'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border bg-white text-[0.625rem] font-medium',
+                      )}
+                    >
+                      {item.initial}
+                    </span>
+                    <span className="truncate">{item.name}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </li>
+        )}
+        {maps.length > 0 && (
+          <li>
+            <div className="text-xs font-semibold leading-6 text-gray-400">
+              Mapping
+            </div>
+            <ul role="list" className="-mx-2 mt-2 space-y-1">
+              {maps.map((item) => (
+                <li key={item.name}>
+                  <Link
+                    href={item.href}
                     className={clsx(
                       item.name !== 'Dashboard' &&
                         pathname.startsWith(item.href)
-                        ? 'border-indigo-600 text-indigo-600'
-                        : 'border-gray-200 text-gray-400 group-hover:border-indigo-600 group-hover:text-indigo-600',
-                      'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border bg-white text-[0.625rem] font-medium',
+                        ? 'bg-indigo-100 text-indigo-600'
+                        : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600',
+                      'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6',
                     )}
                   >
-                    {item.initial}
-                  </span>
-                  <span className="truncate">{item.name}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </li>
+                    <span
+                      className={clsx(
+                        item.name !== 'Dashboard' &&
+                          pathname.startsWith(item.href)
+                          ? 'border-indigo-600 text-indigo-600'
+                          : 'border-gray-200 text-gray-400 group-hover:border-indigo-600 group-hover:text-indigo-600',
+                        'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border bg-white text-[0.625rem] font-medium',
+                      )}
+                    >
+                      {item.initial}
+                    </span>
+                    <span className="truncate">{item.name}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </li>
+        )}
       </ul>
     </>
   );
