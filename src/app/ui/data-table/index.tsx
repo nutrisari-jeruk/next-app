@@ -16,12 +16,7 @@ interface Props {
   meta: Meta;
 }
 
-export default function DataTable({
-  searchField,
-  rows,
-  columns,
-  meta,
-}: Props) {
+export default function DataTable({ searchField, rows, columns, meta }: Props) {
   const [tableData, setTableData] = useState<Row[]>(rows);
   const [sortField, setSortField] = useState('');
   const [order, setOrder] = useState('asc');
@@ -88,7 +83,7 @@ export default function DataTable({
           <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
             <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
               <table className="min-w-full table-fixed divide-y divide-gray-300">
-                <thead className="bg-gray-50">
+                <thead className="bg-gray-100">
                   <tr>
                     {!!columns &&
                       columns.map(({ label, accessor, sortable, width }) => {
@@ -136,7 +131,7 @@ export default function DataTable({
                                 : undefined
                             }
                           >
-                            <div className="flex w-full flex-wrap items-center space-x-2">
+                            <div className="flex w-full items-center space-x-2">
                               <span className="select-none">{label}</span>
                               {sortable && (
                                 <button
