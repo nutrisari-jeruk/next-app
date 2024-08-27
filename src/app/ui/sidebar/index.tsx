@@ -22,7 +22,7 @@ export default function Sidebar({ session }: { session: Session }) {
           </Link>
         </div>
         <nav className="flex flex-1 flex-col overflow-y-auto px-2">
-          <NavLink />
+          <NavLink user={session?.user} />
         </nav>
 
         <div className="-mx-2 flex items-center justify-between border-t px-4 py-2">

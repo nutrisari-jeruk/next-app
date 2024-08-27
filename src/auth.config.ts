@@ -6,6 +6,10 @@ export const authConfig: NextAuthConfig = {
   pages: {
     signIn: '/role-select',
   },
+  secret: process.env.AUTH_SECRET,
+  session: {
+    strategy: 'jwt',
+  },
   callbacks: {
     authorized: ({ auth }) => {
       return !!auth;

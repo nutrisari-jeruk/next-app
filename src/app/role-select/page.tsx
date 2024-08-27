@@ -13,7 +13,9 @@ import { Role } from '@/types/user';
 import { useRouter } from 'next/navigation';
 import { useLoggedInUser } from '@/store/user';
 
-export default function RoleSelect() {
+export default function RoleSelect({ searchParams }: any) {
+  console.log(searchParams);
+  const callBackUrl = searchParams?.callBackUrl || '/';
   const { pending } = useFormStatus();
   const [errorMessage, formAction] = useFormState(authenticate, undefined);
 
@@ -41,7 +43,7 @@ export default function RoleSelect() {
       const formData = new FormData();
       formData.append('user_id', String(loggedInUser?.id));
       formData.append('role_id', String(selectedRole.value));
-
+      formData.append('callBackUrl', callBackUrl);
       return formAction(formData);
     }
   };
