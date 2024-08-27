@@ -7,5 +7,5 @@ export interface Column {
 }
 
 export interface Row {
-    [key: string]: string | number | boolean | null;
+    [key: string]: string | number | boolean | null | undefined;
 }

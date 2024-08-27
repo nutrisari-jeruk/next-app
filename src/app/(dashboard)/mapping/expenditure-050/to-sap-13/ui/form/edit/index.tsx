@@ -5,7 +5,7 @@ import Link from 'next/link';
 import AccountsTree from '../../accounts-tree';
 import { useState } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
-import { TwButton, TwSelect } from '@/components';
+import { TwButton, TwInput, TwSelect } from '@/components';
 import {
   ArrowUturnLeftIcon,
   CheckIcon,
@@ -26,24 +26,30 @@ interface Props {
 }
 
 export default function Form({ treeData, params }: Props) {
+  const id = params.id;
+  const { rows } = useRowStore.getState();
+  const account = rows.find((row) => row.kr050_id === Number(id));
+
   const { pending } = useFormStatus();
   const [state, formAction] = useFormState(mapOnAccount, undefined);
+
   const [accountSap13, setAccountSap13] = useState<TreeNode>();
   const [isOpen, setIsOpen] = useState(false);
-  const [sap13Options, setSap13Options] = useState<Option[]>([]);
-  const { rows } = useRowStore.getState();
+  const [sap13Options, setSap13Options] = useState<Option[]>([
+    {
+      label: account?.account_sap13! as string,
+      value: account?.sap13_id! as string,
+    },
+  ]);
 
   if (!rows.length) {
     notFound();
   }
 
-  const id = params.id;
-  const account = rows.find((row) => row.kr050_id === Number(id));
-
   const expenditureOptions: Option[] = [
     {
       label: account?.account_050! as string,
-      value: account?.kr050_id!,
+      value: account?.kr050_id! as string,
     },
   ];
 
@@ -74,7 +80,7 @@ export default function Form({ treeData, params }: Props) {
                 label="Kode Rekening Belanja 050"
                 required
                 options={expenditureOptions}
-                defaultValue={account?.kr050_id}
+                defaultValue={account?.kr050_id! as string}
                 isError={!!state?.errors?.kr050_id}
                 errorMessage={state?.errors?.kr050_id}
               />
@@ -104,6 +110,18 @@ export default function Form({ treeData, params }: Props) {
                   />
                 </div>
               </div>
+
+              <div className="w-full">
+                  <TwInput
+                    name="method"
+                    label="Method"
+                    required
+                    readOnly
+                    defaultValue={accountSap13?.id}
+                    isError={!!state?.errors?.sap13_id}
+                    errorMessage={state?.errors?.sap13_id}
+                  />
+                </div>
             </div>
           </div>
         </div>
