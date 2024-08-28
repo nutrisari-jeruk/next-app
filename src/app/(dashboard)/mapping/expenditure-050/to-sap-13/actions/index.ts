@@ -82,7 +82,13 @@ const mapOnAccount = async (__prevState: unknown, formData: FormData) => {
   };
 
   try {
-    await $http.post('/v1/mappings/expenditure-050/expenditure-sap13', payload);
+    const id = formData.get('id');
+
+    if (!!id) {
+      await $http.put(`/v1/mappings/expenditure-050/expenditure-sap13/${id}`, payload);
+    } else {
+      await $http.post('/v1/mappings/expenditure-050/expenditure-sap13', payload);
+    }
   } catch (error) {
     if (error instanceof AxiosError) {
       if (error.response?.data?.message) {
