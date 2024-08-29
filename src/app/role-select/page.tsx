@@ -1,20 +1,21 @@
 'use client';
 
-import { TwButton, TwSelect } from '@/components';
 import { useFormState, useFormStatus } from 'react-dom';
+import { TwButton, TwListbox } from '@/components';
 import { authenticate } from '@/app/login/actions/authenticate';
 import {
   ArrowRightEndOnRectangleIcon,
   ExclamationCircleIcon,
 } from '@heroicons/react/24/outline';
 import { useEffect, useState } from 'react';
-import { Option } from '@/types/option';
-import { Role } from '@/types/user';
+
 import { useRouter } from 'next/navigation';
 import { useLoggedInUser } from '@/store/user';
 
+import type { Option } from '@/types/option';
+import type { Role } from '@/types/user';
+
 export default function RoleSelect({ searchParams }: any) {
-  console.log(searchParams);
   const callBackUrl = searchParams?.callBackUrl || '/';
   const { pending } = useFormStatus();
   const [errorMessage, formAction] = useFormState(authenticate, undefined);
@@ -26,13 +27,12 @@ export default function RoleSelect({ searchParams }: any) {
     if (!loggedInUser) {
       router.push('/login');
     }
-  }, []);
+  }, [loggedInUser, router]);
 
-  const options =
-    loggedInUser?.roles?.map((role: Role) => ({
-      label: role.role,
-      value: role.role_id,
-    })) || [];
+  const options = loggedInUser?.roles.map((role: Role) => ({
+    label: role.role,
+    value: role.role_id,
+  })) as Option[];
 
   const [selectedRole, setSelectedRole] = useState<Option | null>(null);
 
@@ -54,7 +54,7 @@ export default function RoleSelect({ searchParams }: any) {
         <div className="flex min-h-screen flex-col items-center justify-center">
           <div className="flex flex-col items-center justify-center space-y-4 rounded-xl bg-white p-8 shadow-lg">
             <form onSubmit={handleSubmit} className="w-80 space-y-2">
-              <TwSelect
+              <TwListbox
                 label="Select Your Role"
                 options={options}
                 selectedData={selectedRole}
