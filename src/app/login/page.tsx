@@ -11,7 +11,9 @@ import { useEffect } from 'react';
 import { useLoggedInUser } from '@/store/user';
 import { useRouter } from 'next/navigation';
 
-export default function Login() {
+export default function Login({ searchParams }: any) {
+  console.log(searchParams);
+  const callBackUrl = searchParams?.callBackUrl || '/';
   const router = useRouter();
   const { pending } = useFormStatus();
   const [state, formAction] = useFormState(getUserRole, undefined);
@@ -19,9 +21,8 @@ export default function Login() {
 
   useEffect(() => {
     if (state?.user) {
-      console.log(state.user);
       setLoggedInUser?.(state.user);
-      router.push('/role-select');
+      router.push(`/role-select?callBackUrl=${callBackUrl}`);
     }
   }, [state]);
   return (

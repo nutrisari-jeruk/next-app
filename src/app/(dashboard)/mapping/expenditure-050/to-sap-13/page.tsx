@@ -1,10 +1,10 @@
 import Skeletons from '@/app/ui/skeletons';
+import DataTable from '@/app/ui/data-table';
+import RowProvider from '@/providers/row';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 import { TwHeader } from '@/components';
 import { fetchList } from './actions';
-import RowProvider from '@/providers/row';
-import DataTable from '@/app/ui/data-table';
 import type { Params } from '@/types/params';
 import type { Column, Row } from '@/types/table';
 

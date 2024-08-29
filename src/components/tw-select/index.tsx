@@ -68,7 +68,7 @@ export default function TwSelect(props: Props) {
           {!!options.length &&
             options.map((option, index) => (
               <option key={index} value={option?.value! as string}>
-                {option.label}
+                {option?.label}
               </option>
             ))}
         </Select>

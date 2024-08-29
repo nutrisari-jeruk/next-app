@@ -52,7 +52,7 @@ export default function DataTable({ searchField, rows, columns, meta }: Props) {
   };
 
   const renderRow = (index: number, column: Column, item: Row) => {
-    if (column.accessor === 'id') {
+    if (column.accessor === '#') {
       return `${index + 1}.`;
     }
 
