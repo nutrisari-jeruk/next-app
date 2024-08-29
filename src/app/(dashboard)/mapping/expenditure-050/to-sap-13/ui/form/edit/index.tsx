@@ -6,7 +6,6 @@ import AccountsTree from '../../accounts-tree';
 import { useState } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
 import { TwButton, TwInput, TwSelect } from '@/components';
-import { TwButton, TwInput, TwSelect } from '@/components';
 import {
   ArrowUturnLeftIcon,
   CheckIcon,
@@ -27,12 +26,10 @@ interface Props {
 }
 
 export default function Form({ treeData, params }: Props) {
-  const id = params.id;
-  const { rows } = useRowStore.getState();
-  const account = rows.find((row) => row.kr050_id === Number(id));
+  const { rows, params: p } = useRowStore.getState();
 
-  const { pending } = useFormStatus();
-  const [state, formAction] = useFormState(mapOnAccount, undefined);
+  const id = params.id;
+  const account = rows.find((row) => row.kr050_id === Number(id));
 
   const [accountSap13, setAccountSap13] = useState<TreeNode>();
   const [isOpen, setIsOpen] = useState(false);
@@ -42,6 +39,9 @@ export default function Form({ treeData, params }: Props) {
       value: account?.sap13_id! as string,
     },
   ]);
+
+  const { pending } = useFormStatus();
+  const [state, formAction] = useFormState(mapOnAccount, undefined);
 
   if (!rows.length) {
     notFound();
@@ -112,23 +112,20 @@ export default function Form({ treeData, params }: Props) {
                 </div>
               </div>
 
-              <div className="w-full">
-                  <TwInput
-                    name="method"
-                    label="Method"
-                    required
-                    readOnly
-                    defaultValue={accountSap13?.id}
-                    isError={!!state?.errors?.sap13_id}
-                    errorMessage={state?.errors?.sap13_id}
-                  />
-                </div>
+              <TwInput
+                name="id"
+                readOnly
+                hidden
+                defaultValue={account?.id! as string}
+              />
+
+              <TwInput name="page" readOnly hidden defaultValue={p.page} />
             </div>
           </div>
         </div>
 
         <div className="mt-6 flex items-center justify-end gap-x-6">
-          <Link href="/mapping/expenditure-050/to-sap-13">
+          <Link href={`/mapping/expenditure-050/to-sap-13?page=${p.page}`}>
             <TwButton
               type="button"
               title="Cancel"

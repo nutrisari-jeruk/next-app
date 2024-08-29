@@ -28,7 +28,7 @@ export default async function Page({ searchParams }: { searchParams: Params }) {
   const columns: Column[] = [
     {
       label: '#',
-      accessor: 'id',
+      accessor: '#',
     },
     {
       label: 'Uraian',
@@ -68,7 +68,7 @@ export default async function Page({ searchParams }: { searchParams: Params }) {
 
       <div className="mt-4">
         <Suspense fallback={<Skeletons />}>
-          <RowProvider rows={rows}>
+          <RowProvider rows={rows} params={searchParams}>
             <DataTable {...{ rows, columns, meta, searchField }} />
           </RowProvider>
         </Suspense>

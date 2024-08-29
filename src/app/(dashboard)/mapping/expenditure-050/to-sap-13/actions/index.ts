@@ -55,7 +55,10 @@ const fetchList = async ({
   return list;
 };
 
-const mapOnAccount = async (__prevState: unknown, formData: FormData) => {
+const mapOnAccount = async (_prevState: unknown, formData: FormData) => {
+  const id = formData.get('id');
+  const page = formData.get('page');
+
   const validatedFields = MapSchema.safeParse({
     kr050_id: Number(formData.get('kr050_id')),
     sap13_id: Number(formData.get('sap13_id')),
@@ -82,12 +85,16 @@ const mapOnAccount = async (__prevState: unknown, formData: FormData) => {
   };
 
   try {
-    const id = formData.get('id');
-
     if (!!id) {
-      await $http.put(`/v1/mappings/expenditure-050/expenditure-sap13/${id}`, payload);
+      await $http.put(
+        `/v1/mappings/expenditure-050/expenditure-sap13/${id}`,
+        payload,
+      );
     } else {
-      await $http.post('/v1/mappings/expenditure-050/expenditure-sap13', payload);
+      await $http.post(
+        '/v1/mappings/expenditure-050/expenditure-sap13',
+        payload,
+      );
     }
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -102,8 +109,8 @@ const mapOnAccount = async (__prevState: unknown, formData: FormData) => {
       };
     }
   }
-  revalidatePath('/mapping/expenditure-050/to-sap-13');
-  redirect('/mapping/expenditure-050/to-sap-13');
+  revalidatePath(`/mapping/expenditure-050/to-sap-13?page=${page}`);
+  redirect(`/mapping/expenditure-050/to-sap-13?page=${page}`);
 };
 
 export { fetchList, mapOnAccount };
