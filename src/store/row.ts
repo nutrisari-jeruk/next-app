@@ -5,8 +5,6 @@ import type { Row } from '@/types/table';
 interface Props {
   rows: Row[];
   params: Params;
-  setRows: (rows: Row[]) => void;
-  setParams: (params: Params) => void;
 }
 
 const useRowStore = create<Props>((set) => ({
@@ -17,8 +15,8 @@ const useRowStore = create<Props>((set) => ({
     searchField: '',
     searchValue: '',
   },
-  setRows: (rows: Row[]) => set({ rows: rows }),
-  setParams: (params: Params) => set({ params: params }),
+  setRows: () => set((state) => ({ rows: state.rows })),
+  setParams: () => set((state) => ({ params: state.params })), 
 }));
 
 export default useRowStore;

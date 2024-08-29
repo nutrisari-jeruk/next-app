@@ -13,8 +13,7 @@ export default function RowProvider({
   params: Params
   children: React.ReactNode;
 }) {
-  useRowStore.getState().setRows(rows);
-  useRowStore.getState().setParams(params);
+  useRowStore.setState({ rows: rows, params: params });
 
   return children;
 }
