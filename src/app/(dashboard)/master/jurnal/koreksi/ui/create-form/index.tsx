@@ -1,6 +1,6 @@
 'use client';
 
-import { TwButton, TwInput, TwToast } from '@/components';
+import { TwButton, TwInput, TwSelect, TwToast } from '@/components';
 import { TreeNode } from '@/types/tree-view';
 import {
   ArrowUturnLeftIcon,
@@ -13,6 +13,7 @@ import Sap13Modal from '../../components/sap13-modal';
 import { createKoreksi } from '../../actions';
 import clsx from 'clsx';
 import { useFormState, useFormStatus } from 'react-dom';
+import { Option } from '@/types/option';
 
 interface CreateKoreksiForm {
   treeData: TreeNode[];
@@ -22,15 +23,17 @@ export default function CreateKoreksiForm(props: CreateKoreksiForm) {
   const { treeData } = props;
   const [activeInput, setActiveInput] = useState<'debit' | 'credit' | ''>('');
   const [modalIsOpen, setModalIsOpen] = useState(false);
-
+  //const [jenis, setJenis] = useState<number>();
   const [jenisKoreksi, setJenisKoreksi] = useState('');
   const [debit, setDebit] = useState('');
-  const [debitId, setDebitId] = useState<number>();
+  const [debitId, setDebitId] = useState<number | null>();
   const [credit, setKredit] = useState('');
-  const [creditId, setCreditId] = useState<number>();
+  const [creditId, setCreditId] = useState<number | null>();
 
   const { pending } = useFormStatus();
   const [state, formAction] = useFormState(createKoreksi, undefined);
+  const [creditDisabled, setCreditDisabled] = useState<boolean>(false);
+  const [debitDisabled, setDebitDisabled] = useState<boolean>(false);
 
   const handleInputFocus = (inputName: 'debit' | 'credit') => {
     setActiveInput(inputName);
@@ -74,6 +77,34 @@ export default function CreateKoreksiForm(props: CreateKoreksiForm) {
     state!.status = undefined;
   };
 
+  const options: Option[] = [
+    { label: 'Menambah', value: 'menambah' },
+    { label: 'Mengurangi', value: 'mengurangi' },
+  ];
+
+  const onChangeJenisEquitas = (value: string) => {
+    switch (value) {
+      case 'menambah':
+        setCreditId(231);
+        setKredit('Ekuitas');
+        setDebitId(null);
+        setDebit('');
+        setCreditDisabled(true);
+        setDebitDisabled(false);
+        break;
+      case 'mengurangi':
+        setDebitId(231);
+        setDebit('Ekuitas');
+        setCreditId(null);
+        setKredit('');
+        setCreditDisabled(false);
+        setDebitDisabled(true);
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <div>
       {state?.status && state?.message && (
@@ -101,24 +132,15 @@ export default function CreateKoreksiForm(props: CreateKoreksiForm) {
                 isError={!!state?.validationErrors?.jenis_jurnal}
                 errorMessage={state?.validationErrors?.jenis_jurnal}
               />
-              <div className="w-full">
-                <label
-                  htmlFor="role"
-                  className="flex items-center gap-2 text-sm font-medium leading-6 text-gray-900"
-                >
-                  Jenis Koreksi Ekuitas
-                </label>
-                <select
-                  id="role"
-                  name="jenisKoreksi"
-                  className="w-full rounded text-sm"
-                >
-                  <option value="-">Pilih</option>
-                  <option value="1">Menambah</option>
-                  <option value="2">Mengurangi</option>
-                </select>
-        
-              </div>
+
+              <TwSelect
+                onChange={(e) => onChangeJenisEquitas(e.target.value)}
+                placeholder="Silahkan Pilih!"
+                label="Jenis Koreksi Ekuitas"
+                name="jenisKoreksiEquitas"
+                options={options}
+                required
+              />
 
               <div
                 className={clsx(
@@ -145,6 +167,7 @@ export default function CreateKoreksiForm(props: CreateKoreksiForm) {
                     type="button"
                     size="md"
                     title="Pilih"
+                    disabled={debitDisabled}
                     onClick={() => handleInputFocus('debit')}
                   />
                 </div>
@@ -174,6 +197,7 @@ export default function CreateKoreksiForm(props: CreateKoreksiForm) {
                     type="button"
                     size="md"
                     title="Pilih"
+                    disabled={creditDisabled}
                     onClick={() => handleInputFocus('credit')}
                   />
                 </div>
