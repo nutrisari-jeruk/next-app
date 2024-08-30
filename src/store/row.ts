@@ -1,14 +1,22 @@
 import { create } from 'zustand';
+import type { Params } from '@/types/params';
 import type { Row } from '@/types/table';
 
 interface Props {
   rows: Row[];
-  setRows: (rows: Row[]) => void;
+  params: Params;
 }
 
 const useRowStore = create<Props>((set) => ({
   rows: [],
-  setRows: (rows: Row[]) => set({ rows: rows }),
+  params: {
+    page: '1',
+    rowsPerPage: '10',
+    searchField: '',
+    searchValue: '',
+  },
+  setRows: () => set((state) => ({ rows: state.rows })),
+  setParams: () => set((state) => ({ params: state.params })), 
 }));
 
 export default useRowStore;

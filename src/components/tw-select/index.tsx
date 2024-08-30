@@ -13,9 +13,10 @@ interface Props extends React.SelectHTMLAttributes<HTMLSelectElement> {
   className?: string;
   options?: Option[];
   placeholder?: string;
+  defaultValue?: string | number;
 }
 
-export default function TwInput(props: Props) {
+export default function TwSelect(props: Props) {
   const randomId = Math.random().toString(36).slice(2);
   const {
     name = `input-${randomId}`,
@@ -27,6 +28,7 @@ export default function TwInput(props: Props) {
     className = '',
     options = [],
     placeholder = '',
+    defaultValue,
     ...attr
   } = props;
 
@@ -59,13 +61,14 @@ export default function TwInput(props: Props) {
           )}
           aria-invalid={isError}
           aria-describedby={`${name}-error`}
+          defaultValue={defaultValue}
           {...attr}
         >
           {!!placeholder && <option hidden>{placeholder}</option>}
           {!!options.length &&
             options.map((option, index) => (
-              <option key={index} value={option.value}>
-                {option.label}
+              <option key={index} value={option?.value! as string}>
+                {option?.label}
               </option>
             ))}
         </Select>

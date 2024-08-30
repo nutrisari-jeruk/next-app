@@ -11,6 +11,7 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   required?: boolean;
   errorMessage?: string | string[];
   className?: string;
+  hidden?: boolean;
 }
 
 export default function TwInput(props: Props) {
@@ -23,11 +24,12 @@ export default function TwInput(props: Props) {
     iconPosition = 'left',
     errorMessage = 'Error message',
     className = '',
+    hidden = false,
     ...attr
   } = props;
 
   return (
-    <Field className={clsx('w-full space-y-1', className)}>
+    <Field className={clsx('w-full space-y-1', className, hidden && 'hidden')}>
       <Label
         htmlFor={name}
         className="block text-sm font-medium leading-6 text-gray-900"

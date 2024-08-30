@@ -5,7 +5,7 @@ import Link from 'next/link';
 import AccountsTree from '../../accounts-tree';
 import { useState } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
-import { TwButton, TwSelect } from '@/components';
+import { TwButton, TwInput, TwSelect } from '@/components';
 import {
   ArrowUturnLeftIcon,
   CheckIcon,
@@ -26,24 +26,31 @@ interface Props {
 }
 
 export default function Form({ treeData, params }: Props) {
-  const { pending } = useFormStatus();
-  const [state, formAction] = useFormState(mapOnAccount, undefined);
+  const { rows, params: p } = useRowStore.getState();
+
+  const id = params.id;
+  const account = rows.find((row) => row.kr050_id === Number(id));
+
   const [accountSap13, setAccountSap13] = useState<TreeNode>();
   const [isOpen, setIsOpen] = useState(false);
-  const [sap13Options, setSap13Options] = useState<Option[]>([]);
-  const { rows } = useRowStore.getState();
+  const [sap13Options, setSap13Options] = useState<Option[]>([
+    {
+      label: account?.account_sap13! as string,
+      value: account?.sap13_id! as string,
+    },
+  ]);
+
+  const { pending } = useFormStatus();
+  const [state, formAction] = useFormState(mapOnAccount, undefined);
 
   if (!rows.length) {
     notFound();
   }
 
-  const id = params.id;
-  const account = rows.find((row) => row.kr050_id === Number(id));
-
   const expenditureOptions: Option[] = [
     {
       label: account?.account_050! as string,
-      value: account?.kr050_id!,
+      value: account?.kr050_id! as string,
     },
   ];
 
@@ -74,7 +81,7 @@ export default function Form({ treeData, params }: Props) {
                 label="Kode Rekening Belanja 050"
                 required
                 options={expenditureOptions}
-                defaultValue={account?.kr050_id}
+                defaultValue={account?.kr050_id! as string}
                 isError={!!state?.errors?.kr050_id}
                 errorMessage={state?.errors?.kr050_id}
               />
@@ -104,12 +111,21 @@ export default function Form({ treeData, params }: Props) {
                   />
                 </div>
               </div>
+
+              <TwInput
+                name="id"
+                readOnly
+                hidden
+                defaultValue={account?.id! as string}
+              />
+
+              <TwInput name="page" readOnly hidden defaultValue={p.page} />
             </div>
           </div>
         </div>
 
         <div className="mt-6 flex items-center justify-end gap-x-6">
-          <Link href="/mapping/expenditure-050/to-sap-13">
+          <Link href={`/mapping/expenditure-050/to-sap-13?page=${p.page}`}>
             <TwButton
               type="button"
               title="Cancel"

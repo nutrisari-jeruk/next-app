@@ -11,6 +11,7 @@ import TwToast from './tw-toast';
 import TwTable from './tw-table';
 import TwSearch from './tw-search';
 import TwSelect from './tw-select';
+import TwListbox from './tw-listbox';
 
 export {
   AppLogo,
@@ -25,5 +26,6 @@ export {
   TwToast,
   TwTable,
   TwSearch,
-  TwSelect
+  TwSelect,
+  TwListbox
 };

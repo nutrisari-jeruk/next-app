@@ -14,16 +14,9 @@ interface Props {
   rows: Row[];
   columns: Column[];
   meta: Meta;
-  children?: React.ReactNode;
 }
 
-export default function DataTable({
-  searchField,
-  rows,
-  columns,
-  meta,
-  children,
-}: Props) {
+export default function DataTable({ searchField, rows, columns, meta }: Props) {
   const [tableData, setTableData] = useState<Row[]>(rows);
   const [sortField, setSortField] = useState('');
   const [order, setOrder] = useState('asc');
@@ -58,14 +51,12 @@ export default function DataTable({
     sort(accessor, sortOrder);
   };
 
-  const render = (index: number, column: Column, item: Row) => {
-    const data = item[column.accessor] ? item[column.accessor] : '-';
-
-    if (column.accessor === 'id') {
+  const renderRow = (index: number, column: Column, item: Row) => {
+    if (column.accessor === '#') {
       return `${index + 1}.`;
     }
 
-    if (column.label.toLowerCase().includes('edit')) {
+    if (column.label.toLowerCase() === 'edit') {
       const id = item[column.accessor];
 
       return (
@@ -78,9 +69,7 @@ export default function DataTable({
       );
     }
 
-    if (children) {
-      return children;
-    }
+    const data = item[column.accessor] ? item[column.accessor] : '-';
 
     return data;
   };
@@ -94,7 +83,7 @@ export default function DataTable({
           <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
             <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
               <table className="min-w-full table-fixed divide-y divide-gray-300">
-                <thead className="bg-gray-50">
+                <thead className="bg-gray-100">
                   <tr>
                     {!!columns &&
                       columns.map(({ label, accessor, sortable, width }) => {
@@ -142,7 +131,7 @@ export default function DataTable({
                                 : undefined
                             }
                           >
-                            <div className="flex w-full flex-wrap items-center space-x-2">
+                            <div className="flex w-full items-center space-x-2">
                               <span className="select-none">{label}</span>
                               {sortable && (
                                 <button
@@ -173,7 +162,7 @@ export default function DataTable({
                               key={column.accessor}
                               className="px-3 py-4 text-sm text-gray-500"
                             >
-                              {render(index, column, item)}
+                              {renderRow(index, column, item)}
                             </td>
                           );
                         })}

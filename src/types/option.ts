@@ -1,5 +1,5 @@
 export interface Option {
   label: string;
-  value: number | string;
+  value: string | number;
   selected?: boolean;
 }

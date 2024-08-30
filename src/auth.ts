@@ -1,28 +1,30 @@
 import $http from '@/lib/axios';
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
-import { signInSchema } from '@/lib/zod';
+import { selectRoleSchema } from '@/lib/zod';
 import { authConfig } from '@/auth.config';
-import type { Credentials as ResponseCredentials } from '@/types/auth';
+import { BaseResponse } from './types/api';
+import type { User } from './types/user';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   ...authConfig,
   providers: [
     Credentials({
       credentials: {
-        email: {},
-        password: {},
+        user_id: {},
+        role_id: {},
       },
-      authorize: async (credentials): Promise<ResponseCredentials | null> => {
-        const { email, password } = await signInSchema.parseAsync(credentials);
+      authorize: async (credentials): Promise<User | null> => {
+        const { user_id, role_id } =
+          await selectRoleSchema.parseAsync(credentials);
 
-        const { data } = await $http.post<ResponseCredentials>('/v1/login', {
-          email,
-          password,
+        const { data } = await $http.post<BaseResponse<User>>('v1/user-role', {
+          user_id,
+          role_id,
         });
 
-        if (!data.access_token) return null;
-        return data;
+        if (!data?.data?.token) return null;
+        return data.data;
       },
     }),
   ],
