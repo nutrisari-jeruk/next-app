@@ -5,7 +5,6 @@ import { List } from '@/types/koreksi';
 import type { Column, Row } from '@/types/table';
 import { fetchKoreksiList } from '../../actions';
 
-
 export default async function Table({
   page,
   rowsPerPage = '10',
@@ -55,6 +54,11 @@ export default async function Table({
     {
       label: 'Kredit',
       accessor: 'credit',
+      sortable: false,
+    },
+    {
+      label: 'Edit',
+      accessor: 'edit',
       sortable: false,
     },
   ];
