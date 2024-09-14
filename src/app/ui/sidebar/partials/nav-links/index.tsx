@@ -28,8 +28,7 @@ const adminNavigation: Menu[] = [
     icon: HomeIcon,
     count: '1',
     current: true,
-  },
-  { name: 'Users', href: '/user', icon: UsersIcon, current: false },
+  }
 ];
 
 const adminJournals: Menu[] = [

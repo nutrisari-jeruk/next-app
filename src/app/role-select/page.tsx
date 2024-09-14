@@ -2,7 +2,7 @@
 
 import { useFormState, useFormStatus } from 'react-dom';
 import { TwButton, TwListbox } from '@/components';
-import { authenticate } from '@/app/login/actions/authenticate';
+import { authenticate } from '@/actions/auth/authenticate';
 import {
   ArrowRightEndOnRectangleIcon,
   ExclamationCircleIcon,

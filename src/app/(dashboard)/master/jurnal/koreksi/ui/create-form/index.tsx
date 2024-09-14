@@ -1,6 +1,6 @@
 'use client';
 
-import { TwButton, TwInput, TwSelect, TwToast } from '@/components';
+import { TwButton, TwInput, TwSelect } from '@/components';
 import { TreeNode } from '@/types/tree-view';
 import {
   ArrowUturnLeftIcon,
@@ -107,13 +107,6 @@ export default function CreateKoreksiForm(props: CreateKoreksiForm) {
 
   return (
     <div>
-      {state?.status && state?.message && (
-        <TwToast
-          message={state.message}
-          status={state.status}
-          onClose={clearMessage}
-        />
-      )}
       <form
         onSubmit={handleSubmit}
         className="mt-4 rounded-lg bg-white p-4 shadow"

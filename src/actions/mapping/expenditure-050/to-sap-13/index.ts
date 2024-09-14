@@ -2,20 +2,27 @@
 
 import $http from '@/lib/axios';
 import { AxiosError } from 'axios';
+import { MapSchema } from '@/schemas/expenditure-050/to-sap-13';
+import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 import type { BaseResponse } from '@/types/api';
 import type { List, Payload } from '@/types/mapping';
 import type { Params } from '@/types/params';
 import type { Pagination } from '@/types/pagination';
-import { MapSchema } from '../schema';
-import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
 
 const fetchList = async ({
   page,
   rowsPerPage,
   searchField,
   searchValue,
-}: Params): Promise<Pagination<List[]>> => {
+}: Params): Promise<Pagination<List[]>> => {  
+  const params = {
+    page: page,
+    rowsPerPage: rowsPerPage,
+    searchField: searchField,
+    searchValue: searchValue
+  }
+
   let list: Pagination<List[]> = {
     data: [],
     links: [],
@@ -34,12 +41,7 @@ const fetchList = async ({
     const { data } = await $http.get<BaseResponse<Pagination<List[]>>>(
       '/v1/mappings/expenditure-050/expenditure-sap13',
       {
-        params: {
-          page: page,
-          rowsPerPage: rowsPerPage,
-          searchField: searchField,
-          searchValue: searchValue,
-        },
+        params: params,
       },
     );
 
