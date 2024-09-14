@@ -12,7 +12,7 @@ import {
   FolderPlusIcon,
 } from '@heroicons/react/24/outline';
 import useRowStore from '@/store/row';
-import { mapOnAccount } from '../../../actions';
+import { mapOnAccount } from '@/actions/mapping/expenditure-050/to-sap-13';
 import { notFound } from 'next/navigation';
 
 import type { TreeNode } from '@/types/tree-view';

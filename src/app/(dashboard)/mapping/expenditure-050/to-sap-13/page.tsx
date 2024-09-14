@@ -4,7 +4,7 @@ import RowProvider from '@/providers/row';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 import { TwHeader } from '@/components';
-import { fetchList } from './actions';
+import { fetchList } from '@/actions/mapping/expenditure-050/to-sap-13';
 import type { Params } from '@/types/params';
 import type { Column, Row } from '@/types/table';
 

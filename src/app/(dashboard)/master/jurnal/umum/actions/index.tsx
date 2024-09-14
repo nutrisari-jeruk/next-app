@@ -5,7 +5,6 @@ import { UmumSchema} from '../schema';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { AxiosError } from 'axios';
-import { cookies } from 'next/headers';
 import type { List, PostRequest } from '@/types/umum';
 import type { Params } from '@/types/params';
 import type { BaseResponse } from '@/types/api';
@@ -148,10 +147,6 @@ const createUmum = async (_prevState: unknown, formData: FormData) => {
       status: 'error',
     };
   }
-
-  const session = cookies();
-  session.set('toastMessage', 'Data Penyesuaian Berhasil Dibuat');
-  session.set('toastStatus', 'success');
 
   revalidatePath('/master/jurnal/umum');
   redirect(`/master/jurnal/umum`);
