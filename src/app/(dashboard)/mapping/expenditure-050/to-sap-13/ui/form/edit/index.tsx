@@ -25,6 +25,21 @@ interface Props {
   };
 }
 
+function SubmitButton () {
+  const { pending } = useFormStatus();
+
+  return (
+    <TwButton
+    type="submit"
+    title="Save"
+    variant="success"
+    disabled={pending}
+    isLoading={pending}
+    icon={<CheckIcon className="h-5 w-5" aria-hidden="true" />}
+  />
+  );
+}
+
 export default function Form({ treeData, params }: Props) {
   const { rows, params: p } = useRowStore.getState();
 
@@ -135,14 +150,7 @@ export default function Form({ treeData, params }: Props) {
               }
             />
           </Link>
-          <TwButton
-            type="submit"
-            title="Save"
-            variant="success"
-            disabled={pending}
-            isLoading={pending}
-            icon={<CheckIcon className="h-5 w-5" aria-hidden="true" />}
-          />
+          <SubmitButton />
         </div>
       </form>
 

@@ -1,28 +1,26 @@
 'use server';
 
-import $http from '@/lib/axios';
-import { AxiosError } from 'axios';
+import $fetch from '@/lib/fetch';
 import { MapSchema } from '@/schemas/expenditure-050/to-sap-13';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import type { BaseResponse } from '@/types/api';
 import type { List, Payload } from '@/types/mapping';
 import type { Params } from '@/types/params';
 import type { Pagination } from '@/types/pagination';
 
 const fetchList = async ({
-  page,
-  rowsPerPage,
-  searchField,
-  searchValue,
-}: Params): Promise<Pagination<List[]>> => {  
+  page = '1',
+  rowsPerPage = '10',
+  searchField = 'account_050',
+  searchValue = '',
+}: Params): Promise<Pagination<List[]>> => {
   const params = {
     page: page,
     rowsPerPage: rowsPerPage,
     searchField: searchField,
-    searchValue: searchValue
-  }
-
+    searchValue: searchValue,
+  };
+  const urlParams = new URLSearchParams(params).toString();
   let list: Pagination<List[]> = {
     data: [],
     links: [],
@@ -37,21 +35,11 @@ const fetchList = async ({
     },
   };
 
-  try {
-    const { data } = await $http.get<BaseResponse<Pagination<List[]>>>(
-      '/v1/mappings/expenditure-050/expenditure-sap13',
-      {
-        params: params,
-      },
-    );
+  const url = `/v1/mappings/expenditure-050/expenditure-sap13?${urlParams}`;
+  const data = await $fetch<Pagination<List[]>>({ url, method: 'GET' });
 
-    if (data.success) {
-      list = data?.data!;
-    }
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      return list;
-    }
+  if (data.success) {
+    list = data?.data!;
   }
 
   return list;
@@ -88,28 +76,22 @@ const mapOnAccount = async (_prevState: unknown, formData: FormData) => {
 
   try {
     if (!!id) {
-      await $http.put(
-        `/v1/mappings/expenditure-050/expenditure-sap13/${id}`,
-        payload,
-      );
+      await $fetch({
+        url: `/v1/mappings/expenditure-050/expenditure-sap13/${id}`,
+        method: 'PUT',
+        payload: payload,
+      });
     } else {
-      await $http.post(
-        '/v1/mappings/expenditure-050/expenditure-sap13',
-        payload,
-      );
+      await $fetch({
+        url: '/v1/mappings/expenditure-050/expenditure-sap13',
+        method: 'POST',
+        payload: payload,
+      });
     }
   } catch (error) {
-    if (error instanceof AxiosError) {
-      if (error.response?.data?.message) {
-        return {
-          message: error.response?.data?.message,
-        };
-      }
-
-      return {
-        message: 'Failed to map on account',
-      };
-    }
+    return {
+      message: 'Failed to map on account',
+    };
   }
   revalidatePath(`/mapping/expenditure-050/to-sap-13?page=${page}`);
   redirect(`/mapping/expenditure-050/to-sap-13?page=${page}`);
