@@ -8,9 +8,9 @@ import {
   FolderPlusIcon,
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Sap13Modal from '../../components/sap13-modal';
-import { createUmum } from '../../actions';
+import { createUmum } from '../../../../../../../actions/master/jurnal/umum';
 import clsx from 'clsx';
 import { useFormState, useFormStatus } from 'react-dom';
 
@@ -18,18 +18,31 @@ interface CreateUmumForm {
   treeData: TreeNode[];
 }
 
+function SubmitButton() {
+  const { pending } = useFormStatus();
+
+  return (
+    <TwButton
+      type="submit"
+      title="Save"
+      isLoading={pending}
+      disabled={pending}
+      variant="success"
+      icon={<CheckIcon className="h-5 w-5" aria-hidden="true" />}
+    />
+  );
+}
+
 export default function CreateUmumForm(props: CreateUmumForm) {
   const { treeData } = props;
   const [activeInput, setActiveInput] = useState<'debit' | 'credit' | ''>('');
   const [modalIsOpen, setModalIsOpen] = useState(false);
-
   const [jenisUmum, setJenisUmum] = useState('');
   const [debit, setDebit] = useState('');
   const [debitId, setDebitId] = useState<number>();
   const [credit, setKredit] = useState('');
   const [creditId, setCreditId] = useState<number>();
 
-  const { pending } = useFormStatus();
   const [state, formAction] = useFormState(createUmum, undefined);
 
   const handleInputFocus = (inputName: 'debit' | 'credit') => {
@@ -43,7 +56,7 @@ export default function CreateUmumForm(props: CreateUmumForm) {
 
   const handleKodeRekeningNodeSelect = (node: TreeNode) => {
     handleModalClose();
-    
+
     switch (activeInput) {
       case 'debit':
         setDebit(node?.text);
@@ -168,13 +181,7 @@ export default function CreateUmumForm(props: CreateUmumForm) {
               }
             />
           </Link>
-          <TwButton
-            type="submit"
-            title="Save"
-            isLoading={pending}
-            variant="success"
-            icon={<CheckIcon className="h-5 w-5" aria-hidden="true" />}
-          />
+          <SubmitButton />
         </div>
       </form>
       <Sap13Modal

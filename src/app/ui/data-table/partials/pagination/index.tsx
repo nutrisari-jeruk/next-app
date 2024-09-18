@@ -26,7 +26,7 @@ export default function Pagination({ meta }: { meta: Meta }) {
     // If the current page is among the first 3 pages,
     // show the first 3, an ellipsis, and the last 2 pages.
     if (currentPage <= 3) {
-      return [1, 2, 3, 4, '...', totalPages];
+      return [1, 2, 3, 4, 5, '...', totalPages];
     }
 
     // If the current page is among the last 3 pages,
@@ -35,6 +35,7 @@ export default function Pagination({ meta }: { meta: Meta }) {
       return [
         1,
         '...',
+        totalPages - 4,
         totalPages - 3,
         totalPages - 2,
         totalPages - 1,

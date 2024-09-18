@@ -1,7 +1,7 @@
 import DataTable from '@/app/ui/data-table';
 import type { Params } from '@/types/params';
 import type { Column, Row } from '@/types/table';
-import { fetchUmumList } from '../../actions';
+import { fetchUmumList } from '@/actions/master/jurnal/umum';
 import { List } from '@/types/umum';
 
 
