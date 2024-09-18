@@ -5,7 +5,6 @@ import { KoreksiSchema } from '../schema';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { AxiosError } from 'axios';
-import { cookies } from 'next/headers';
 import type { List, Payload } from '@/types/koreksi';
 import type { Params } from '@/types/params';
 import type { BaseResponse } from '@/types/api';
@@ -57,14 +56,11 @@ const fetchKoreksiList = async ({
 };
 
 const createKoreksi = async (_prevState: unknown, formData: FormData) => {
-  console.log(formData);
   const validatedFields = KoreksiSchema.safeParse({
     jenis_jurnal: formData.get('jenis_jurnal'),
     debit: formData.get('debit'),
     credit: formData.get('credit'),
   });
-
-  console.log(validatedFields);
 
   if (!validatedFields.success) {
     return {
@@ -105,10 +101,6 @@ const createKoreksi = async (_prevState: unknown, formData: FormData) => {
       status: 'error',
     };
   }
-
-  const session = cookies();
-  session.set('toastMessage', 'Data Koreksi Berhasil Dibuat');
-  session.set('toastStatus', 'success');
 
   revalidatePath('/master/jurnal/koreksi');
   redirect(`/master/jurnal/koreksi`);

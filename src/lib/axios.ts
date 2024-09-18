@@ -1,4 +1,3 @@
-import { auth } from '@/auth';
 import axios from 'axios';
 import type { AxiosRequestHeaders, AxiosResponse } from 'axios';
 
@@ -40,9 +39,7 @@ const $http = axios.create({
 });
 
 $http.interceptors.request.use(async function (config) {
-  const session = await auth();
-  const token = session?.user.access_token;
-  
+  const token = null;
   if (token) {
     config.headers = {
       ...config.headers,

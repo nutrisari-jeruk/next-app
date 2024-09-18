@@ -1,4 +1,3 @@
-import { redirect } from 'next/navigation';
 import type { NextAuthConfig, User } from 'next-auth';
 import type { JWT } from 'next-auth/jwt';
 
@@ -16,7 +15,6 @@ export const authConfig: NextAuthConfig = {
     },
     jwt: ({ token, user }: { token: JWT; user: User }) => {
       if (user) {
-        console.log(user);
         token.id = user.id as string;
         token.name = user.name as string;
         token.role = user.role as string;

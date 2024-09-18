@@ -1,6 +1,6 @@
 'use client';
 
-import { TwButton, TwInput, TwToast } from '@/components';
+import { TwButton, TwInput } from '@/components';
 import { TreeNode } from '@/types/tree-view';
 import {
   ArrowUturnLeftIcon,
@@ -76,13 +76,6 @@ export default function CreateUmumForm(props: CreateUmumForm) {
 
   return (
     <div>
-      {state?.status && state?.message && (
-        <TwToast
-          message={state.message}
-          status={state.status}
-          onClose={clearMessage}
-        />
-      )}
       <form
         onSubmit={handleSubmit}
         className="mt-4 rounded-lg bg-white p-4 shadow"

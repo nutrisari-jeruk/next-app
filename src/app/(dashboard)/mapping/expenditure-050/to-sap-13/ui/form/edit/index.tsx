@@ -12,7 +12,7 @@ import {
   FolderPlusIcon,
 } from '@heroicons/react/24/outline';
 import useRowStore from '@/store/row';
-import { mapOnAccount } from '../../../actions';
+import { mapOnAccount } from '@/actions/mapping/expenditure-050/to-sap-13';
 import { notFound } from 'next/navigation';
 
 import type { TreeNode } from '@/types/tree-view';
@@ -23,6 +23,21 @@ interface Props {
   params: {
     id: string;
   };
+}
+
+function SubmitButton () {
+  const { pending } = useFormStatus();
+
+  return (
+    <TwButton
+    type="submit"
+    title="Save"
+    variant="success"
+    disabled={pending}
+    isLoading={pending}
+    icon={<CheckIcon className="h-5 w-5" aria-hidden="true" />}
+  />
+  );
 }
 
 export default function Form({ treeData, params }: Props) {
@@ -135,14 +150,7 @@ export default function Form({ treeData, params }: Props) {
               }
             />
           </Link>
-          <TwButton
-            type="submit"
-            title="Save"
-            variant="success"
-            disabled={pending}
-            isLoading={pending}
-            icon={<CheckIcon className="h-5 w-5" aria-hidden="true" />}
-          />
+          <SubmitButton />
         </div>
       </form>
 

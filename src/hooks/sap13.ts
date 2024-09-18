@@ -8,7 +8,7 @@ export default async function useSap13(): Promise<TreeNode[]> {
 
   try {
     const { data } = await $http.get<BaseResponse<TreeNode[]>>(
-      'http://10.10.12.26:8000/api/v1/masters/accounts/sap13/tree',
+      '/v1/masters/accounts/sap13/tree',
     );
 
     sap13 = data?.data!;
