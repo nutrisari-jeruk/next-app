@@ -1,31 +1,32 @@
-import $http from '@/lib/axios';
-import NextAuth from 'next-auth';
-import Credentials from 'next-auth/providers/credentials';
-import { selectRoleSchema } from '@/lib/zod';
-import { authConfig } from '@/auth.config';
-import { BaseResponse } from './types/api';
-import type { User } from './types/user';
+import NextAuth, { User } from 'next-auth';
+import authConfig from './auth.config';
+import { JWT } from 'next-auth/jwt';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  callbacks: {
+    jwt: ({ token, user }: { token: JWT; user: User }) => {
+      if (user) {
+        token.id = user.id as string;
+        token.name = user.name as string;
+        token.role = user.role as string;
+        token.role_id = user.role_id as string;
+        token.token = user.token as string;
+      }
+
+      return token;
+    },
+    session: ({ session, token }) => {
+      if (token) {
+        session.user.id = token.id as string;
+        session.user.name = token.name as string;
+        session.user.role = token.role as string;
+        session.user.role_id = token.role_id as string;
+        session.user.token = token.token as string;
+      }
+      return session;
+    },
+  },
+  session: { strategy: 'jwt' },
+  secret: process.env.AUTH_SECRET,
   ...authConfig,
-  providers: [
-    Credentials({
-      credentials: {
-        user_id: {},
-        role_id: {},
-      },
-      authorize: async (credentials): Promise<User | null> => {
-        const { user_id, role_id } =
-          await selectRoleSchema.parseAsync(credentials);
-
-        const { data } = await $http.post<BaseResponse<User>>('v1/user-role', {
-          user_id,
-          role_id,
-        });
-
-        if (!data?.data?.token) return null;
-        return data.data;
-      },
-    }),
-  ],
 });
