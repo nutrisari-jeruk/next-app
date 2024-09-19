@@ -7,6 +7,8 @@ import { AuthError } from 'next-auth';
 import { ZodError } from 'zod';
 import { signInSchema } from '@/lib/zod';
 import { isDynamicServerError } from 'next/dist/client/components/hooks-server-context';
+import { User } from '@/types/user';
+import { BaseResponse } from '@/types/api';
 
 export async function getUserRole(_currentState: unknown, formData: FormData) {
   const validatedFields = signInSchema.safeParse({
@@ -27,7 +29,6 @@ export async function getUserRole(_currentState: unknown, formData: FormData) {
       ...validatedFields.data,
     });
 
-
     if (data?.data) {
       return { user: data.data };
     }
@@ -46,4 +47,30 @@ export async function getUserRole(_currentState: unknown, formData: FormData) {
       errorMessage: 'Something went wrong. Please try again later.',
     };
   }
+}
+
+export async function SelectRole({
+  user_id,
+  role_id,
+}: {
+  user_id: string;
+  role_id: string;
+}): Promise<User | null> {
+  let user: User | null = null;
+
+  try {
+    const { data } = await $http.post<BaseResponse<User>>('/v1/user-role', {
+      user_id,
+      role_id,
+    });
+
+    user = data?.data!;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      return error.response?.data;
+    }
+    throw error;
+  }
+
+  return user;
 }
