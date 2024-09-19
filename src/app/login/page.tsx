@@ -29,7 +29,7 @@ const SubmitButton = () => {
 };
 
 export default function Page({ searchParams }: any) {
-  const callBackUrl = searchParams?.callBackUrl || '/';
+  const callbackUrl = searchParams?.callbackUrl || '/';
   const router = useRouter();
   const [state, formAction] = useFormState(getUserRole, undefined);
   const { setLoggedInUser } = useLoggedInUser();
@@ -37,9 +37,9 @@ export default function Page({ searchParams }: any) {
   useEffect(() => {
     if (state?.user) {
       setLoggedInUser?.(state.user);
-      router.push(`/role-select?callBackUrl=${callBackUrl}`);
+      router.push(`/role-select?callbackUrl=${callbackUrl}`);
     }
-  }, [state, callBackUrl, setLoggedInUser, router]);
+  }, [state, callbackUrl, setLoggedInUser, router]);
   return (
     <div className="flex min-h-screen flex-col items-center justify-center">
       <div className="flex flex-col items-center justify-center space-y-4 rounded-xl bg-white p-8 shadow-lg">
@@ -57,4 +57,4 @@ export default function Page({ searchParams }: any) {
       </div>
     </div>
   );
-};
+}

@@ -16,7 +16,7 @@ import type { Option } from '@/types/option';
 import type { Role } from '@/types/user';
 
 export default function RoleSelect({ searchParams }: any) {
-  const callBackUrl = searchParams?.callBackUrl || '/';
+  const callbackUrl = searchParams?.callbackUrl || '/';
   const { pending } = useFormStatus();
   const [errorMessage, formAction] = useFormState(authenticate, undefined);
 
@@ -43,7 +43,7 @@ export default function RoleSelect({ searchParams }: any) {
       const formData = new FormData();
       formData.append('user_id', String(loggedInUser?.id));
       formData.append('role_id', String(selectedRole.value));
-      formData.append('callBackUrl', callBackUrl);
+      formData.append('callbackUrl', callbackUrl);
       return formAction(formData);
     }
   };

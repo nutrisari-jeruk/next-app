@@ -1,39 +1,22 @@
-import type { NextAuthConfig, User } from 'next-auth';
-import type { JWT } from 'next-auth/jwt';
+import type { NextAuthConfig } from 'next-auth';
+import credentials from 'next-auth/providers/credentials';
+import { selectRoleSchema } from './lib/zod';
+import { SelectRole } from './actions/auth/getUserRole';
 
-export const authConfig: NextAuthConfig = {
-  pages: {
-    signIn: '/role-select',
-  },
-  secret: process.env.AUTH_SECRET,
-  session: {
-    strategy: 'jwt',
-  },
-  callbacks: {
-    authorized: ({ auth }) => {
-      return !!auth;
-    },
-    jwt: ({ token, user }: { token: JWT; user: User }) => {
-      if (user) {
-        token.id = user.id as string;
-        token.name = user.name as string;
-        token.role = user.role as string;
-        token.role_id = user.role_id as string;
-        token.token = user.token as string;
-      }
+export default {
+  providers: [
+    credentials({
+      async authorize(credentials) {
+        const validatedFields = selectRoleSchema.safeParse(credentials);
+        if (validatedFields.success) {
+          const { user_id, role_id } = validatedFields.data!;
+          const user = await SelectRole({ user_id, role_id });
+          if (!user) return null;
 
-      return token;
-    },
-    session: ({ session, token }) => {
-      if (token) {
-        session.user.id = token.id as string;
-        session.user.name = token.name as string;
-        session.user.role = token.role as string;
-        session.user.role_id = token.role_id as string;
-        session.user.token = token.token as string;
-      }
-      return session;
-    },
-  },
-  providers: [], // Add providers with an empty array for now
+          return user;
+        }
+        return null;
+      },
+    }),
+  ],
 } satisfies NextAuthConfig;
