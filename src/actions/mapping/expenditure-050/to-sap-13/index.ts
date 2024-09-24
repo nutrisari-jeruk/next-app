@@ -4,6 +4,7 @@ import $fetch from '@/lib/fetch';
 import { MapSchema } from '@/schemas/expenditure-050/to-sap-13';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+import { setFlash } from '@/lib/flash-toaster';
 import type { List, Payload } from '@/types/mapping';
 import type { Params } from '@/types/params';
 import type { Pagination } from '@/types/pagination';
@@ -93,6 +94,8 @@ const mapOnAccount = async (_prevState: unknown, formData: FormData) => {
       message: 'Failed to map on account',
     };
   }
+
+  setFlash({ type: 'success', message: 'Berhasil', tag: new Date().toLocaleString() });
   revalidatePath(`/mapping/expenditure-050/to-sap-13?page=${page}`);
   redirect(`/mapping/expenditure-050/to-sap-13?page=${page}`);
 };

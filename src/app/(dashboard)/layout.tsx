@@ -1,7 +1,7 @@
 import { auth } from '@/auth';
-import { redirect } from 'next/navigation';
 import { SessionProvider } from 'next-auth/react';
 import Sidebar from '../ui/sidebar';
+import { FlashToaster } from '@/lib/flash-toaster';
 
 export default async function Layout({
   children,
@@ -18,6 +18,8 @@ export default async function Layout({
         <main className="h-svh w-full space-y-4 overflow-y-auto px-8 py-8">
           {children}
         </main>
+
+        <FlashToaster />
       </div>
     </SessionProvider>
   );
