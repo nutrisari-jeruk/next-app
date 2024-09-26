@@ -13,54 +13,65 @@ import {
 import {
   XMarkIcon,
   FolderPlusIcon,
-  PlusIcon
+  PlusIcon,
 } from '@heroicons/react/24/outline';
 import { useState } from 'react';
 import Sap13Modal from './sap13-modal';
 import type { TreeNode } from '@/types/tree-view';
-
+import type { AccountList } from '@/types/journal/general';
 
 interface Props {
   treeData: TreeNode[];
   isModalOpen?: boolean;
   onClose: () => void;
+  handleAppendAction: (accountList: AccountList) => void;
 }
 
 export default function AccountModal(props: Props) {
-  const { treeData, isModalOpen, onClose } = props;
+  const { treeData, isModalOpen, onClose, handleAppendAction } = props;
   const [debit, setDebit] = useState<TreeNode>();
   const [credit, setCredit] = useState<TreeNode>();
   const [activeInput, setActiveInput] = useState<'debit' | 'credit' | ''>('');
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [isSapModalOpen, setIsSapModalOpen] = useState(false);
+  const [accountList, setAccountList] = useState<AccountList>();
 
   const handleInputFocus = (inputName: 'debit' | 'credit') => {
     setActiveInput(inputName);
-    setModalIsOpen(true);
+    setIsSapModalOpen(true);
   };
 
   const handleModalClose = () => {
-    setModalIsOpen(false);
+    setIsSapModalOpen(false);
+    setDebit(undefined);
+    setCredit(undefined);
   };
+
 
   const handleKodeRekeningNodeSelect = (node: TreeNode) => {
     handleModalClose();
-
     switch (activeInput) {
       case 'debit':
         setDebit(node);
+        setAccountList(Object.assign({}, accountList, { debit: node }));
         break;
       case 'credit':
         setCredit(node);
+        setAccountList(Object.assign({}, accountList, { credit: node }));
         break;
       default:
         break;
     }
   };
 
+  const handleClick = () => {
+    if (!accountList) return;
+    handleAppendAction(accountList);
+  };
+
   return (
     <>
       <Transition show={isModalOpen}>
-        <Dialog className="relative z-10" onClose={() => onClose}>
+        <Dialog className="relative z-10" onClose={() => handleModalClose()}>
           <TransitionChild
             enter="ease-out duration-300"
             enterFrom="opacity-0"
@@ -135,7 +146,11 @@ export default function AccountModal(props: Props) {
                         />
                       </div>
 
-                      <TwButton title="Tambah Kode Rekening" icon={<PlusIcon className="h-5 w-5" />} />
+                      <TwButton
+                        title="Tambah Kode Rekening"
+                        icon={<PlusIcon className="h-5 w-5" />}
+                        onClick={() => handleClick()}
+                      />
                     </Description>
                   </div>
                 </DialogPanel>
@@ -147,7 +162,7 @@ export default function AccountModal(props: Props) {
 
       <Sap13Modal
         treeData={treeData}
-        isModalOpen={modalIsOpen}
+        isModalOpen={isSapModalOpen}
         activeInput={activeInput}
         onClose={handleModalClose}
         onNodeSelect={handleKodeRekeningNodeSelect}

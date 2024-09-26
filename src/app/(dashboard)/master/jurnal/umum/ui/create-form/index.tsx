@@ -1,18 +1,19 @@
 'use client';
 
+import Link from 'next/link';
+import AccountModal from '../../components/account-modal';
+import { useState } from 'react';
+import { useFormState, useFormStatus } from 'react-dom';
 import { TwButton, TwInput } from '@/components';
-import { TreeNode } from '@/types/tree-view';
 import {
   ArrowUturnLeftIcon,
   CheckIcon,
-  PlusCircleIcon,
   PlusIcon,
 } from '@heroicons/react/24/outline';
-import Link from 'next/link';
-import { useState } from 'react';
+
 import { createUmum } from '@/actions/master/jurnal/umum';
-import { useFormState, useFormStatus } from 'react-dom';
-import AccountModal from '../../components/account-modal';
+import type { TreeNode } from '@/types/tree-view';
+import type { AccountList } from '@/types/journal/general';
 
 interface Props {
   treeData: TreeNode[];
@@ -33,10 +34,12 @@ function SubmitButton() {
   );
 }
 
-export default function CreateUmumForm(props: Props) {
+export default function CreateForm(props: Props) {
   const { treeData } = props;
   const [jenisUmum, setJenisUmum] = useState('');
   const [isAccountModalOpen, setIsAccountModalOpen] = useState(false);
+  const [accountList, setAccountList] = useState<AccountList[]>([]);
+
   const [state, formAction] = useFormState(createUmum, undefined);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -50,13 +53,17 @@ export default function CreateUmumForm(props: Props) {
     return formAction(formData);
   };
 
+  const append = (account: AccountList) => {
+    account && setAccountList([...accountList, account]);
+  };
+
   return (
-    <div>
+    <>
       <form onSubmit={handleSubmit} className="rounded-lg">
         <div className="mb-6 rounded-lg bg-white p-4 shadow">
           <TwInput
             name="jenis_jurnal"
-            label="Jenis Umum"
+            label="Jenis Jurnal"
             type="text"
             value={jenisUmum}
             onChange={(e) => setJenisUmum(e.target.value)}
@@ -71,7 +78,7 @@ export default function CreateUmumForm(props: Props) {
           <TwButton
             icon={<PlusIcon className="h-5 w-5" />}
             type="button"
-            title="Akun"
+            title="Tambah Kode Rekening"
             onClick={() => setIsAccountModalOpen(true)}
           />
         </div>
@@ -80,19 +87,26 @@ export default function CreateUmumForm(props: Props) {
           <table className="w-full">
             <thead>
               <tr className="border-b border-gray-200">
-                <td>Kode Rekening</td>
-                <td>Debit/Kredit</td>
+                <td>Debit</td>
+                <td>Kredit</td>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Belanja Pegawai</td>
-                <td>Debit</td>
-              </tr>
-              <tr>
-                <td>Belanja Pegawai</td>
-                <td>Kredit</td>
-              </tr>
+              {!!accountList &&
+                accountList.map((item, index) => (
+                  <tr key={index}>
+                    <td>{item.debit?.text!}</td>
+                    <td>{item.credit?.text!}</td>
+                  </tr>
+                ))}
+
+              {!accountList && (
+                <tr>
+                  <td colSpan={2} className="text-center text-gray-400">
+                    Data tidak ditemukan.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
@@ -116,7 +130,8 @@ export default function CreateUmumForm(props: Props) {
         treeData={treeData}
         isModalOpen={isAccountModalOpen}
         onClose={() => setIsAccountModalOpen(false)}
+        handleAppendAction={append}
       />
-    </div>
+    </>
   );
 }

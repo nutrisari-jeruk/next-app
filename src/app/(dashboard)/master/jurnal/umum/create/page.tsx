@@ -1,6 +1,6 @@
 import { TwHeader } from '@/components';
 import useSap13 from '@/hooks/sap13';
-import CreateUmumForm from '../ui/create-form';
+import CreateForm from '../ui/create-form';
 import type { TreeNode } from '@/types/tree-view';
 
 export default async function Page() {
@@ -9,7 +9,7 @@ export default async function Page() {
   return (
     <>
       <TwHeader title="Tambah Master Jurnal Umum" />
-      <CreateUmumForm treeData={treeData} />
+      <CreateForm treeData={treeData} />
     </>
   );
 }

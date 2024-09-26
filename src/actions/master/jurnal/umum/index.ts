@@ -5,7 +5,7 @@ import { UmumSchema } from '@/schemas/master/journal/umum';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { AxiosError } from 'axios';
-import type { List, PostRequest } from '@/types/umum';
+import type { List, PostRequest } from '@/types/';
 import type { Params } from '@/types/params';
 import type { BaseResponse } from '@/types/api';
 import { Pagination } from '@/types/pagination';
