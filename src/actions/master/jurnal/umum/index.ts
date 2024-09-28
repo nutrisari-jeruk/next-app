@@ -5,7 +5,7 @@ import { UmumSchema } from '@/schemas/master/journal/umum';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { AxiosError } from 'axios';
-import type { List, PostRequest } from '@/types/';
+import type { List, PostRequest } from '@/types/journal/general';
 import type { Params } from '@/types/params';
 import type { BaseResponse } from '@/types/api';
 import { Pagination } from '@/types/pagination';
@@ -58,8 +58,7 @@ const fetchUmumList = async ({
 const createUmum = async (_prevState: unknown, formData: FormData) => {
   const validatedFields = UmumSchema.safeParse({
     jenis_jurnal: formData.get('jenis_jurnal'),
-    debit: formData.get('debit'),
-    credit: formData.get('credit'),
+    kode_rekening_id: JSON.parse(formData.get('kode_rekening_id') as string),
   });
 
   if (!validatedFields.success) {
@@ -70,10 +69,12 @@ const createUmum = async (_prevState: unknown, formData: FormData) => {
 
   const requestUmum: PostRequest = {
     jenis_jurnal: validatedFields.data.jenis_jurnal,
-    kode_rekening_id: {
-      debit: Number(validatedFields.data.debit),
-      credit: Number(validatedFields.data.credit),
-    },
+    kode_rekening_id: validatedFields.data.kode_rekening_id.map((item) => {
+      return {
+        debit: item.debit.id,
+        credit: item.credit.id,
+      };
+    }),
   };
 
   try {

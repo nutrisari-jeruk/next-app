@@ -18,13 +18,13 @@ import {
 import { useState } from 'react';
 import Sap13Modal from './sap13-modal';
 import type { TreeNode } from '@/types/tree-view';
-import type { AccountList } from '@/types/journal/general';
+import type { Account } from '@/types/journal/general';
 
 interface Props {
   treeData: TreeNode[];
   isModalOpen?: boolean;
   onClose: () => void;
-  handleAppendAction: (accountList: AccountList) => void;
+  handleAppendAction: (accountList: Account) => void;
 }
 
 export default function AccountModal(props: Props) {
@@ -33,7 +33,7 @@ export default function AccountModal(props: Props) {
   const [credit, setCredit] = useState<TreeNode>();
   const [activeInput, setActiveInput] = useState<'debit' | 'credit' | ''>('');
   const [isSapModalOpen, setIsSapModalOpen] = useState(false);
-  const [accountList, setAccountList] = useState<AccountList>();
+  const [accountList, setAccountList] = useState<Account>({});
 
   const handleInputFocus = (inputName: 'debit' | 'credit') => {
     setActiveInput(inputName);
@@ -42,10 +42,7 @@ export default function AccountModal(props: Props) {
 
   const handleModalClose = () => {
     setIsSapModalOpen(false);
-    setDebit(undefined);
-    setCredit(undefined);
   };
-
 
   const handleKodeRekeningNodeSelect = (node: TreeNode) => {
     handleModalClose();
@@ -64,7 +61,6 @@ export default function AccountModal(props: Props) {
   };
 
   const handleClick = () => {
-    if (!accountList) return;
     handleAppendAction(accountList);
   };
 

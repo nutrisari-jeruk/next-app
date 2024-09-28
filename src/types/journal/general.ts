@@ -41,10 +41,10 @@ export interface PostRequest {
   kode_rekening_id: {
     debit: number;
     credit: number;
-  };
+  }[];
 }
 
-export interface AccountList {
+export interface Account {
   debit?: TreeNode,
   credit?: TreeNode
 }

@@ -13,7 +13,7 @@ import {
 
 import { createUmum } from '@/actions/master/jurnal/umum';
 import type { TreeNode } from '@/types/tree-view';
-import type { AccountList } from '@/types/journal/general';
+import type { Account } from '@/types/journal/general';
 
 interface Props {
   treeData: TreeNode[];
@@ -38,7 +38,7 @@ export default function CreateForm(props: Props) {
   const { treeData } = props;
   const [jenisUmum, setJenisUmum] = useState('');
   const [isAccountModalOpen, setIsAccountModalOpen] = useState(false);
-  const [accountList, setAccountList] = useState<AccountList[]>([]);
+  const [accountList, setAccountList] = useState<Account[]>([]);
 
   const [state, formAction] = useFormState(createUmum, undefined);
 
@@ -46,14 +46,14 @@ export default function CreateForm(props: Props) {
     event.preventDefault();
 
     const formData = new FormData();
-    // formData.append('jenis_jurnal', jenisUmum);
-    // debitId && formData.append('debit', debitId!.toString());
-    // creditId && formData.append('credit', creditId!.toString());
+    formData.append('jenis_jurnal', jenisUmum);
+    formData.append('kode_rekening_id', JSON.stringify(accountList));
 
     return formAction(formData);
   };
 
-  const append = (account: AccountList) => {
+  const append = (account: Account) => {
+    setIsAccountModalOpen(false);
     account && setAccountList([...accountList, account]);
   };
 
@@ -83,32 +83,35 @@ export default function CreateForm(props: Props) {
           />
         </div>
 
-        <div className="mb-3 space-y-4 rounded-lg bg-white p-4 shadow">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-gray-200">
-                <td>Debit</td>
-                <td>Kredit</td>
-              </tr>
-            </thead>
-            <tbody>
-              {!!accountList &&
-                accountList.map((item, index) => (
-                  <tr key={index}>
-                    <td>{item.debit?.text!}</td>
-                    <td>{item.credit?.text!}</td>
-                  </tr>
-                ))}
+        <div className="mb-3 space-y-1">
+          <div className="flex w-full rounded bg-white p-3 shadow">
+            <div className="w-1/2 font-bold">Kode Rekening Debit</div>
+            <div className="w-1/2 font-bold">Kode Rekening Credit Kredit</div>
+          </div>
 
-              {!accountList && (
-                <tr>
-                  <td colSpan={2} className="text-center text-gray-400">
-                    Data tidak ditemukan.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+          {!!accountList &&
+            accountList.map((account, index) => (
+              <div
+                key={index}
+                className="flex w-full rounded bg-white px-3 py-2 shadow"
+              >
+                <div className="w-1/2">{account?.debit?.text}</div>
+                <div className="w-1/2">{account?.credit?.text}</div>
+              </div>
+            ))}
+
+          {!accountList.length && (
+            <div className="flex w-full rounded bg-white px-3 py-2 shadow">
+              <div className="w-1/2 text-gray-500">
+                Belum ada akun yang ditambahkan.
+              </div>
+              <div className="w-1/2 text-gray-500">
+                Belum ada akun yang ditambahkan.
+              </div>
+            </div>
+          )}
+
+          {!!state && <div className="text-red-500">{state.message}</div>}
         </div>
 
         <div className="flex items-center justify-end gap-x-6">
@@ -122,6 +125,7 @@ export default function CreateForm(props: Props) {
               }
             />
           </Link>
+          
           <SubmitButton />
         </div>
       </form>
