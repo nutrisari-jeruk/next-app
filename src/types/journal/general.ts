@@ -45,6 +45,6 @@ export interface PostRequest {
 }
 
 export interface Account {
-  debit?: TreeNode,
-  credit?: TreeNode
+  is_credit: boolean;
+  sap13_id: TreeNode;
 }

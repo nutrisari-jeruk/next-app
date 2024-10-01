@@ -11,6 +11,7 @@ import TwTable from './tw-table';
 import TwSearch from './tw-search';
 import TwSelect from './tw-select';
 import TwListbox from './tw-listbox';
+import TwRadio from './tw-radio';
 
 export {
   AppLogo,
@@ -25,5 +26,6 @@ export {
   TwTable,
   TwSearch,
   TwSelect,
-  TwListbox
+  TwListbox,
+  TwRadio
 };

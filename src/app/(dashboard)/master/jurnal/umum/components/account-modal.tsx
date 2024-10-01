@@ -1,6 +1,7 @@
 'use client';
 
-import { TwButton, TwInput } from '@/components';
+import { useEffect, useState } from 'react';
+import { TwButton, TwInput, TwRadio } from '@/components';
 import {
   Button,
   Description,
@@ -10,12 +11,7 @@ import {
   Transition,
   TransitionChild,
 } from '@headlessui/react';
-import {
-  XMarkIcon,
-  FolderPlusIcon,
-  PlusIcon,
-} from '@heroicons/react/24/outline';
-import { useState } from 'react';
+import { XMarkIcon, PlusIcon } from '@heroicons/react/24/outline';
 import Sap13Modal from './sap13-modal';
 import type { TreeNode } from '@/types/tree-view';
 import type { Account } from '@/types/journal/general';
@@ -24,50 +20,49 @@ interface Props {
   treeData: TreeNode[];
   isModalOpen?: boolean;
   onClose: () => void;
-  handleAppendAction: (accountList: Account) => void;
+  handleAppendAction: (account: Account) => void;
 }
 
 export default function AccountModal(props: Props) {
   const { treeData, isModalOpen, onClose, handleAppendAction } = props;
-  const [debit, setDebit] = useState<TreeNode>();
-  const [credit, setCredit] = useState<TreeNode>();
-  const [activeInput, setActiveInput] = useState<'debit' | 'credit' | ''>('');
+
   const [isSapModalOpen, setIsSapModalOpen] = useState(false);
-  const [accountList, setAccountList] = useState<Account>({});
+  const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isShown, setIsShown] = useState(isModalOpen);
+  const [account, setAccount] = useState<Account>({
+    is_credit: false,
+    sap13_id: {} as TreeNode,
+  });
 
-  const handleInputFocus = (inputName: 'debit' | 'credit') => {
-    setActiveInput(inputName);
-    setIsSapModalOpen(true);
-  };
-
-  const handleModalClose = () => {
+  const handleAccountSelect = (node: TreeNode) => {
     setIsSapModalOpen(false);
+    setAccount({ is_credit: false, sap13_id: node });
   };
 
-  const handleKodeRekeningNodeSelect = (node: TreeNode) => {
-    handleModalClose();
-    switch (activeInput) {
-      case 'debit':
-        setDebit(node);
-        setAccountList(Object.assign({}, accountList, { debit: node }));
-        break;
-      case 'credit':
-        setCredit(node);
-        setAccountList(Object.assign({}, accountList, { credit: node }));
-        break;
-      default:
-        break;
+  const addAccount = () => {
+    if (!account.sap13_id.id) {
+      setIsError(true);
+      setErrorMessage('Pilih akun terlebih dahulu');
+
+      return;
     }
+
+    setIsShown(false);
+    !!account.sap13_id.id && handleAppendAction(account);
   };
 
-  const handleClick = () => {
-    handleAppendAction(accountList);
-  };
+  useEffect(() => {
+    setIsShown(isModalOpen);
+  }, [isModalOpen]);
 
   return (
     <>
-      <Transition show={isModalOpen}>
-        <Dialog className="relative z-10" onClose={() => handleModalClose()}>
+      <Transition show={isShown}>
+        <Dialog
+          className="relative z-10"
+          onClose={() => setIsSapModalOpen(false)}
+        >
           <TransitionChild
             enter="ease-out duration-300"
             enterFrom="opacity-0"
@@ -100,52 +95,42 @@ export default function AccountModal(props: Props) {
                       <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                     </Button>
                   </div>
-                  <div className="mt-3">
+                  <div>
                     <DialogTitle
                       as="h3"
                       className="flex justify-center text-base font-semibold leading-6 text-gray-900"
                     >
-                      Pilih SAP 13
+                      Atur Kode Rekening
                     </DialogTitle>
-                    <Description className="mb-2 space-y-2">
-                      <div className="flex items-end space-x-2">
+                    <Description className="mb-2 space-y-4">
+                      <div className="flex space-x-2">
                         <TwInput
-                          className="w-full"
-                          label="Debit"
-                          name="debit"
-                          readOnly
+                          id="sap13_id"
+                          name="sap13_id"
+                          className="w-full cursor-pointer"
+                          label="Kode Rekening SAP 13"
                           placeholder="Kode SAP 13 level 5"
-                          value={debit?.text!}
-                        />
-
-                        <TwButton
-                          icon={<FolderPlusIcon className="h-5 w-5" />}
-                          title="Pilih"
-                          onClick={() => handleInputFocus('debit')}
+                          value={account?.sap13_id.text!}
+                          isError={isError}
+                          errorMessage={errorMessage}
+                          readOnly
+                          onClick={() => setIsSapModalOpen(true)}
                         />
                       </div>
 
-                      <div className="flex items-end space-x-2">
-                        <TwInput
-                          className="w-full"
-                          label="Kredit"
-                          name="credit"
-                          readOnly
-                          placeholder="Kode SAP 13 level 5"
-                          value={credit?.text!}
-                        />
-
-                        <TwButton
-                          icon={<FolderPlusIcon className="h-5 w-5" />}
-                          title="Pilih"
-                          onClick={() => handleInputFocus('credit')}
-                        />
-                      </div>
+                      <TwRadio
+                        options={[
+                          { label: 'Debit', value: 'debit' },
+                          { label: 'Credit', value: 'credit' },
+                        ]}
+                        value={account?.is_credit ? 'credit' : 'debit'}
+                        onChange={(value) => setAccount({ ...account, is_credit: true })}
+                      />
 
                       <TwButton
                         title="Tambah Kode Rekening"
                         icon={<PlusIcon className="h-5 w-5" />}
-                        onClick={() => handleClick()}
+                        onClick={addAccount}
                       />
                     </Description>
                   </div>
@@ -159,9 +144,8 @@ export default function AccountModal(props: Props) {
       <Sap13Modal
         treeData={treeData}
         isModalOpen={isSapModalOpen}
-        activeInput={activeInput}
-        onClose={handleModalClose}
-        onNodeSelect={handleKodeRekeningNodeSelect}
+        onClose={() => setIsSapModalOpen(false)}
+        onNodeSelect={handleAccountSelect}
       />
     </>
   );
