@@ -36,7 +36,7 @@ export interface Meta {
   total: string;
 }
 
-export interface PostRequest {
+export interface Payload {
   jenis_jurnal: string;
   kode_rekening_list: {
     is_credit: boolean;

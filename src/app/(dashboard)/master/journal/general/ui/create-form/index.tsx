@@ -11,8 +11,7 @@ import {
   PlusIcon,
   TrashIcon,
 } from '@heroicons/react/24/outline';
-
-import { createUmum } from '@/actions/master/jurnal/umum';
+import { createJournal } from '@/actions/master/journal/general';
 import type { TreeNode } from '@/types/tree-view';
 import type { Account } from '@/types/journal/general';
 
@@ -41,7 +40,7 @@ export default function CreateForm(props: Props) {
   const [isAccountModalOpen, setIsAccountModalOpen] = useState(false);
   const [accountList, setAccountList] = useState<Account[]>([]);
 
-  const [state, formAction] = useFormState(createUmum, undefined);
+  const [state, formAction] = useFormState(createJournal, undefined);
 
   const handleSubmit = async () => {
     const formData = new FormData();
@@ -126,7 +125,7 @@ export default function CreateForm(props: Props) {
         </div>
 
         <div className="flex items-center justify-end gap-x-6">
-          <Link href="/master/jurnal/umum">
+          <Link href="/master/journal/general">
             <TwButton
               type="button"
               title="Cancel"

@@ -35,7 +35,7 @@ const adminJournals: Menu[] = [
   {
     id: 1,
     name: 'Jurnal Umum',
-    href: '/master/jurnal/umum',
+    href: '/master/journal/general',
     initial: 'JU',
     current: false,
   },

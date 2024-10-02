@@ -1,16 +1,16 @@
 'use server';
 
 import $http from '@/lib/axios';
-import { UmumSchema } from '@/schemas/master/journal/umum';
+import { UmumSchema } from '@/schemas/master/journal/general';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { AxiosError } from 'axios';
-import type { List, PostRequest } from '@/types/journal/general';
+import type { List, Payload } from '@/types/journal/general';
 import type { Params } from '@/types/params';
 import type { BaseResponse } from '@/types/api';
 import { Pagination } from '@/types/pagination';
 
-const fetchUmumList = async ({
+const fetchList = async ({
   page,
   rowsPerPage,
   searchField,
@@ -55,7 +55,7 @@ const fetchUmumList = async ({
   return list;
 };
 
-const createUmum = async (_prevState: unknown, formData: FormData) => {
+const createJournal = async (_prevState: unknown, formData: FormData) => {
   const validatedFields = UmumSchema.safeParse({
     jenis_jurnal: formData.get('jenis_jurnal'),
     kode_rekening_id: JSON.parse(formData.get('kode_rekening_id') as string),
@@ -69,7 +69,7 @@ const createUmum = async (_prevState: unknown, formData: FormData) => {
     };
   }
 
-  const payload: PostRequest = {
+  const payload: Payload = {
     jenis_jurnal: validatedFields.data.jenis_jurnal,
     kode_rekening_list: validatedFields.data.kode_rekening_id.map(item => {
       return {
@@ -97,13 +97,13 @@ const createUmum = async (_prevState: unknown, formData: FormData) => {
     }
 
     return {
-      message: 'Telah Terjadi Kesalahan Silahkan Hubungi Administrator IT!',
+      message: 'Internal Server Error',
       status: 'error',
     };
   }
 
-  revalidatePath('/master/jurnal/umum');
-  redirect(`/master/jurnal/umum`);
+  revalidatePath('/master/journal/general');
+  redirect(`/master/journal/general`);
 };
 
-export { createUmum, fetchUmumList };
+export { createJournal, fetchList };

@@ -1,8 +1,8 @@
 import DataTable from '@/app/ui/data-table';
 import type { Params } from '@/types/params';
 import type { Column, Row } from '@/types/table';
-import { fetchUmumList } from '@/actions/master/jurnal/umum';
-import { List } from '@/types/';
+import { fetchList } from '@/actions/master/journal/general';
+import { List } from '@/types/journal/general';
 
 
 export default async function Table({
@@ -11,7 +11,7 @@ export default async function Table({
   searchField = '',
   searchValue = '',
 }: Params) {
-  const data = await fetchUmumList({
+  const data = await fetchList({
     page: page,
     rowsPerPage: rowsPerPage,
     searchField: searchField,
@@ -19,23 +19,19 @@ export default async function Table({
   });
 
   const rows = data?.data.map((item: List) => {
-    const deb = item.kode_rekening.find(
-      (rekening) => rekening.debit !== null && rekening.credit === null,
-    )?.debit;
-    const cred = item.kode_rekening.find(
-      (rekening) => rekening.credit !== null && rekening.debit === null,
-    )?.credit;
-
     return {
       id: item.id,
       jurnal_kode: item.jurnal_kode,
-      jurnal_jenis: item.jurnal_jenis,
-      debit: deb,
-      credit: cred,
+      jurnal_jenis: item.jurnal_jenis
     };
   }) as Row[];
 
   const columns: Column[] = [
+    {
+      label: 'No.',
+      accessor: '#',
+      sortable: false,
+    },
     {
       label: 'Kode Jurnal',
       accessor: 'jurnal_kode',
@@ -46,23 +42,7 @@ export default async function Table({
       accessor: 'jurnal_jenis',
       sortable: true,
     },
-    {
-      label: 'Debit',
-      accessor: 'debit',
-      sortable: false,
-    },
-    {
-      label: 'Kredit',
-      accessor: 'credit',
-      sortable: false,
-    },
-    {
-      label: 'Edit',
-      accessor: 'credit',
-      sortable: false,
-    },
   ];
-
 
   const meta = data.meta;
 
