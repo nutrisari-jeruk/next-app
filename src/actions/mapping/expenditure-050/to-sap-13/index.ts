@@ -95,7 +95,7 @@ const mapOnAccount = async (_prevState: unknown, formData: FormData) => {
     };
   }
 
-  setFlash({ type: 'success', message: 'Berhasil', tag: new Date().toLocaleString() });
+  setFlash({ type: 'success', message: 'Data berhasil disimpan', tag: new Date().toLocaleString() });
   revalidatePath(`/mapping/expenditure-050/to-sap-13?page=${page}`);
   redirect(`/mapping/expenditure-050/to-sap-13?page=${page}`);
 };
