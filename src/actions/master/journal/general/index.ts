@@ -9,6 +9,7 @@ import type { List, Payload } from '@/types/journal/general';
 import type { Params } from '@/types/params';
 import type { BaseResponse } from '@/types/api';
 import { Pagination } from '@/types/pagination';
+import { setFlash } from '@/lib/flash-toaster';
 
 const fetchList = async ({
   page,
@@ -61,8 +62,6 @@ const createJournal = async (_prevState: unknown, formData: FormData) => {
     kode_rekening_id: JSON.parse(formData.get('kode_rekening_id') as string),
   });
 
-
-
   if (!validatedFields.success) {
     return {
       validationErrors: validatedFields.error.flatten().fieldErrors,
@@ -71,7 +70,7 @@ const createJournal = async (_prevState: unknown, formData: FormData) => {
 
   const payload: Payload = {
     jenis_jurnal: validatedFields.data.jenis_jurnal,
-    kode_rekening_list: validatedFields.data.kode_rekening_id.map(item => {
+    kode_rekening_list: validatedFields.data.kode_rekening_id.map((item) => {
       return {
         is_credit: item.is_credit,
         sap13_id: item.sap13_id.id,
@@ -101,6 +100,12 @@ const createJournal = async (_prevState: unknown, formData: FormData) => {
       status: 'error',
     };
   }
+
+  setFlash({
+    message: 'Data berhasil disimpan',
+    type: 'success',
+    tag: new Date().toLocaleString(),
+  });
 
   revalidatePath('/master/journal/general');
   redirect(`/master/journal/general`);
