@@ -61,24 +61,26 @@ const createUmum = async (_prevState: unknown, formData: FormData) => {
     kode_rekening_id: JSON.parse(formData.get('kode_rekening_id') as string),
   });
 
+
+
   if (!validatedFields.success) {
     return {
       validationErrors: validatedFields.error.flatten().fieldErrors,
     };
   }
 
-  const requestUmum: PostRequest = {
+  const payload: PostRequest = {
     jenis_jurnal: validatedFields.data.jenis_jurnal,
-    kode_rekening_id: validatedFields.data.kode_rekening_id.map((item) => {
+    kode_rekening_list: validatedFields.data.kode_rekening_id.map(item => {
       return {
-        debit: item.debit.id,
-        credit: item.credit.id,
+        is_credit: item.is_credit,
+        sap13_id: item.sap13_id.id,
       };
     }),
   };
 
   try {
-    await $http.post('/v1/masters/journals/general', requestUmum);
+    await $http.post('/v1/masters/journals/general', payload);
   } catch (error) {
     if (error instanceof AxiosError) {
       if (error.response?.data?.message) {

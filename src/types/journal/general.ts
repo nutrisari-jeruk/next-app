@@ -38,9 +38,9 @@ export interface Meta {
 
 export interface PostRequest {
   jenis_jurnal: string;
-  kode_rekening_id: {
-    debit: number;
-    credit: number;
+  kode_rekening_list: {
+    is_credit: boolean;
+    sap13_id: number;
   }[];
 }
 

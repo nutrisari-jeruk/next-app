@@ -1,6 +1,8 @@
 'use client';
 
+import Sap13Modal from './sap13-modal';
 import { useEffect, useState } from 'react';
+import { XMarkIcon, PlusIcon } from '@heroicons/react/24/outline';
 import { TwButton, TwInput, TwRadio } from '@/components';
 import {
   Button,
@@ -11,8 +13,6 @@ import {
   Transition,
   TransitionChild,
 } from '@headlessui/react';
-import { XMarkIcon, PlusIcon } from '@heroicons/react/24/outline';
-import Sap13Modal from './sap13-modal';
 import type { TreeNode } from '@/types/tree-view';
 import type { Account } from '@/types/journal/general';
 
@@ -29,7 +29,6 @@ export default function AccountModal(props: Props) {
   const [isSapModalOpen, setIsSapModalOpen] = useState(false);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [isShown, setIsShown] = useState(isModalOpen);
   const [account, setAccount] = useState<Account>({
     is_credit: false,
     sap13_id: {} as TreeNode,
@@ -45,23 +44,27 @@ export default function AccountModal(props: Props) {
       setIsError(true);
       setErrorMessage('Pilih akun terlebih dahulu');
 
-      return;
+      return
     }
 
-    setIsShown(false);
     !!account.sap13_id.id && handleAppendAction(account);
+
+    onClose();
   };
 
-  useEffect(() => {
-    setIsShown(isModalOpen);
-  }, [isModalOpen]);
+  const handleChange = (value: string) => {
+    setAccount((prevAccount) => ({
+      ...prevAccount,
+      is_credit: value === 'credit',
+    }));
+  };
 
   return (
     <>
-      <Transition show={isShown}>
+      <Transition show={isModalOpen}>
         <Dialog
           className="relative z-10"
-          onClose={() => setIsSapModalOpen(false)}
+          onClose={() => onClose}
         >
           <TransitionChild
             enter="ease-out duration-300"
@@ -124,7 +127,7 @@ export default function AccountModal(props: Props) {
                           { label: 'Credit', value: 'credit' },
                         ]}
                         value={account?.is_credit ? 'credit' : 'debit'}
-                        onChange={(value) => setAccount({ ...account, is_credit: true })}
+                        handleChange={handleChange}
                       />
 
                       <TwButton

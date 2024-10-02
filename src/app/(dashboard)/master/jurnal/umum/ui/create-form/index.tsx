@@ -9,6 +9,7 @@ import {
   ArrowUturnLeftIcon,
   CheckIcon,
   PlusIcon,
+  TrashIcon,
 } from '@heroicons/react/24/outline';
 
 import { createUmum } from '@/actions/master/jurnal/umum';
@@ -50,9 +51,16 @@ export default function CreateForm(props: Props) {
     return formAction(formData);
   };
 
-  const append = (account: Account) => {
-    console.log(account);
+  const appendAccount = (account: Account) => {
     account && setAccountList([...accountList, account]);
+  };
+
+  const removeAccount = (index: number) => {
+    setAccountList(accountList.filter((_, i) => i !== index));
+  };
+
+  const addAcount = () => {
+    setIsAccountModalOpen(true);
   };
 
   return (
@@ -77,24 +85,32 @@ export default function CreateForm(props: Props) {
             icon={<PlusIcon className="h-5 w-5" />}
             type="button"
             title="Tambah Kode Rekening"
-            onClick={() => setIsAccountModalOpen(true)}
+            onClick={addAcount}
           />
         </div>
 
         <div className="mb-3 space-y-1">
           <div className="flex w-full rounded bg-white p-3 shadow">
-            <div className="w-1/2 font-bold">Kode Rekening</div>
-            <div className="w-1/2 font-bold">Debit/Kredit</div>
+            <div className="w-full font-bold">Kode Rekening</div>
+            <div className="w-1/3 font-bold">Debit/Kredit</div>
+            <div className="w-1/4"></div>
           </div>
 
           {!!accountList &&
             accountList.map((account, index) => (
               <div
                 key={index}
-                className="flex w-full rounded bg-white px-3 py-2 shadow"
+                className="flex items-center justify-center w-full rounded bg-white px-3 py-2 shadow gap-1"
               >
-                <div className="w-1/2">{account?.sap13_id.text}</div>
-                <div className="w-1/2">{account?.is_credit ? 'Kredit' : 'Debit'}</div>
+                <div className="w-full">{account?.sap13_id.text}</div>
+                <div className="w-1/3">
+                  {account?.is_credit ? 'Kredit' : 'Debit'}
+                </div>
+                <div className="w-1/4">
+                  <button className="text-red-500" onClick={() => removeAccount(index)}>
+                    <TrashIcon className="h-5 w-5" aria-hidden="true" />
+                  </button>
+                </div>
               </div>
             ))}
 
@@ -120,7 +136,7 @@ export default function CreateForm(props: Props) {
               }
             />
           </Link>
-          
+
           <SubmitButton />
         </div>
       </form>
@@ -129,7 +145,7 @@ export default function CreateForm(props: Props) {
         treeData={treeData}
         isModalOpen={isAccountModalOpen}
         onClose={() => setIsAccountModalOpen(false)}
-        handleAppendAction={append}
+        handleAppendAction={appendAccount}
       />
     </>
   );

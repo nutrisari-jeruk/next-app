@@ -9,21 +9,17 @@ export const UmumSchema = z.object({
     .min(1, 'Jenis Umum is required'),
   kode_rekening_id: z.array(
     z.object({
-      debit: z.object({
-        id: z
-          .number({
-            required_error: 'Kode Rekening Debit is required',
-            invalid_type_error: 'Kode Rekening Debit must be a number',
-          })
-          .min(1, 'Kode Rekening Debit is required'),
+      is_credit: z.boolean({
+        required_error: 'Is Credit is required',
+        invalid_type_error: 'Is Credit must be a boolean',
       }),
-      credit: z.object({
+      sap13_id: z.object({
         id: z
           .number({
-            required_error: 'Kode Rekening Kredit is required',
-            invalid_type_error: 'Kode Rekening Kredit must be a string',
+            required_error: 'Kode Rekening is required',
+            invalid_type_error: 'Kode Rekening must be a string',
           })
-          .min(1, 'Kode Rekening Kredit is required'),
+          .min(1, 'Kode Rekening is required'),
       }),
     }),
   ),

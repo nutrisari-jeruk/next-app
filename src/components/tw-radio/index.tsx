@@ -12,15 +12,20 @@ const plans = [
 interface Props {
   options: Option[];
   value: string | number | boolean;
-  onChange?: (value: boolean) => void;
+  handleChange?: (value: string) => void;
 }
 
-export default function TwRadio({ options, value }: Props) {
+export default function TwRadio({ options, value, handleChange }: Props) {
   const defaultValue = value || plans[0].value;
   const [selected, setSelected] = useState(defaultValue);
 
+  const onHandleChange = (value: string) => {
+    setSelected(value);
+    handleChange && handleChange(value);
+  };
+
   return (
-    <RadioGroup value={selected} onChange={setSelected} aria-label="Radio Box">
+    <RadioGroup value={selected} onChange={onHandleChange} aria-label="Radio Box">
       {!!options &&
         options.map((plan, index) => (
           <Field key={index} className="flex items-center gap-2">
