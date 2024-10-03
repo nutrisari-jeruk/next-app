@@ -1,16 +1,17 @@
 'use server';
 
 import $http from '@/lib/axios';
-import { UmumSchema } from '@/schemas/master/journal/umum';
+import { UmumSchema } from '@/schemas/master/journal/general';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { AxiosError } from 'axios';
-import type { List, PostRequest } from '@/types/umum';
+import type { List, Payload } from '@/types/journal/general';
 import type { Params } from '@/types/params';
 import type { BaseResponse } from '@/types/api';
 import { Pagination } from '@/types/pagination';
+import { setFlash } from '@/lib/flash-toaster';
 
-const fetchUmumList = async ({
+const fetchList = async ({
   page,
   rowsPerPage,
   searchField,
@@ -55,11 +56,10 @@ const fetchUmumList = async ({
   return list;
 };
 
-const createUmum = async (_prevState: unknown, formData: FormData) => {
+const createJournal = async (_prevState: unknown, formData: FormData) => {
   const validatedFields = UmumSchema.safeParse({
     jenis_jurnal: formData.get('jenis_jurnal'),
-    debit: formData.get('debit'),
-    credit: formData.get('credit'),
+    kode_rekening_id: JSON.parse(formData.get('kode_rekening_id') as string),
   });
 
   if (!validatedFields.success) {
@@ -68,16 +68,18 @@ const createUmum = async (_prevState: unknown, formData: FormData) => {
     };
   }
 
-  const requestUmum: PostRequest = {
+  const payload: Payload = {
     jenis_jurnal: validatedFields.data.jenis_jurnal,
-    kode_rekening_id: {
-      debit: Number(validatedFields.data.debit),
-      credit: Number(validatedFields.data.credit),
-    },
+    kode_rekening_list: validatedFields.data.kode_rekening_id.map((item) => {
+      return {
+        is_credit: item.is_credit,
+        sap13_id: item.sap13_id.id,
+      };
+    }),
   };
 
   try {
-    await $http.post('/v1/masters/journals/general', requestUmum);
+    await $http.post('/v1/masters/journals/general', payload);
   } catch (error) {
     if (error instanceof AxiosError) {
       if (error.response?.data?.message) {
@@ -94,13 +96,19 @@ const createUmum = async (_prevState: unknown, formData: FormData) => {
     }
 
     return {
-      message: 'Telah Terjadi Kesalahan Silahkan Hubungi Administrator IT!',
+      message: 'Internal Server Error',
       status: 'error',
     };
   }
 
-  revalidatePath('/master/jurnal/umum');
-  redirect(`/master/jurnal/umum`);
+  setFlash({
+    message: 'Data berhasil disimpan',
+    type: 'success',
+    tag: new Date().toLocaleString(),
+  });
+
+  revalidatePath('/master/journal/general');
+  redirect(`/master/journal/general`);
 };
 
-export { createUmum, fetchUmumList };
+export { createJournal, fetchList };

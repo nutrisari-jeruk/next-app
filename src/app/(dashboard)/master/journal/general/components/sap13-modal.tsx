@@ -18,7 +18,6 @@ interface Sap13Modal {
   isModalOpen?: boolean;
   searchValue?: string;
   className?: string;
-  activeInput: 'debit' | 'credit' | '';
   onNodeSelect: (node: TreeNode) => void;
   onClose: () => void;
 }

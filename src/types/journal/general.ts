@@ -1,4 +1,4 @@
-import type { Url } from 'next/dist/shared/lib/router/router';
+import type { TreeNode } from '@/types/tree-view';
 
 export interface PaginateList {
   data: List[];
@@ -21,7 +21,7 @@ export interface KodeRekening {
 }
 
 export interface Links {
-  url: Url;
+  url: string;
   label: string;
   active: boolean;
 }
@@ -30,16 +30,21 @@ export interface Meta {
   current_page: string;
   from: string;
   last_page: string;
-  path: Url;
+  path: string;
   per_page: string;
   to: string;
   total: string;
 }
 
-export interface PostRequest {
+export interface Payload {
   jenis_jurnal: string;
-  kode_rekening_id: {
-    debit: number;
-    credit: number;
-  };
+  kode_rekening_list: {
+    is_credit: boolean;
+    sap13_id: number;
+  }[];
+}
+
+export interface Account {
+  is_credit: boolean;
+  sap13_id: TreeNode;
 }

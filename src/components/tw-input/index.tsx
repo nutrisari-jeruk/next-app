@@ -48,8 +48,8 @@ export default function TwInput(props: Props) {
           className={clsx(
             isError &&
               'text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500',
-            attr.disabled ||
-              (attr.readOnly && 'cursor-not-allowed bg-gray-100'),
+            attr.disabled && 'cursor-not-allowed bg-gray-100',
+            attr.readOnly && 'bg-gray-100',
             icon && (iconPosition === 'left' ? 'pl-8' : 'pr-8'),
             'block w-full rounded-md border-0 py-1.5 ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6',
           )}
