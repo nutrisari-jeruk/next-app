@@ -1,22 +1,17 @@
 'use client';
 
 import clsx from 'clsx';
-import Pagination from './partials/pagination';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { Search } from './partials';
 import type { Column, Row } from '@/types/table';
-import type { Meta } from '@/types/pagination';
 
 interface Props {
-  searchField: string;
   rows: Row[];
   columns: Column[];
-  meta: Meta;
 }
 
-export default function DataTable({ searchField, rows, columns, meta }: Props) {
+export default function DataTable({ rows, columns }: Props) {
   const [tableData, setTableData] = useState<Row[]>(rows);
   const [sortField, setSortField] = useState('');
   const [order, setOrder] = useState('asc');
@@ -56,6 +51,10 @@ export default function DataTable({ searchField, rows, columns, meta }: Props) {
       return `${index + 1}.`;
     }
 
+    if (column.render) {
+      return column.render;
+    }
+
     if (column.label.toLowerCase() === 'edit') {
       const id = item[column.accessor];
 
@@ -75,118 +74,109 @@ export default function DataTable({ searchField, rows, columns, meta }: Props) {
   };
 
   return (
-    <div className="flex w-full flex-col space-y-2">
-      <Search placeholder="Cari kode rekening" searchField={searchField} />
+    <div className="flow-root">
+      <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+          <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
+            <table className="min-w-full table-fixed divide-y divide-gray-300">
+              <thead className="bg-gray-100">
+                <tr>
+                  {!!columns &&
+                    columns.map(({ label, accessor, sortable, width }) => {
+                      let iconElement = (
+                        <div>
+                          <span className="text-gray-600">↑</span>
+                          <span className="text-gray-600">↓</span>
+                        </div>
+                      );
 
-      <div className="flow-root">
-        <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-          <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-            <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
-              <table className="min-w-full table-fixed divide-y divide-gray-300">
-                <thead className="bg-gray-100">
-                  <tr>
-                    {!!columns &&
-                      columns.map(({ label, accessor, sortable, width }) => {
-                        let iconElement = (
-                          <div>
-                            <span className="text-gray-600">↑</span>
-                            <span className="text-gray-600">↓</span>
-                          </div>
-                        );
-
-                        if (sortable) {
-                          if (sortField === accessor && order === 'asc') {
-                            iconElement = (
-                              <div>
-                                <span className="text-gray-200">↑</span>
-                                <span className="text-gray-600">↓</span>
-                              </div>
-                            );
-                          } else if (
-                            sortField === accessor &&
-                            order === 'desc'
-                          ) {
-                            iconElement = (
-                              <div>
-                                <span className="text-gray-600">↑</span>
-                                <span className="text-gray-200">↓</span>
-                              </div>
-                            );
-                          }
-                        }
-
-                        const icon = iconElement;
-
-                        return (
-                          <th
-                            key={accessor}
-                            scope="col"
-                            className={clsx(
-                              'px-3 py-3.5 text-left text-sm font-semibold text-gray-900',
-                              !!width ? `w-[${width}]` : 'w-fit',
-                            )}
-                            onClick={
-                              sortable
-                                ? () => handleSortingChange(accessor)
-                                : undefined
-                            }
-                          >
-                            <div className="flex w-full items-center space-x-2">
-                              <span className="select-none">{label}</span>
-                              {sortable && (
-                                <button
-                                  type="button"
-                                  className="select-none"
-                                  onClick={
-                                    sortable
-                                      ? () => handleSortingChange(accessor)
-                                      : undefined
-                                  }
-                                >
-                                  {icon}
-                                </button>
-                              )}
+                      if (sortable) {
+                        if (sortField === accessor && order === 'asc') {
+                          iconElement = (
+                            <div>
+                              <span className="text-gray-200">↑</span>
+                              <span className="text-gray-600">↓</span>
                             </div>
-                          </th>
+                          );
+                        } else if (sortField === accessor && order === 'desc') {
+                          iconElement = (
+                            <div>
+                              <span className="text-gray-600">↑</span>
+                              <span className="text-gray-200">↓</span>
+                            </div>
+                          );
+                        }
+                      }
+
+                      const icon = iconElement;
+
+                      return (
+                        <th
+                          key={accessor}
+                          scope="col"
+                          className={clsx(
+                            'px-3 py-3.5 text-left text-sm font-semibold text-gray-900',
+                            !!width ? `w-[${width}]` : 'w-fit',
+                          )}
+                          onClick={
+                            sortable
+                              ? () => handleSortingChange(accessor)
+                              : undefined
+                          }
+                        >
+                          <div className="flex w-full items-center space-x-2">
+                            <span className="select-none">{label}</span>
+                            {sortable && (
+                              <button
+                                type="button"
+                                className="select-none"
+                                onClick={
+                                  sortable
+                                    ? () => handleSortingChange(accessor)
+                                    : undefined
+                                }
+                              >
+                                {icon}
+                              </button>
+                            )}
+                          </div>
+                        </th>
+                      );
+                    })}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-200 bg-white">
+                {!!tableData.length &&
+                  tableData?.map((item, index) => (
+                    <tr key={index} className="hover:bg-gray-100">
+                      {columns.map((column: Column) => {
+                        return (
+                          <td
+                            key={column.accessor}
+                            className="px-3 py-4 text-sm text-gray-500"
+                          >
+                            {renderRow(index, column, item)}
+                          </td>
                         );
                       })}
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200 bg-white">
-                  {!!tableData.length &&
-                    tableData?.map((item, index) => (
-                      <tr key={index} className="hover:bg-gray-100">
-                        {columns.map((column: Column) => {
-                          return (
-                            <td
-                              key={column.accessor}
-                              className="px-3 py-4 text-sm text-gray-500"
-                            >
-                              {renderRow(index, column, item)}
-                            </td>
-                          );
-                        })}
-                      </tr>
-                    ))}
-
-                  {!tableData.length && (
-                    <tr>
-                      <td
-                        colSpan={columns.length}
-                        className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
-                      >
-                        No data found
-                      </td>
                     </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
+                  ))}
+
+                {!tableData.length && (
+                  <tr>
+                    <td
+                      colSpan={columns.length}
+                      className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
+                    >
+                      No data found
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
-
-      <Pagination {...{ meta }} />
     </div>
   );
 }
