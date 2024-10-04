@@ -21,6 +21,9 @@ export default auth(async (req) => {
     return nextUrl.pathname.startsWith(route);
   });
 
+  const originalSSOToken = nextUrl.searchParams.get('token') || '';
+  const MaskedSSOToken = originalSSOToken.split('_')[0];
+
   if (isApiAuthRoute) {
     return;
   }
@@ -35,6 +38,7 @@ export default auth(async (req) => {
   if (!isLoggedIn) {
     const url = new URL('/login', req.url);
     url.searchParams.set('callbackUrl', encodeURI(req.url));
+    originalSSOToken && url.searchParams.set('ssoToken', MaskedSSOToken);
     return Response.redirect(url);
   }
 
