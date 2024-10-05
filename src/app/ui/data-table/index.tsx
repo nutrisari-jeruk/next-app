@@ -52,7 +52,7 @@ export default function DataTable({ rows, columns }: Props) {
     }
 
     if (column.render) {
-      return column.render;
+      return column.render(item);
     }
 
     if (column.label.toLowerCase() === 'edit') {
@@ -63,7 +63,7 @@ export default function DataTable({ rows, columns }: Props) {
           className="font-semibold text-blue-500 underline"
           href={`${pathname}/${id}/edit`}
         >
-          Edit
+          {column.label}
         </Link>
       );
     }

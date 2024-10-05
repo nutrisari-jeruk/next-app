@@ -2,41 +2,38 @@
 
 import DataTable from '@/app/ui/data-table';
 import { useState } from 'react';
-import { TwButton, TwConfirm } from '@/components';
+import { TwButton } from '@/components';
 import { Pagination, Search } from '@/app/ui/data-table/partials';
 import {
   Dialog,
   DialogPanel,
-  DialogTitle,
   Transition,
   TransitionChild,
 } from '@headlessui/react';
-import type { Meta } from '@/types/pagination';
+import { XMarkIcon } from '@heroicons/react/24/outline';
+import type { Meta, Pagination as PaginationType } from '@/types/pagination';
 import type { Column, Row } from '@/types/table';
 import type { List } from '@/types/journal/general';
 
-function View() {
+function View(data: any) {
   const [isOpen, setIsOpen] = useState(false);
+
   return (
     <>
       <TwButton size="xs" title="View" onClick={() => setIsOpen(true)} />
-      <Display
-        isOpen={isOpen}
-        handleClose={() => setIsOpen(false)}
-        handleSubmit={() => setIsOpen(false)}
-      />
+      <Show data={data} isOpen={isOpen} handleClose={() => setIsOpen(false)} />
     </>
   );
 }
 
-function Display({
+function Show({
+  data,
   isOpen = false,
   handleClose = () => {},
-  handleSubmit = () => {}
 }: {
+  data: { data: List };
   isOpen: boolean;
   handleClose: () => void;
-  handleSubmit: () => void;
 }) {
   return (
     <Transition show={isOpen}>
@@ -62,9 +59,53 @@ function Display({
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <DialogPanel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
-                <div className="sm:flex sm:items-start">
+              <DialogPanel className="relative w-full max-w-2xl transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all">
+                <div className="flex items-start">
+                  <div className="mt-3 w-full space-y-4">
+                    <table className="w-full">
+                      <tbody>
+                        <tr>
+                          <td className="w-1/8 font-bold leading-5">Kode</td>
+                          <td className="w-1/12">:</td>
+                          <td className="w-full">{data?.data.jurnal_kode}</td>
+                        </tr>
+                        <tr>
+                          <td className="w-1/4 font-bold leading-5">Jenis</td>
+                          <td>:</td>
+                          <td className="w-full">{data?.data.jurnal_jenis}</td>
+                        </tr>
+                      </tbody>
+                    </table>
 
+                    <table className="w-full table-fixed divide-y divide-gray-300">
+                      <thead className="bg-gray-100">
+                        <tr>
+                          <th className="w-1/2">Kode Rekening Debit</th>
+                          <th className="w-1/2">Kode Rekening Kredit</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-gray-200">
+                        {data?.data.kode_rekening?.map((item, index) => (
+                          <tr key={index}>
+                            <td className="w-1/2">{item.debit}</td>
+                            <td className="w-1/2">{item.credit}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                  <TwButton
+                    variant="secondary"
+                    className="ml-2"
+                    onClick={handleClose}
+                    isLoading={false}
+                    icon={<XMarkIcon className="h-4 w-4" />}
+                    iconPosition="left"
+                    title="Tutup"
+                  />
                 </div>
               </DialogPanel>
             </TransitionChild>
@@ -77,25 +118,17 @@ function Display({
 
 interface Props {
   searchField?: string;
-  data: {
-    data: List[];
-    meta: Meta;
-  };
+  data: PaginationType<List[]>;
 }
-export default function Table({
-  searchField = '',
-  data = {
-    data: [] as List[],
-    meta: {} as Meta,
-  },
-}: Props) {
-  const rows = data?.data.map((item: List) => {
+export default function Table({ searchField = '', data }: Props) {
+  const rows: Row[] = data?.data.map((item: List) => {
     return {
       id: item.id,
       jurnal_kode: item.jurnal_kode,
       jurnal_jenis: item.jurnal_jenis,
+      kode_rekening: item.kode_rekening,
     };
-  }) as Row[];
+  });
 
   const columns: Column[] = [
     {
@@ -114,10 +147,12 @@ export default function Table({
       sortable: true,
     },
     {
-      label: 'Action',
+      label: 'View',
       accessor: 'id',
       sortable: false,
-      render: <View />,
+      render: (item: Row) => {
+        return <View data={item} />;
+      },
     },
   ];
 
