@@ -37,7 +37,6 @@ export default auth(async (req) => {
 
   if (!isLoggedIn) {
     const url = new URL('/login', req.url);
-    url.searchParams.set('callbackUrl', encodeURI(req.url));
     originalSSOToken && url.searchParams.set('ssoToken', MaskedSSOToken);
     return Response.redirect(url);
   }
