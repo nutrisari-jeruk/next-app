@@ -56,7 +56,7 @@ const adminJournals: Menu[] = [
   {
     id: 4,
     name: 'Jurnal Penutup',
-    href: '/master/jurnal/penutup',
+    href: '/master/journal/closing',
     initial: 'JPP',
     current: false,
   },
