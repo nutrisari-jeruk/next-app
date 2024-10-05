@@ -7,7 +7,7 @@ import { redirect } from 'next/navigation';
 export async function authenticate(_currentState: unknown, formData: FormData) {
   const callbackUrl = formData.get('callbackUrl') as string;
   try {
-    await signIn('credentials', formData);
+    const cek = await signIn('credentials', formData);
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {
