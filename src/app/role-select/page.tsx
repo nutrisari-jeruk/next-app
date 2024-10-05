@@ -19,7 +19,6 @@ export default function RoleSelect({ searchParams }: any) {
   const callbackUrl = searchParams?.callbackUrl || '/';
   const { pending } = useFormStatus();
   const [errorMessage, formAction] = useFormState(authenticate, undefined);
-
   const { loggedInUser } = useLoggedInUser();
   const router = useRouter();
 

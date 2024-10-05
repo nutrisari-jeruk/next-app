@@ -1,16 +1,27 @@
 'use server';
 
 import $http from '@/lib/axios';
-import { redirect } from 'next/navigation';
 import { AxiosError } from 'axios';
-import { AuthError } from 'next-auth';
-import { ZodError } from 'zod';
-import { signInSchema } from '@/lib/zod';
+import { signInSchema, ssoSignInSchema } from '@/lib/zod';
 import { isDynamicServerError } from 'next/dist/client/components/hooks-server-context';
 import { User } from '@/types/user';
 import { BaseResponse } from '@/types/api';
 
 export async function getUserRole(_currentState: unknown, formData: FormData) {
+  if (
+    formData.get('ssoToken') &&
+    !formData.get('email') &&
+    !formData.get('password')
+  ) {
+    return getUserRoleBySSOToken(_currentState, formData);
+  }
+
+  return getUserRoleByCredential(_currentState, formData);
+}
+export async function getUserRoleByCredential(
+  _currentState: unknown,
+  formData: FormData,
+) {
   const validatedFields = signInSchema.safeParse({
     email: formData.get('email'),
     password: formData.get('password'),
@@ -26,6 +37,45 @@ export async function getUserRole(_currentState: unknown, formData: FormData) {
 
   try {
     const { data } = await $http.post('/v1/apps/login', {
+      ...validatedFields.data,
+    });
+
+    if (data?.data) {
+      return { user: data.data };
+    }
+  } catch (error) {
+    if (isDynamicServerError(error)) {
+      throw error;
+    }
+
+    if (error instanceof AxiosError) {
+      return {
+        errorMessage: error?.response?.data?.message,
+      };
+    }
+
+    return {
+      errorMessage: 'Something went wrong. Please try again later.',
+    };
+  }
+}
+
+export async function getUserRoleBySSOToken(
+  _currentState: unknown,
+  formData: FormData,
+) {
+  const validatedFields = ssoSignInSchema.safeParse({
+    token: formData.get('ssoToken'),
+  });
+
+  if (validatedFields.success === false) {
+    return {
+      errorMessage: validatedFields.error.flatten().fieldErrors.token,
+    };
+  }
+
+  try {
+    const { data } = await $http.post('/v1/sso/login', {
       ...validatedFields.data,
     });
 
