@@ -42,35 +42,61 @@ export default function Show({
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
               <DialogPanel className="relative w-full max-w-2xl transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all">
-                <div className="flex items-start">
-                  <div className="mt-3 w-full space-y-4">
-                    <table className="w-full">
-                      <tbody>
-                        <tr>
-                          <td className="w-1/8 font-bold leading-5">Kode</td>
-                          <td className="w-1/12">:</td>
-                          <td className="w-full">{data?.data.jurnal_kode}</td>
-                        </tr>
-                        <tr>
-                          <td className="w-1/4 font-bold leading-5">Jenis</td>
-                          <td>:</td>
-                          <td className="w-full">{data?.data.jurnal_jenis}</td>
-                        </tr>
-                      </tbody>
-                    </table>
+                <div>
+                  <div className="px-4 sm:px-0">
+                    <h3 className="text-base font-semibold leading-7 text-gray-900">
+                      Informasi Jurnal
+                    </h3>
+                  </div>
+                  <div className="mt-6 border-t border-gray-100 shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg px-3">
+                    <dl className="divide-y divide-gray-100">
+                      <div className="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                        <dt className="text-sm font-bold leading-6 text-gray-900">
+                          Kode Jurnal
+                        </dt>
+                        <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                          {data.data.jurnal_kode}
+                        </dd>
+                      </div>
 
+                      <div className="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                        <dt className="text-sm font-bold leading-6 text-gray-900">
+                          Jenis Jurnal
+                        </dt>
+                        <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                          {data.data.jurnal_jenis}
+                        </dd>
+                      </div>
+                    </dl>
+                  </div>
+
+                  <div className="mt-6 overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
                     <table className="w-full table-fixed divide-y divide-gray-300">
-                      <thead className="bg-gray-100">
+                      <thead className="bg-gray-200">
                         <tr>
-                          <th className="w-1/2">Kode Rekening Debit</th>
-                          <th className="w-1/2">Kode Rekening Kredit</th>
+                          <th className="w-1/3 px-3 py-2 text-left text-sm font-semibold text-gray-900">
+                            Kode Rekening
+                          </th>
+                          <th className="w-1/3 px-3 py-2 text-left text-sm font-semibold text-gray-900">
+                            Debit
+                          </th>
+                          <th className="w-1/3 px-3 py-2 text-left text-sm font-semibold text-gray-900">
+                            Kredit
+                          </th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-gray-200">
-                        {data?.data.kode_rekening?.map((item, index) => (
-                          <tr key={index}>
-                            <td className="w-1/2">{item.debit}</td>
-                            <td className="w-1/2">{item.credit}</td>
+                      <tbody className="divide-y divide-gray-200 bg-white">
+                        {data.data.kode_rekening.map((item: any) => (
+                          <tr key={item.id}>
+                            <td className="px-3 py-2 text-sm text-gray-500">
+                              {item.code}
+                            </td>
+                            <td className="px-3 py-2 text-sm text-gray-500">
+                              {item.debit}
+                            </td>
+                            <td className="px-3 py-2 text-sm text-gray-500">
+                              {item.credit}
+                            </td>
                           </tr>
                         ))}
                       </tbody>
