@@ -1,4 +1,4 @@
-import Form from '@/app/(dashboard)/mapping/expenditure-050/to-sap-13/ui/form/edit';
+import Form from '@/app/(dashboard)/mapping/expenditure-050/to-expenditure-sap-13/ui/form/edit';
 import { TwHeader } from '@/components';
 import useSap13 from '@/hooks/sap13';
 import type { TreeNode } from '@/types/tree-view';
