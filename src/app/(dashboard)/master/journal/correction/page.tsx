@@ -39,14 +39,7 @@ export default async function Page({ searchParams }: { searchParams: Params }) {
       </div>
 
       <div className="mt-4">
-        <Suspense fallback={<Skeletons />}>
-          <Table
-            page={page}
-            rowsPerPage={rowsPerPage}
-            searchField={searchField}
-            searchValue={searchValue}
-          />
-        </Suspense>
+        <Table data={data} searchField={searchField} />
       </div>
     </>
   );
