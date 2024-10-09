@@ -25,13 +25,15 @@ export async function getUserRoleByCredential(
   const validatedFields = signInSchema.safeParse({
     email: formData.get('email'),
     password: formData.get('password'),
+    captcha_token: formData.get('captchaToken'),
   });
 
   if (validatedFields.success === false) {
     return {
       errorMessage:
         validatedFields.error.flatten().fieldErrors.email ||
-        validatedFields.error.flatten().fieldErrors.password,
+        validatedFields.error.flatten().fieldErrors.password ||
+        validatedFields.error.flatten().fieldErrors.captcha_token,
     };
   }
 
@@ -39,6 +41,8 @@ export async function getUserRoleByCredential(
     const { data } = await $http.post('/v1/apps/login', {
       ...validatedFields.data,
     });
+
+    console.log(data);
 
     if (data?.data) {
       return { user: data.data };

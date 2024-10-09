@@ -22,6 +22,7 @@ export default auth(async (req) => {
   });
 
   const originalSSOToken = nextUrl.searchParams.get('token') || '';
+
   const MaskedSSOToken = originalSSOToken.split('_')[0];
 
   if (isApiAuthRoute) {
@@ -39,6 +40,12 @@ export default auth(async (req) => {
     const url = new URL('/login', req.url);
     originalSSOToken && url.searchParams.set('ssoToken', MaskedSSOToken);
     return Response.redirect(url);
+  }
+
+  if (nextUrl.searchParams.has('token')) {
+    const cleanUrl = new URL(req.url);
+    cleanUrl.searchParams.delete('token');
+    return Response.redirect(cleanUrl);
   }
 
   if (token.role !== 'admin' && isAllowedRoute) {
