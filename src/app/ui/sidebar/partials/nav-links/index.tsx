@@ -42,7 +42,7 @@ const adminJournals: Menu[] = [
   {
     id: 2,
     name: 'Jurnal Penyesuaian',
-    href: '/master/jurnal/penyesuaian',
+    href: '/master/journal/adjustment',
     initial: 'JP',
     current: false,
   },
