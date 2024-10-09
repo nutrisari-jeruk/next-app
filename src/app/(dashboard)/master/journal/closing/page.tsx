@@ -1,16 +1,15 @@
 import Link from 'next/link';
+import Table from './ui/table';
+import { Metadata } from 'next';
 import { TwButton, TwHeader } from '@/components';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
-import { Metadata } from 'next';
-import { Suspense } from 'react';
-import type { Params } from '@/types/params';
-import Skeletons from '@/app/ui/skeletons';
-import Table from './ui/table';
 import { fetchList } from '@/actions/master/journal/closing';
+import type { Params } from '@/types/params';
 
 export const metadata: Metadata = {
   title: 'Jurnal Penutup',
 };
+
 export default async function Page({ searchParams }: { searchParams: Params }) {
   const searchValue = searchParams?.searchValue || '';
   const searchField = searchParams?.searchField || 'jurnal_kode';
@@ -39,14 +38,7 @@ export default async function Page({ searchParams }: { searchParams: Params }) {
       </div>
 
       <div className="mt-4">
-        <Suspense fallback={<Skeletons />}>
-          <Table
-            page={page}
-            rowsPerPage={rowsPerPage}
-            searchField={searchField}
-            searchValue={searchValue}
-          />
-        </Suspense>
+        <Table data={data} searchField={searchField} />
       </div>
     </>
   );
