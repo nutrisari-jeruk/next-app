@@ -66,7 +66,7 @@ const adminJournals: Menu[] = [
 const adminMaps: Menu[] = [
   {
     name: 'Kode Rekening Belanja',
-    href: '/mapping/expenditure-050/to-sap-13',
+    href: '/mapping/expenditure-050/to-expenditure-sap-13',
     initial: 'MP',
     current: false,
   },

@@ -1,7 +1,7 @@
 'use server';
 
 import $fetch from '@/lib/fetch';
-import { MapSchema } from '@/schemas/expenditure-050/to-sap-13';
+import { MapSchema } from '@/schemas/expenditure-050/to-expenditure-sap-13';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { setFlash } from '@/lib/flash-toaster';
@@ -96,8 +96,8 @@ const mapOnAccount = async (_prevState: unknown, formData: FormData) => {
   }
 
   setFlash({ type: 'success', message: 'Data berhasil disimpan', tag: new Date().toLocaleString() });
-  revalidatePath(`/mapping/expenditure-050/to-sap-13?page=${page}`);
-  redirect(`/mapping/expenditure-050/to-sap-13?page=${page}`);
+  revalidatePath(`/mapping/expenditure-050/to-expenditure-sap-13?page=${page}`);
+  redirect(`/mapping/expenditure-050/to-expenditure-sap-13?page=${page}`);
 };
 
 export { fetchList, mapOnAccount };

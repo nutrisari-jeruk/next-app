@@ -7,7 +7,6 @@ import TwKbd from './tw-kbd';
 import Input from './input';
 import TwConfirm from './tw-confirm';
 import TwComboBox from './tw-combo-box';
-import TwTable from './tw-table';
 import TwSearch from './tw-search';
 import TwSelect from './tw-select';
 import TwListbox from './tw-listbox';
@@ -23,7 +22,6 @@ export {
   TwKbd,
   TwConfirm,
   TwComboBox,
-  TwTable,
   TwSearch,
   TwSelect,
   TwListbox,

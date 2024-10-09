@@ -1,29 +1,35 @@
-import Skeletons from '@/app/ui/skeletons';
 import DataTable from '@/app/ui/data-table';
 import RowProvider from '@/providers/row';
 import { Metadata } from 'next';
-import { Suspense } from 'react';
 import { TwHeader } from '@/components';
-import { fetchList } from '@/actions/mapping/expenditure-050/to-sap-13';
+import { fetchList } from '@/actions/mapping/expenditure-050/to-expenditure-sap-13';
 import type { Params } from '@/types/params';
 import type { Column, Row } from '@/types/table';
+import Search from '@/components/tw-search';
+import { Pagination } from '@/app/ui/data-table/partials';
 
 export const metadata: Metadata = {
   title: 'Mapping',
 };
 
-export default async function Page({ searchParams }: { searchParams: Params }) {
-  const page = searchParams.page || '1';
-  const rowsPerPage = searchParams.rowsPerPage || '10';
-  const searchField = searchParams.searchField || 'account_050';
-  const searchValue = searchParams.searchValue || '';
-
-  const data = await fetchList({
+export default async function Page({
+  searchParams: {
+    page = '1',
+    rowsPerPage = '10',
+    searchField = 'account_050',
+    searchValue = '',
+  },
+}: {
+  searchParams: Params;
+}) {
+  const params: Params = {
     page: page,
     rowsPerPage: rowsPerPage,
     searchField: searchField,
     searchValue: searchValue,
-  });
+  };
+
+  const data = await fetchList(params);
 
   const columns: Column[] = [
     {
@@ -61,18 +67,21 @@ export default async function Page({ searchParams }: { searchParams: Params }) {
   const meta = data.meta;
 
   return (
-    <div>
+    <>
       <div className="flex items-center justify-between">
         <TwHeader title="Mapping Kode Rekening" />
       </div>
 
-      <div className="mt-4">
-        <Suspense fallback={<Skeletons />}>
-          <RowProvider rows={rows} params={searchParams}>
-            <DataTable {...{ rows, columns, meta, searchField }} />
-          </RowProvider>
-        </Suspense>
+      <div className="mt-4 flex w-full flex-col space-y-2">
+        <RowProvider {...{ rows, params }}>
+          <Search
+            placeholder="Cari kode rekening"
+            searchField={searchField}
+          />
+          <DataTable {...{ columns, rows }} />
+          <Pagination {...{ meta }} />
+        </RowProvider>
       </div>
-    </div>
+    </>
   );
 }

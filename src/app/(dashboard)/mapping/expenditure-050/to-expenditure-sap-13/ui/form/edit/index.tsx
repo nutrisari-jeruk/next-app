@@ -12,7 +12,7 @@ import {
   FolderPlusIcon,
 } from '@heroicons/react/24/outline';
 import useRowStore from '@/store/row';
-import { mapOnAccount } from '@/actions/mapping/expenditure-050/to-sap-13';
+import { mapOnAccount } from '@/actions/mapping/expenditure-050/to-expenditure-sap-13';
 import { notFound } from 'next/navigation';
 
 import type { TreeNode } from '@/types/tree-view';
@@ -25,23 +25,31 @@ interface Props {
   };
 }
 
-function SubmitButton () {
+function SubmitButton() {
   const { pending } = useFormStatus();
 
   return (
     <TwButton
-    type="submit"
-    title="Save"
-    variant="success"
-    disabled={pending}
-    isLoading={pending}
-    icon={<CheckIcon className="h-5 w-5" aria-hidden="true" />}
-  />
+      type="submit"
+      title="Save"
+      variant="success"
+      disabled={pending}
+      isLoading={pending}
+      icon={<CheckIcon className="h-5 w-5" aria-hidden="true" />}
+    />
   );
 }
 
 export default function Form({ treeData, params }: Props) {
-  const { rows, params: p } = useRowStore.getState();
+  const {
+    rows,
+    params: p = {
+      page: '1',
+      rowsPerPage: '10',
+      searchField: '',
+      searchValue: '',
+    },
+  } = useRowStore.getState();
 
   const id = params.id;
   const account = rows.find((row) => row.kr050_id === Number(id));
@@ -55,7 +63,6 @@ export default function Form({ treeData, params }: Props) {
     },
   ]);
 
-  const { pending } = useFormStatus();
   const [state, formAction] = useFormState(mapOnAccount, undefined);
 
   if (!rows.length) {
@@ -140,7 +147,9 @@ export default function Form({ treeData, params }: Props) {
         </div>
 
         <div className="mt-6 flex items-center justify-end gap-x-6">
-          <Link href={`/mapping/expenditure-050/to-sap-13?page=${p.page}`}>
+          <Link
+            href={`/mapping/expenditure-050/to-expenditure-sap-13?page=${p.page}`}
+          >
             <TwButton
               type="button"
               title="Cancel"

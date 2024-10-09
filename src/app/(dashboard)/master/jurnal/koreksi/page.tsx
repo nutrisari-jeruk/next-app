@@ -1,16 +1,11 @@
 import Link from 'next/link';
-import Search from '@/app/ui/search';
-import { TwButton, TwHeader, TwTable } from '@/components';
+import { TwButton, TwHeader } from '@/components';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import { Metadata } from 'next';
-import { fetchKoreksiList } from './actions';
 import { Suspense } from 'react';
-import type { Params } from '@/types/params';
-import type { Column, Row } from '@/types/table';
-import type { List } from '@/types/koreksi';
 import Skeletons from '@/app/ui/skeletons';
 import Table from './ui/table';
-
+import type { Params } from '@/types/params';
 
 export const metadata: Metadata = {
   title: 'Jurnal Koreksi',
@@ -20,53 +15,6 @@ export default async function Page({ searchParams }: { searchParams: Params }) {
   const searchField = searchParams?.searchField || 'jurnal_kode';
   const page = searchParams?.page || '1';
   const rowsPerPage = searchParams?.rowsPerPage || '10';
-
-  // const columns: Column[] = [
-  //   {
-  //     label: 'Kode Jurnal',
-  //     accessor: 'jurnal_kode',
-  //     sortable: true,
-  //   },
-  //   {
-  //     label: 'Jenis Jurnal',
-  //     accessor: 'jurnal_jenis',
-  //     sortable: true,
-  //   },
-  //   {
-  //     label: 'Debit',
-  //     accessor: 'debit',
-  //     sortable: false,
-  //   },
-  //   {
-  //     label: 'Kredit',
-  //     accessor: 'credit',
-  //     sortable: false,
-  //   },
-  // ];
-
-  // const data = await fetchKoreksiList({
-  //   page: currentPage,
-  //   rowsPerPage: perPage,
-  //   searchField: searchField,
-  //   searchValue: searchValue,
-  // });
-
-  // const rows = data?.data.map((item: List) => {
-  //   const deb = item.kode_rekening.find(
-  //     (rekening) => rekening.debit !== null && rekening.credit === null,
-  //   )?.debit;
-  //   const cred = item.kode_rekening.find(
-  //     (rekening) => rekening.credit !== null && rekening.debit === null,
-  //   )?.credit;
-
-  //   return {
-  //     id: item.id,
-  //     jurnal_kode: item.jurnal_kode,
-  //     jurnal_jenis: item.jurnal_jenis,
-  //     debit: deb,
-  //     credit: cred,
-  //   };
-  // }) as Row[];
 
   return (
     <div>

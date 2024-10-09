@@ -10,6 +10,13 @@ export const signInSchema = object({
     .max(32, 'Password must be less than 32 characters'),
 });
 
+export const ssoSignInSchema = object({
+  token: string({ required_error: 'SSO Token is required' }).min(
+    33,
+    'SSO Token is required',
+  ),
+});
+
 export const selectRoleSchema = object({
   user_id: string({ required_error: 'User id is required' }),
   role_id: string({ required_error: 'Role id is required' }),
