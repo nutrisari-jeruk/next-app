@@ -12,20 +12,22 @@ import { useLoggedInUser } from '@/store/user';
 import { useRouter } from 'next/navigation';
 import Loading from './loading';
 import ReCAPTCHA from 'react-google-recaptcha';
+import { set } from 'zod';
 
-const SubmitButton = (props: { captchaToken: string | null }) => {
-  const { captchaToken } = props;
-  const { pending } = useFormStatus();
-
+const SubmitButton = (props: {
+  captchaToken: string | null;
+  isLoading: boolean;
+}) => {
+  const { captchaToken, isLoading } = props;
   return (
     <TwButton
       type="submit"
       title="Login"
       className="w-full"
       size="lg"
-      aria-disabled={pending}
-      disabled={pending || !captchaToken}
-      isLoading={pending}
+      aria-disabled={isLoading}
+      disabled={isLoading || !captchaToken}
+      isLoading={isLoading}
       icon={<ArrowRightEndOnRectangleIcon className="w-5" />}
     />
   );
@@ -39,12 +41,14 @@ export default function Page({ searchParams }: any) {
   const { setLoggedInUser } = useLoggedInUser();
   const [isLoading, setIsLoading] = useState(true);
   const recaptchaRef = useRef<ReCAPTCHA>(null);
+  const [pending, setPending] = useState(false);
 
   useEffect(() => {
     if (state?.user) {
       setLoggedInUser?.(state.user);
       router.push(`/role-select`);
     }
+    setPending(false);
   }, [state, setLoggedInUser, router, ssoToken]);
 
   useEffect(() => {
@@ -72,8 +76,9 @@ export default function Page({ searchParams }: any) {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+    setPending(true);
     if (!captchaToken) {
+      setPending(false);
       return;
     }
 
@@ -107,7 +112,7 @@ export default function Page({ searchParams }: any) {
                 ref={recaptchaRef}
               />
 
-              <SubmitButton captchaToken={captchaToken} />
+              <SubmitButton captchaToken={captchaToken} isLoading={pending} />
             </form>
             {state?.errorMessage && (
               <p className="flex items-center gap-1 text-sm text-red-500">
