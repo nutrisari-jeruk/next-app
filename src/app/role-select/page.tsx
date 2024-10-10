@@ -16,9 +16,9 @@ import type { Option } from '@/types/option';
 import type { Role } from '@/types/user';
 
 export default function RoleSelect({ searchParams }: any) {
-  const { pending } = useFormStatus();
   const [errorMessage, formAction] = useFormState(authenticate, undefined);
   const { loggedInUser } = useLoggedInUser();
+  const [pending, setPending] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -36,7 +36,7 @@ export default function RoleSelect({ searchParams }: any) {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+    setPending(true);
     if (selectedRole) {
       const formData = new FormData();
       formData.append('user_id', String(loggedInUser?.id));
@@ -64,8 +64,8 @@ export default function RoleSelect({ searchParams }: any) {
                 className="w-full"
                 size="lg"
                 aria-disabled={pending}
-                disabled={pending}
-                isLoading={false}
+                disabled={pending || !selectedRole}
+                isLoading={pending}
                 icon={<ArrowRightEndOnRectangleIcon className="w-5" />}
               />
             </form>
