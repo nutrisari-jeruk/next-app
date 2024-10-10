@@ -45,8 +45,8 @@ export default function CreateForm(props: Props) {
 
   const handleSubmit = async () => {
     const formData = new FormData();
-    formData.append('jenis_jurnal', jenis);
-    formData.append('kode_rekening_id', JSON.stringify(accountList));
+    formData.append('journal_kind', jenis);
+    formData.append('accounts_id', JSON.stringify(accountList));
 
     return formAction(formData);
   };
@@ -75,8 +75,8 @@ export default function CreateForm(props: Props) {
             onChange={(e) => setJenis(e.target.value)}
             required
             placeholder="Masukkan Jenis Penutup"
-            isError={!!state?.validationErrors?.jenis_jurnal}
-            errorMessage={state?.validationErrors?.jenis_jurnal}
+            isError={!!state?.validationErrors?.journal_kind}
+            errorMessage={state?.validationErrors?.journal_kind}
           />
         </div>
 

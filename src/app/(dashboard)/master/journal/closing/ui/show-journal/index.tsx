@@ -55,7 +55,7 @@ export default function Show({
                           Kode Jurnal
                         </dt>
                         <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                          {data.data.jurnal_kode}
+                          {data.data.journal_code}
                         </dd>
                       </div>
 
@@ -64,7 +64,7 @@ export default function Show({
                           Jenis Jurnal
                         </dt>
                         <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                          {data.data.jurnal_jenis}
+                          {data.data.journal_kind}
                         </dd>
                       </div>
                     </dl>
@@ -86,7 +86,7 @@ export default function Show({
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-gray-200 bg-white">
-                        {data.data.kode_rekening.map((item: any) => (
+                        {data.data.accounts.map((item: any) => (
                           <tr key={item.id}>
                             <td className="px-3 py-2 text-sm text-gray-500">
                               {item.code}
