@@ -1,11 +1,11 @@
 'use server';
 
 import { signIn } from '@/auth';
+import { DEFAULT_LOGIN_REDIRECT } from '@/routes';
 import { AuthError } from 'next-auth';
 import { redirect } from 'next/navigation';
 
 export async function authenticate(_currentState: unknown, formData: FormData) {
-  const callbackUrl = formData.get('callbackUrl') as string;
   try {
     const cek = await signIn('credentials', formData);
   } catch (error) {
@@ -21,5 +21,5 @@ export async function authenticate(_currentState: unknown, formData: FormData) {
     }
   }
 
-  redirect(callbackUrl);
+  redirect(DEFAULT_LOGIN_REDIRECT);
 }
