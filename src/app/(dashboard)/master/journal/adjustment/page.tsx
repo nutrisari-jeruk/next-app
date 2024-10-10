@@ -1,27 +1,34 @@
 import Link from 'next/link';
+import Table from './ui/table';
+import { Metadata } from 'next';
 import { TwButton, TwHeader } from '@/components';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
-import { Metadata } from 'next';
-import { Suspense } from 'react';
-import Skeletons from '@/app/ui/skeletons';
-import Table from './ui/table';
+import { fetchList } from '@/actions/master/journal/adjustment';
 import type { Params } from '@/types/params';
 
 export const metadata: Metadata = {
-  title: 'journal_kind Koreksi',
+  title: 'Jurnal Penyesuaian',
 };
+
 export default async function Page({ searchParams }: { searchParams: Params }) {
   const searchValue = searchParams?.searchValue || '';
   const searchField = searchParams?.searchField || 'journal_kind_kode';
   const page = searchParams?.page || '1';
   const rowsPerPage = searchParams?.rowsPerPage || '10';
 
-  return (
-    <div>
-      <div className="flex items-center justify-between">
-        <TwHeader title="journal_kind Koreksi" />
+  const data = await fetchList({
+    page: page,
+    rowsPerPage: rowsPerPage,
+    searchField: searchField,
+    searchValue: searchValue,
+  });
 
-        <Link href="/master/journal_kind/koreksi/create">
+  return (
+    <>
+      <div className="flex items-center justify-between">
+        <TwHeader title="Jurnal Penyesuaian" />
+
+        <Link href="/master/journal/adjustment/create">
           <TwButton
             title="Tambah Baru"
             variant="success"
@@ -30,16 +37,9 @@ export default async function Page({ searchParams }: { searchParams: Params }) {
         </Link>
       </div>
 
-      <div className="mt-4 flex flex-col space-y-2">
-        <Suspense fallback={<Skeletons />}>
-          <Table
-            page={page}
-            rowsPerPage={rowsPerPage}
-            searchField={searchField}
-            searchValue={searchValue}
-          />
-        </Suspense>
+      <div className="mt-4">
+        <Table data={data} searchField={searchField} />
       </div>
-    </div>
+    </>
   );
 }

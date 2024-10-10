@@ -11,9 +11,9 @@ import {
   PlusIcon,
   TrashIcon,
 } from '@heroicons/react/24/outline';
-import { createJournal } from '@/actions/master/journal/general';
+import { createJournal } from '@/actions/master/journal/adjustment';
 import type { TreeNode } from '@/types/tree-view';
-import type { Account } from '@/types/journal/general';
+import type { Account } from '@/types/journal/adjustment';
 
 interface Props {
   treeData: TreeNode[];
@@ -73,9 +73,9 @@ export default function CreateForm(props: Props) {
             value={jenis}
             onChange={(e) => setJenis(e.target.value)}
             required
-            placeholder="Masukkan Jenis Umum"
-            isError={!!state?.validationErrors?.jenis_journal_kind}
-            errorMessage={state?.validationErrors?.jenis_journal_kind}
+            placeholder="Masukkan Jenis Penyesuaian"
+            isError={!!state?.validationErrors?.journal_kind}
+            errorMessage={state?.validationErrors?.journal_kind}
           />
         </div>
 
@@ -125,7 +125,7 @@ export default function CreateForm(props: Props) {
         </div>
 
         <div className="flex items-center justify-end gap-x-6">
-          <Link href="/master/journal/general">
+          <Link href="/master/journal/adjustment">
             <TwButton
               type="button"
               title="Cancel"

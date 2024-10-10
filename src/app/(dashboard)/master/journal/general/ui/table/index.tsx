@@ -29,9 +29,9 @@ export default function Table({ searchField = '', data }: Props) {
   const rows: Row[] = data?.data.map((item: List) => {
     return {
       id: item.id,
-      jurnal_kode: item.jurnal_kode,
-      jurnal_jenis: item.jurnal_jenis,
-      kode_rekening: item.kode_rekening,
+      journal_code: item.journal_code,
+      journal_kind: item.journal_kind,
+      accounts: item.accounts,
     };
   });
 
@@ -42,13 +42,13 @@ export default function Table({ searchField = '', data }: Props) {
       sortable: false,
     },
     {
-      label: 'Kode Jurnal',
-      accessor: 'jurnal_kode',
+      label: 'Kode',
+      accessor: 'journal_code',
       sortable: true,
     },
     {
-      label: 'Jenis Jurnal',
-      accessor: 'jurnal_jenis',
+      label: 'Jenis',
+      accessor: 'journal_kind',
       sortable: true,
     },
     {

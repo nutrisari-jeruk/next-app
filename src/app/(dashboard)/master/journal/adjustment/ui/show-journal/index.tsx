@@ -55,7 +55,7 @@ export default function Show({
                           Kode journal_kind
                         </dt>
                         <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                          {data.data.journal_code}
+                          {data.data.journal_kind_kode}
                         </dd>
                       </div>
 
@@ -64,7 +64,7 @@ export default function Show({
                           Jenis journal_kind
                         </dt>
                         <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                          {data.data.journal_kind}
+                          {data.data.journal_kind_jenis}
                         </dd>
                       </div>
                     </dl>

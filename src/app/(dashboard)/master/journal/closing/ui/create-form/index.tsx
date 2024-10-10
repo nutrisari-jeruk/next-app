@@ -68,8 +68,8 @@ export default function CreateForm(props: Props) {
       <form action={handleSubmit} className="rounded-lg">
         <div className="mb-6 rounded-lg bg-white p-4 shadow">
           <TwInput
-            name="jenis_jurnal"
-            label="Jenis Jurnal"
+            name="jenis_journal_kind"
+            label="Jenis Penutup"
             type="text"
             value={jenis}
             onChange={(e) => setJenis(e.target.value)}

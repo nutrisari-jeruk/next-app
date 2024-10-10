@@ -42,14 +42,14 @@ const adminJournals: Menu[] = [
   {
     id: 2,
     name: 'Jurnal Penyesuaian',
-    href: '/master/jurnal/penyesuaian',
+    href: '/master/journal/adjustment',
     initial: 'JP',
     current: false,
   },
   {
     id: 3,
     name: 'Jurnal Koreksi',
-    href: '/master/jurnal/koreksi',
+    href: '/master/journal_kind/koreksi',
     initial: 'JK',
     current: false,
   },
@@ -120,7 +120,7 @@ export default function NavLink({ user }: { user: User }) {
         {journals.length > 0 && (
           <li>
             <div className="text-xs font-semibold leading-6 text-gray-400">
-              Jurnal
+              journal_kind
             </div>
             <ul role="list" className="-mx-2 mt-2 space-y-1">
               {journals.map((item) => (

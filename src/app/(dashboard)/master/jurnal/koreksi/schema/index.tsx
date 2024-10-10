@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const KoreksiSchema = z.object({
-  jenis_jurnal: z
+  jenis_journal_kind: z
     .string({
       required_error: 'Jenis Koreksi is required',
       invalid_type_error: 'Jenis Koreksi must be a string',

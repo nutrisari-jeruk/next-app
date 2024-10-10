@@ -6,7 +6,7 @@ import { TwButton } from '@/components';
 import { Pagination, Search } from '@/app/ui/data-table/partials';
 import type { Meta, Pagination as PaginationType } from '@/types/pagination';
 import type { Column, Row } from '@/types/table';
-import type { List } from '@/types/journal/closing';
+import type { List } from '@/types/journal/adjustment';
 import ShowJournal from '../show-journal';
 
 function View(data: Row) {
