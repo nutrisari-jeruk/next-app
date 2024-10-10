@@ -8,20 +8,20 @@ import Skeletons from '@/app/ui/skeletons';
 import Table from './ui/table';
 
 export const metadata: Metadata = {
-  title: 'Jurnal Penutup',
+  title: 'journal_kind Penutup',
 };
 export default async function Page({ searchParams }: { searchParams: Params }) {
   const searchValue = searchParams?.searchValue || '';
-  const searchField = searchParams?.searchField || 'jurnal_kode';
+  const searchField = searchParams?.searchField || 'journal_kind_kode';
   const page = searchParams?.page || '1';
   const rowsPerPage = searchParams?.rowsPerPage || '10';
 
   return (
     <div>
       <div className="flex items-center justify-between">
-        <TwHeader title="Jurnal Penutup" />
+        <TwHeader title="journal_kind Penutup" />
 
-        <Link href="/master/jurnal/penutup/create">
+        <Link href="/master/journal_kind/penutup/create">
           <TwButton
             title="Tambah Baru"
             variant="success"

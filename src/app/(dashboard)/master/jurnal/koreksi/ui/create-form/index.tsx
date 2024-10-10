@@ -65,7 +65,7 @@ export default function CreateKoreksiForm(props: CreateKoreksiForm) {
     event.preventDefault();
 
     const formData = new FormData();
-    formData.append('jenis_jurnal', jenisKoreksi);
+    formData.append('jenis_journal_kind', jenisKoreksi);
     debitId && formData.append('debit', debitId!.toString());
     creditId && formData.append('credit', creditId!.toString());
 
@@ -115,15 +115,15 @@ export default function CreateKoreksiForm(props: CreateKoreksiForm) {
           <div className="border-b border-gray-900/10 pb-12">
             <div className="flex flex-col space-y-4">
               <TwInput
-                name="jenis_jurnal"
-                label="Jenis Jurnal Koreksi LPE"
+                name="jenis_journal_kind"
+                label="Jenis journal_kind Koreksi LPE"
                 type="text"
                 value={jenisKoreksi}
                 onChange={(e) => setJenisKoreksi(e.target.value)}
                 required
                 placeholder="Masukkan Jenis Koreksi"
-                isError={!!state?.validationErrors?.jenis_jurnal}
-                errorMessage={state?.validationErrors?.jenis_jurnal}
+                isError={!!state?.validationErrors?.jenis_journal_kind}
+                errorMessage={state?.validationErrors?.jenis_journal_kind}
               />
 
               <TwSelect
