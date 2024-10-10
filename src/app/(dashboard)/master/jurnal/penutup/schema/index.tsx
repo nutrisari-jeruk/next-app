@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const PenutupSchema = z.object({
-  jenis_jurnal: z
+  jenis_journal_kind: z
     .string({
       required_error: 'Jenis Penutup is required',
       invalid_type_error: 'Jenis Penutup must be a string',

@@ -45,8 +45,8 @@ export default function CreateForm(props: Props) {
 
   const handleSubmit = async () => {
     const formData = new FormData();
-    formData.append('jenis_jurnal', jenis);
-    formData.append('kode_rekening_id', JSON.stringify(accountList));
+    formData.append('journal_kind', jenis);
+    formData.append('accounts_id', JSON.stringify(accountList));
 
     return formAction(formData);
   };
@@ -68,15 +68,15 @@ export default function CreateForm(props: Props) {
       <form action={handleSubmit} className="rounded-lg">
         <div className="mb-6 rounded-lg bg-white p-4 shadow">
           <TwInput
-            name="jenis_jurnal"
-            label="Jenis Jurnal"
+            name="jenis_journal_kind"
+            label="Jenis Penutup"
             type="text"
             value={jenis}
             onChange={(e) => setJenis(e.target.value)}
             required
             placeholder="Masukkan Jenis Penutup"
-            isError={!!state?.validationErrors?.jenis_jurnal}
-            errorMessage={state?.validationErrors?.jenis_jurnal}
+            isError={!!state?.validationErrors?.journal_kind}
+            errorMessage={state?.validationErrors?.journal_kind}
           />
         </div>
 

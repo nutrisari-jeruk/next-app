@@ -1,13 +1,13 @@
 import { z } from 'zod';
 
 export const PenutupSchema = z.object({
-  jenis_jurnal: z
+  journal_kind: z
     .string({
       required_error: 'Jenis Penutup is required',
       invalid_type_error: 'Jenis Penutup must be a string',
     })
     .min(1, 'Jenis Penutup is required'),
-  kode_rekening_id: z.array(
+  accounts_id: z.array(
     z.object({
       is_credit: z.boolean({
         required_error: 'Is Credit is required',

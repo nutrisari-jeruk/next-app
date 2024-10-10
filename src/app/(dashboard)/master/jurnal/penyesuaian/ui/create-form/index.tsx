@@ -62,7 +62,7 @@ export default function CreatePenyesuaianForm(props: Props) {
     event.preventDefault();
 
     const formData = new FormData();
-    formData.append('jenis_jurnal', jenisPenyesuaian);
+    formData.append('jenis_journal_kind', jenisPenyesuaian);
     debitId && formData.append('debit', debitId!.toString());
     creditId && formData.append('credit', creditId!.toString());
 
@@ -84,15 +84,15 @@ export default function CreatePenyesuaianForm(props: Props) {
           <div className="border-b border-gray-900/10 pb-12">
             <div className="flex flex-col space-y-4">
               <TwInput
-                name="jenis_jurnal"
+                name="jenis_journal_kind"
                 label="Jenis Penyesuaian"
                 type="text"
                 value={jenisPenyesuaian}
                 onChange={(e) => setJenisPenyesuaian(e.target.value)}
                 required
                 placeholder="Masukkan Jenis Penyesuaian"
-                isError={!!state?.validationErrors?.jenis_jurnal}
-                errorMessage={state?.validationErrors?.jenis_jurnal}
+                isError={!!state?.validationErrors?.jenis_journal_kind}
+                errorMessage={state?.validationErrors?.jenis_journal_kind}
               />
 
               <div
@@ -158,7 +158,7 @@ export default function CreatePenyesuaianForm(props: Props) {
         </div>
 
         <div className="mt-6 flex items-center justify-end gap-x-6">
-          <Link href="/master/jurnal/penyesuaian">
+          <Link href="/master/journal_kind/penyesuaian">
             <TwButton
               type="button"
               title="Cancel"
