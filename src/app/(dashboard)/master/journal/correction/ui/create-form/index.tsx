@@ -50,7 +50,9 @@ export default function CreateForm(props: Props) {
       },
     },
   ]);
-  const [EquitasType, setEquitasType] = useState('menambah');
+  const [EquitasType, setEquitasType] = useState<'menambah' | 'mengurangi'>(
+    'menambah',
+  );
   const [state, formAction] = useFormState(createJournal, undefined);
 
   const handleSubmit = async () => {
@@ -79,7 +81,7 @@ export default function CreateForm(props: Props) {
     { label: 'Mengurangi', value: 'mengurangi' },
   ];
 
-  const onChangeJenisEquitas = (value: string) => {
+  const onChangeJenisEquitas = (value: 'menambah' | 'mengurangi') => {
     setEquitasType(value);
     switch (value) {
       case 'menambah':
@@ -132,7 +134,9 @@ export default function CreateForm(props: Props) {
           <br></br>
 
           <TwSelect
-            onChange={(e) => onChangeJenisEquitas(e.target.value)}
+            onChange={(e) =>
+              onChangeJenisEquitas(e.target.value as 'menambah' | 'mengurangi')
+            }
             label="Jenis Koreksi Ekuitas"
             name="jenisKoreksiEquitas"
             options={options}

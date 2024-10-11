@@ -22,7 +22,7 @@ interface Props {
   isModalOpen?: boolean;
   onClose: () => void;
   handleAppendAction: (account: Account) => void;
-  equitasType: String;
+  equitasType: 'menambah' | 'mengurangi';
 }
 
 export default function AccountModal(props: Props) {
