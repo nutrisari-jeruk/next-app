@@ -19,17 +19,17 @@ export default async function Table({
   });
 
   const rows = data?.data.map((item: List) => {
-    const deb = item.kode_rekening.find(
+    const deb = item.accounts.find(
       (rekening) => rekening.debit !== null && rekening.credit === null,
     )?.debit;
-    const cred = item.kode_rekening.find(
+    const cred = item.accounts.find(
       (rekening) => rekening.credit !== null && rekening.debit === null,
     )?.credit;
 
     return {
       id: item.id,
-      jurnal_kode: item.jurnal_kode,
-      jurnal_jenis: item.jurnal_jenis,
+      journal_kind_kode: item.journal_kind_kode,
+      journal_kind_jenis: item.journal_kind_jenis,
       debit: deb,
       credit: cred,
     };
@@ -37,13 +37,13 @@ export default async function Table({
 
   const columns: Column[] = [
     {
-      label: 'Kode Jurnal',
-      accessor: 'jurnal_kode',
+      label: 'Kode journal_kind',
+      accessor: 'journal_kind_kode',
       sortable: true,
     },
     {
-      label: 'Jenis Jurnal',
-      accessor: 'jurnal_jenis',
+      label: 'Jenis journal_kind',
+      accessor: 'journal_kind_jenis',
       sortable: true,
     },
     {

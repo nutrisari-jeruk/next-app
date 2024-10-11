@@ -58,9 +58,11 @@ const fetchList = async ({
 
 const createJournal = async (_prevState: unknown, formData: FormData) => {
   const validatedFields = UmumSchema.safeParse({
-    jenis_jurnal: formData.get('jenis_jurnal'),
-    kode_rekening_id: JSON.parse(formData.get('kode_rekening_id') as string),
+    jenis_journal_kind: formData.get('jenis_journal_kind'),
+    accounts_id: JSON.parse(formData.get('accounts_id') as string),
   });
+
+  console.log(validatedFields)
 
   if (!validatedFields.success) {
     return {
@@ -69,8 +71,8 @@ const createJournal = async (_prevState: unknown, formData: FormData) => {
   }
 
   const payload: Payload = {
-    jenis_jurnal: validatedFields.data.jenis_jurnal,
-    kode_rekening_list: validatedFields.data.kode_rekening_id.map((item) => {
+    jenis_journal_kind: validatedFields.data.jenis_journal_kind,
+    accounts_list: validatedFields.data.accounts_id.map((item) => {
       return {
         is_credit: item.is_credit,
         sap13_id: item.sap13_id.id,

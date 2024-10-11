@@ -8,20 +8,20 @@ import Table from './ui/table';
 import type { Params } from '@/types/params';
 
 export const metadata: Metadata = {
-  title: 'Jurnal Koreksi',
+  title: 'journal_kind Koreksi',
 };
 export default async function Page({ searchParams }: { searchParams: Params }) {
   const searchValue = searchParams?.searchValue || '';
-  const searchField = searchParams?.searchField || 'jurnal_kode';
+  const searchField = searchParams?.searchField || 'journal_kind_kode';
   const page = searchParams?.page || '1';
   const rowsPerPage = searchParams?.rowsPerPage || '10';
 
   return (
     <div>
       <div className="flex items-center justify-between">
-        <TwHeader title="Jurnal Koreksi" />
+        <TwHeader title="journal_kind Koreksi" />
 
-        <Link href="/master/jurnal/koreksi/create">
+        <Link href="/master/journal_kind/koreksi/create">
           <TwButton
             title="Tambah Baru"
             variant="success"

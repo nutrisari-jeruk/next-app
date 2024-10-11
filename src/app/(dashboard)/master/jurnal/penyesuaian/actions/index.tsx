@@ -57,7 +57,7 @@ const fetchPenyesuaianList = async ({
 
 const createPenyesuaian = async (_prevState: unknown, formData: FormData) => {
   const validatedFields = PenyesuaianSchema.safeParse({
-    jenis_jurnal: formData.get('jenis_jurnal'),
+    jenis_journal_kind: formData.get('jenis_journal_kind'),
     debit: formData.get('debit'),
     credit: formData.get('credit'),
   });
@@ -69,8 +69,8 @@ const createPenyesuaian = async (_prevState: unknown, formData: FormData) => {
   }
 
   const requestPenyesuaian: Payload = {
-    jenis_jurnal: validatedFields.data.jenis_jurnal,
-    kode_rekening_id: {
+    jenis_journal_kind: validatedFields.data.jenis_journal_kind,
+    accounts_id: {
       debit: Number(validatedFields.data.debit),
       credit: Number(validatedFields.data.credit),
     },
@@ -102,8 +102,8 @@ const createPenyesuaian = async (_prevState: unknown, formData: FormData) => {
     };
   }
 
-  revalidatePath('/master/jurnal/penyesuaian');
-  redirect(`/master/jurnal/penyesuaian`);
+  revalidatePath('/master/journal_kind/penyesuaian');
+  redirect(`/master/journal_kind/penyesuaian`);
 };
 
 export { createPenyesuaian, fetchPenyesuaianList };

@@ -2,7 +2,7 @@
 
 import type { Option } from '@/types/option';
 import { Field, Label, Radio, RadioGroup } from '@headlessui/react';
-import { useState } from 'react';
+import { ReactElement, useState } from 'react';
 
 const plans = [
   { label: 'Debit', value: false },
@@ -13,9 +13,15 @@ interface Props {
   options: Option[];
   value: string | number | boolean;
   handleChange?: (value: string) => void;
+  disabled?: boolean;
 }
 
-export default function TwRadio({ options, value, handleChange }: Props) {
+export default function TwRadio({
+  options,
+  value,
+  handleChange,
+  disabled = false,
+}: Props) {
   const defaultValue = value || plans[0].value;
   const [selected, setSelected] = useState(defaultValue);
 
@@ -25,7 +31,12 @@ export default function TwRadio({ options, value, handleChange }: Props) {
   };
 
   return (
-    <RadioGroup value={selected} onChange={onHandleChange} aria-label="Radio Box">
+    <RadioGroup
+      value={selected}
+      onChange={onHandleChange}
+      aria-label="Radio Box"
+      disabled={disabled}
+    >
       {!!options &&
         options.map((plan, index) => (
           <Field key={index} className="flex items-center gap-2">
