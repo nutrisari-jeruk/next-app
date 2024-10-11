@@ -62,6 +62,8 @@ const createJournal = async (_prevState: unknown, formData: FormData) => {
     kode_rekening_id: JSON.parse(formData.get('kode_rekening_id') as string),
   });
 
+  console.log(validatedFields)
+
   if (!validatedFields.success) {
     return {
       validationErrors: validatedFields.error.flatten().fieldErrors,

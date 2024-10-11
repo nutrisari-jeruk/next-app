@@ -1,7 +1,7 @@
 'use server';
 
 import $http from '@/lib/axios';
-import { UmumSchema } from '@/schemas/master/journal/correction';
+import { CorrectionSchema } from '@/schemas/master/journal/correction';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { AxiosError } from 'axios';
@@ -57,20 +57,25 @@ const fetchList = async ({
 };
 
 const createJournal = async (_prevState: unknown, formData: FormData) => {
-  const validatedFields = UmumSchema.safeParse({
-    jenis_jurnal: formData.get('jenis_jurnal'),
-    kode_rekening_id: JSON.parse(formData.get('kode_rekening_id') as string),
+  console.log(formData.get('accounts'));
+  const validatedFields = CorrectionSchema.safeParse({
+    journal_kind: formData.get('journal_kind'),
+    //accounts: formData.get('accounts'),
+    //accounts : formData.getAll('accounts').map((account) => JSON.parse(account)), 
+    accounts: JSON.parse(formData.get('accounts') as string),
   });
 
+  console.log(validatedFields)
   if (!validatedFields.success) {
     return {
       validationErrors: validatedFields.error.flatten().fieldErrors,
     };
   }
 
+
   const payload: Payload = {
-    jenis_jurnal: validatedFields.data.jenis_jurnal,
-    kode_rekening_list: validatedFields.data.kode_rekening_id.map((item) => {
+    journal_kind: validatedFields.data.journal_kind,
+    accounts: validatedFields.data.accounts.map((item) => {
       return {
         is_credit: item.is_credit,
         sap13_id: item.sap13_id.id,
@@ -78,6 +83,7 @@ const createJournal = async (_prevState: unknown, formData: FormData) => {
     }),
   };
 
+  console.log(payload)
   try {
     await $http.post('/v1/masters/journals/correction', payload);
   } catch (error) {
