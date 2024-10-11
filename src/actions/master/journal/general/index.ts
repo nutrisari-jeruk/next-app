@@ -1,7 +1,7 @@
 'use server';
 
 import $http from '@/lib/axios';
-import { UmumSchema } from '@/schemas/master/journal/general';
+import { GeneralSchema } from '@/schemas/master/journal/general';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { AxiosError } from 'axios';
@@ -57,12 +57,10 @@ const fetchList = async ({
 };
 
 const createJournal = async (_prevState: unknown, formData: FormData) => {
-  const validatedFields = UmumSchema.safeParse({
-    jenis_journal_kind: formData.get('jenis_journal_kind'),
-    accounts_id: JSON.parse(formData.get('accounts_id') as string),
+  const validatedFields = GeneralSchema.safeParse({
+    journal_kind: formData.get('journal_kind'),
+    accounts: JSON.parse(formData.get('accounts') as string),
   });
-
-  console.log(validatedFields)
 
   if (!validatedFields.success) {
     return {
@@ -71,8 +69,8 @@ const createJournal = async (_prevState: unknown, formData: FormData) => {
   }
 
   const payload: Payload = {
-    jenis_journal_kind: validatedFields.data.jenis_journal_kind,
-    accounts_list: validatedFields.data.accounts_id.map((item) => {
+    journal_kind: validatedFields.data.journal_kind,
+    accounts: validatedFields.data.accounts.map((item) => {
       return {
         is_credit: item.is_credit,
         sap13_id: item.sap13_id.id,

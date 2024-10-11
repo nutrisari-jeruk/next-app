@@ -44,8 +44,8 @@ export default function CreateForm(props: Props) {
 
   const handleSubmit = async () => {
     const formData = new FormData();
-    formData.append('jenis_journal_kind', jenis);
-    formData.append('accounts_id', JSON.stringify(accountList));
+    formData.append('journal_kind', jenis);
+    formData.append('accounts', JSON.stringify(accountList));
 
     return formAction(formData);
   };
@@ -67,15 +67,15 @@ export default function CreateForm(props: Props) {
       <form action={handleSubmit} className="rounded-lg">
         <div className="mb-6 rounded-lg bg-white p-4 shadow">
           <TwInput
-            name="jenis_journal_kind"
-            label="Jenis journal_kind"
+            name="journal_kind"
+            label="Jenis Jurnal"
             type="text"
             value={jenis}
             onChange={(e) => setJenis(e.target.value)}
             required
             placeholder="Masukkan Jenis Umum"
-            isError={!!state?.validationErrors?.jenis_journal_kind}
-            errorMessage={state?.validationErrors?.jenis_journal_kind}
+            isError={!!state?.validationErrors?.journal_kind}
+            errorMessage={state?.validationErrors?.journal_kind}
           />
         </div>
 
@@ -99,14 +99,17 @@ export default function CreateForm(props: Props) {
             accountList.map((account, index) => (
               <div
                 key={index}
-                className="flex items-center justify-center w-full rounded bg-white px-3 py-2 shadow gap-1"
+                className="flex w-full items-center justify-center gap-1 rounded bg-white px-3 py-2 shadow"
               >
                 <div className="w-full">{account?.sap13_id.text}</div>
                 <div className="w-1/3">
                   {account?.is_credit ? 'Kredit' : 'Debit'}
                 </div>
                 <div className="w-1/4">
-                  <button className="text-red-500" onClick={() => removeAccount(index)}>
+                  <button
+                    className="text-red-500"
+                    onClick={() => removeAccount(index)}
+                  >
                     <TrashIcon className="h-5 w-5" aria-hidden="true" />
                   </button>
                 </div>

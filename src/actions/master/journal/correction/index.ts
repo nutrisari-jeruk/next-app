@@ -57,21 +57,18 @@ const fetchList = async ({
 };
 
 const createJournal = async (_prevState: unknown, formData: FormData) => {
-  console.log(formData.get('accounts'));
   const validatedFields = CorrectionSchema.safeParse({
     journal_kind: formData.get('journal_kind'),
     //accounts: formData.get('accounts'),
-    //accounts : formData.getAll('accounts').map((account) => JSON.parse(account)), 
+    //accounts : formData.getAll('accounts').map((account) => JSON.parse(account)),
     accounts: JSON.parse(formData.get('accounts') as string),
   });
 
-  console.log(validatedFields)
   if (!validatedFields.success) {
     return {
       validationErrors: validatedFields.error.flatten().fieldErrors,
     };
   }
-
 
   const payload: Payload = {
     journal_kind: validatedFields.data.journal_kind,
@@ -83,7 +80,6 @@ const createJournal = async (_prevState: unknown, formData: FormData) => {
     }),
   };
 
-  console.log(payload)
   try {
     await $http.post('/v1/masters/journals/correction', payload);
   } catch (error) {

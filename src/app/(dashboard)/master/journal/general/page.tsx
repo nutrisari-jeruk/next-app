@@ -7,12 +7,12 @@ import { fetchList } from '@/actions/master/journal/general';
 import type { Params } from '@/types/params';
 
 export const metadata: Metadata = {
-  title: 'journal_kind Umum',
+  title: 'Jurnal Umum',
 };
 
 export default async function Page({ searchParams }: { searchParams: Params }) {
   const searchValue = searchParams?.searchValue || '';
-  const searchField = searchParams?.searchField || 'journal_kind_kode';
+  const searchField = searchParams?.searchField || 'journal_kind';
   const page = searchParams?.page || '1';
   const rowsPerPage = searchParams?.rowsPerPage || '10';
 
@@ -26,7 +26,7 @@ export default async function Page({ searchParams }: { searchParams: Params }) {
   return (
     <>
       <div className="flex items-center justify-between">
-        <TwHeader title="journal_kind Umum" />
+        <TwHeader title="Jurnal Umum" />
 
         <Link href="/master/journal/general/create">
           <TwButton

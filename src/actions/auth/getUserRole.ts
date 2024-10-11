@@ -42,8 +42,6 @@ export async function getUserRoleByCredential(
       ...validatedFields.data,
     });
 
-    console.log(data);
-
     if (data?.data) {
       return { user: data.data };
     }
