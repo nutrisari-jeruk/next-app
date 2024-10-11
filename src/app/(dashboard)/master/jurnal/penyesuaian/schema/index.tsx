@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const PenyesuaianSchema = z.object({
-  jenis_jurnal: z
+  jenis_journal_kind: z
     .string({
       required_error: 'Jenis Penyesuaian is required',
       invalid_type_error: 'Jenis Penyesuaian must be a string',

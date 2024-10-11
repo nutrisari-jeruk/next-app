@@ -1,8 +1,8 @@
 export interface List {
     id: number;
-    jurnal_kode: string;
-    jurnal_jenis: string;
-    kode_rekening: KodeRekening[];
+    journal_kind_kode: string;
+    journal_kind_jenis: string;
+    accounts: KodeRekening[];
   }
   
   export interface KodeRekening {
@@ -13,8 +13,8 @@ export interface List {
   }
   
   export interface Payload {
-    jenis_jurnal: string;
-    kode_rekening_id: {
+    jenis_journal_kind: string;
+    accounts_id: {
       debit: number;
       credit: number;
     };

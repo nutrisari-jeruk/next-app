@@ -57,7 +57,7 @@ const fetchKoreksiList = async ({
 
 const createKoreksi = async (_prevState: unknown, formData: FormData) => {
   const validatedFields = KoreksiSchema.safeParse({
-    jenis_jurnal: formData.get('jenis_jurnal'),
+    jenis_journal_kind: formData.get('jenis_journal_kind'),
     debit: formData.get('debit'),
     credit: formData.get('credit'),
   });
@@ -69,8 +69,8 @@ const createKoreksi = async (_prevState: unknown, formData: FormData) => {
   }
 
   const requestKoreksi: Payload = {
-    jenis_jurnal: validatedFields.data.jenis_jurnal,
-    kode_rekening_id: {
+    jenis_journal_kind: validatedFields.data.jenis_journal_kind,
+    accounts_id: {
       debit: Number(validatedFields.data.debit),
       credit: Number(validatedFields.data.credit),
     },
@@ -102,8 +102,8 @@ const createKoreksi = async (_prevState: unknown, formData: FormData) => {
     };
   }
 
-  revalidatePath('/master/jurnal/koreksi');
-  redirect(`/master/jurnal/koreksi`);
+  revalidatePath('/master/journal_kind/koreksi');
+  redirect(`/master/journal_kind/koreksi`);
 };
 
 export { createKoreksi, fetchKoreksiList };
