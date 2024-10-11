@@ -59,8 +59,10 @@ const fetchList = async ({
 const createJournal = async (_prevState: unknown, formData: FormData) => {
   const validatedFields = PenutupSchema.safeParse({
     journal_kind: formData.get('journal_kind'),
-    accounts_id: JSON.parse(formData.get('accounts_id') as string),
+    accounts: JSON.parse(formData.get('accounts') as string),
   });
+
+
 
   if (!validatedFields.success) {
     return {
@@ -70,7 +72,7 @@ const createJournal = async (_prevState: unknown, formData: FormData) => {
 
   const payload: Payload = {
     journal_kind: validatedFields.data.journal_kind,
-    accounts_list: validatedFields.data.accounts_id.map((item) => {
+    accounts: validatedFields.data.accounts.map((item) => {
       return {
         is_credit: item.is_credit,
         sap13_id: item.sap13_id.id,

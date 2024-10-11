@@ -38,7 +38,7 @@ export interface Meta {
 
 export interface Payload {
   journal_kind: string;
-  accounts_list: {
+  accounts: {
     is_credit: boolean;
     sap13_id: number;
   }[];
