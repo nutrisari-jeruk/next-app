@@ -1,11 +1,11 @@
 'use server';
 
 import $http from '@/lib/axios';
-import { UmumSchema } from '@/schemas/master/journal/general';
+import { CorrectionSchema } from '@/schemas/master/journal/correction';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { AxiosError } from 'axios';
-import type { List, Payload } from '@/types/journal/general';
+import type { List, Payload } from '@/types/journal/correction';
 import type { Params } from '@/types/params';
 import type { BaseResponse } from '@/types/api';
 import { Pagination } from '@/types/pagination';
@@ -33,7 +33,7 @@ const fetchList = async ({
 
   try {
     const { data } = await $http.get<BaseResponse<Pagination<List[]>>>(
-      '/v1/masters/journals/general',
+      '/v1/masters/journals/correction',
       {
         params: {
           page: page,
@@ -57,22 +57,25 @@ const fetchList = async ({
 };
 
 const createJournal = async (_prevState: unknown, formData: FormData) => {
-  const validatedFields = UmumSchema.safeParse({
-    jenis_journal_kind: formData.get('jenis_journal_kind'),
-    accounts_id: JSON.parse(formData.get('accounts_id') as string),
+  console.log(formData.get('accounts'));
+  const validatedFields = CorrectionSchema.safeParse({
+    journal_kind: formData.get('journal_kind'),
+    //accounts: formData.get('accounts'),
+    //accounts : formData.getAll('accounts').map((account) => JSON.parse(account)), 
+    accounts: JSON.parse(formData.get('accounts') as string),
   });
 
   console.log(validatedFields)
-
   if (!validatedFields.success) {
     return {
       validationErrors: validatedFields.error.flatten().fieldErrors,
     };
   }
 
+
   const payload: Payload = {
-    jenis_journal_kind: validatedFields.data.jenis_journal_kind,
-    accounts_list: validatedFields.data.accounts_id.map((item) => {
+    journal_kind: validatedFields.data.journal_kind,
+    accounts: validatedFields.data.accounts.map((item) => {
       return {
         is_credit: item.is_credit,
         sap13_id: item.sap13_id.id,
@@ -80,8 +83,9 @@ const createJournal = async (_prevState: unknown, formData: FormData) => {
     }),
   };
 
+  console.log(payload)
   try {
-    await $http.post('/v1/masters/journals/general', payload);
+    await $http.post('/v1/masters/journals/correction', payload);
   } catch (error) {
     if (error instanceof AxiosError) {
       if (error.response?.data?.message) {
@@ -109,8 +113,8 @@ const createJournal = async (_prevState: unknown, formData: FormData) => {
     tag: new Date().toLocaleString(),
   });
 
-  revalidatePath('/master/journal/general');
-  redirect(`/master/journal/general`);
+  revalidatePath('/master/journal/correction');
+  redirect(`/master/journal/correction`);
 };
 
 export { createJournal, fetchList };

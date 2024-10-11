@@ -28,7 +28,7 @@ const adminNavigation: Menu[] = [
     icon: HomeIcon,
     count: '1',
     current: true,
-  }
+  },
 ];
 
 const adminJournals: Menu[] = [
@@ -50,6 +50,7 @@ const adminJournals: Menu[] = [
     id: 3,
     name: 'Jurnal Koreksi',
     href: '/master/journal_kind/koreksi',
+    href: '/master/journal/correction',
     initial: 'JK',
     current: false,
   },
