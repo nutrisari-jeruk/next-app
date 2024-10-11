@@ -1,13 +1,13 @@
 import { z } from 'zod';
 
-export const PenyesuaianSchemaSchema = z.object({
+export const AdjustmentSchema = z.object({
   journal_kind: z
     .string({
       required_error: 'Jenis Penyesuaian is required',
       invalid_type_error: 'Jenis Penyesuaian must be a string',
     })
     .min(1, 'Jenis Penyesuaian is required'),
-  accounts_id: z.array(
+  accounts: z.array(
     z.object({
       is_credit: z.boolean({
         required_error: 'Is Credit is required',

@@ -10,10 +10,10 @@ export interface List {
   id: number;
   journal_code: string;
   journal_kind: string;
-  accounts: KodeRekening[];
+  accounts: AccountCode[];
 }
 
-export interface KodeRekening {
+export interface AccountCode {
   id: number;
   code: string;
   debit?: string | null;
@@ -38,7 +38,7 @@ export interface Meta {
 
 export interface Payload {
   journal_kind: string;
-  accounts_list: {
+  accounts: {
     is_credit: boolean;
     sap13_id: number;
   }[];
