@@ -1,7 +1,8 @@
 'use client';
 
+import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { useState, useEffect } from 'react';
 import { TwButton, TwInput, TwKbd, TwTreeView } from '@/components';
-import { TreeNode } from '@/types/tree-view';
 import {
   Button,
   Description,
@@ -11,8 +12,8 @@ import {
   Transition,
   TransitionChild,
 } from '@headlessui/react';
-import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import { useState, useEffect } from 'react';
+import type { TreeNode } from '@/types/tree-view';
+
 
 interface Props {
   treeData: TreeNode[];

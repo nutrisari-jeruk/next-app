@@ -1,15 +1,34 @@
+import $fetch from '@/lib/fetch';
 import { AxiosError } from 'axios';
-import type { BaseResponse } from '@/types/api';
 import type { TreeNode } from '@/types/tree-view';
-import $http from '@/lib/axios';
 
-export default async function useSap13(): Promise<TreeNode[]> {
+interface Props {
+  account?: string;
+  category?: string;
+  kind?: string;
+  object?: string;
+  object_details?: string;
+  sub_object_details?: string;
+}
+
+export default async function useSap13(props?: Props): Promise<TreeNode[]> {
   let sap13: TreeNode[];
+  const params = {
+    account: props?.account || '',
+    category: props?.category || '',
+    kind: props?.kind || '',
+    object: props?.object || '',
+    object_details: props?.object_details || '',
+    sub_object_details: props?.sub_object_details || '',
+  };
+
+  const urlParams = new URLSearchParams(params).toString();
 
   try {
-    const { data } = await $http.get<BaseResponse<TreeNode[]>>(
-      '/v1/masters/accounts/sap13/tree',
-    );
+    const data = await $fetch<TreeNode[]>({
+      url: '/v1/masters/accounts/sap13/tree?' + urlParams,
+      method: 'GET',
+    });
 
     sap13 = data?.data!;
   } catch (error) {

@@ -66,7 +66,13 @@ const adminMaps: Menu[] = [
   {
     name: 'Kode Rekening Belanja',
     href: '/mapping/expenditure-050/to-expenditure-sap-13',
-    initial: 'MP',
+    initial: 'MB',
+    current: false,
+  },
+  {
+    name: 'Kode Rekening Utang',
+    href: '/mapping/expenditure-050/to-debt-sap-13',
+    initial: 'MU',
     current: false,
   },
 ];
