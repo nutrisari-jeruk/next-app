@@ -1,7 +1,7 @@
 'use server';
 
 import $http from '@/lib/axios';
-import { PenyesuaianSchemaSchema } from '@/schemas/master/journal/adjustment';
+import { AdjustmentSchema } from '@/schemas/master/journal/adjustment';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { AxiosError } from 'axios';
@@ -10,7 +10,6 @@ import type { Params } from '@/types/params';
 import type { BaseResponse } from '@/types/api';
 import { Pagination } from '@/types/pagination';
 import { setFlash } from '@/lib/flash-toaster';
-
 
 const fetchList = async ({
   page,
@@ -45,8 +44,6 @@ const fetchList = async ({
       },
     );
 
-    console.log(data)
-
     if (data.success) {
       list = data?.data!;
     }
@@ -60,9 +57,9 @@ const fetchList = async ({
 };
 
 const createJournal = async (_prevState: unknown, formData: FormData) => {
-  const validatedFields = PenyesuaianSchemaSchema.safeParse({
+  const validatedFields = AdjustmentSchema.safeParse({
     journal_kind: formData.get('journal_kind'),
-    accounts_id: JSON.parse(formData.get('accounts_id') as string),
+    accounts: JSON.parse(formData.get('accounts') as string),
   });
 
   if (!validatedFields.success) {
@@ -73,7 +70,7 @@ const createJournal = async (_prevState: unknown, formData: FormData) => {
 
   const payload: Payload = {
     journal_kind: validatedFields.data.journal_kind,
-    accounts_list: validatedFields.data.accounts_id.map((item) => {
+    accounts: validatedFields.data.accounts.map((item) => {
       return {
         is_credit: item.is_credit,
         sap13_id: item.sap13_id.id,
