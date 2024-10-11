@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default async function Page({ searchParams }: { searchParams: Params }) {
   const searchValue = searchParams?.searchValue || '';
-  const searchField = searchParams?.searchField || 'journal_kind_kode';
+  const searchField = searchParams?.searchField || 'journal_kind';
   const page = searchParams?.page || '1';
   const rowsPerPage = searchParams?.rowsPerPage || '10';
 

@@ -1,13 +1,13 @@
 import { z } from 'zod';
 
-export const UmumSchema = z.object({
-  jenis_journal_kind: z
+export const GeneralSchema = z.object({
+  journal_kind: z
     .string({
       required_error: 'Jenis Umum is required',
       invalid_type_error: 'Jenis Umum must be a string',
     })
     .min(1, 'Jenis Umum is required'),
-  accounts_id: z.array(
+  accounts: z.array(
     z.object({
       is_credit: z.boolean({
         required_error: 'Is Credit is required',

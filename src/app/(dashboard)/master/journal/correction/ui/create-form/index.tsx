@@ -39,12 +39,8 @@ export default function CreateForm(props: Props) {
   const { treeData } = props;
   const [jenis, setJenis] = useState('');
   const [isAccountModalOpen, setIsAccountModalOpen] = useState(false);
-  const [accountList, setAccountList] = useState<Account[]>([]);
-  const [EquitasType, setEquitasType] = useState('menambah');
-  const [state, formAction] = useFormState(createJournal, undefined);
-
-  useEffect(() => {
-    appendAccount({
+  const [accountList, setAccountList] = useState<Account[]>([
+    {
       is_credit: true,
       sap13_id: {
         id: 231,
@@ -52,15 +48,16 @@ export default function CreateForm(props: Props) {
         parent_id: 230,
         is_selectable: true,
       },
-    });
-  }, []);
+    },
+  ]);
+  const [EquitasType, setEquitasType] = useState('menambah');
+  const [state, formAction] = useFormState(createJournal, undefined);
 
   const handleSubmit = async () => {
     const formData = new FormData();
     formData.append('journal_kind', jenis);
     formData.append('accounts', JSON.stringify(accountList));
 
-    console.log(jenis);
     return formAction(formData);
   };
 
@@ -83,15 +80,7 @@ export default function CreateForm(props: Props) {
   ];
 
   const onChangeJenisEquitas = (value: string) => {
-    const cek = accountList.map((account) => {
-      if (account.sap13_id.id === 231) {
-        return { ...account, is_credit: false };
-      }
-      return account;
-    });
-
-    console.log(cek);
-
+    setEquitasType(value);
     switch (value) {
       case 'menambah':
         setAccountList(

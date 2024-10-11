@@ -44,7 +44,10 @@ export default function AccountModal(props: Props) {
 
   const handleAccountSelect = (node: TreeNode) => {
     setIsSapModalOpen(false);
-    setAccount({ is_credit: false, sap13_id: node });
+    setAccount({
+      is_credit: equitasType === 'menambah' ? false : true,
+      sap13_id: node,
+    });
   };
 
   const addAccount = () => {

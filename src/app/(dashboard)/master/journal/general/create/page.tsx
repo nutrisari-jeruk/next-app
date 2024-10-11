@@ -8,7 +8,7 @@ export default async function Page() {
 
   return (
     <>
-      <TwHeader title="Tambah Master journal_kind Umum" />
+      <TwHeader title="Tambah Master Jurnal Umum" />
       <CreateForm treeData={treeData} />
     </>
   );
