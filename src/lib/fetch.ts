@@ -1,5 +1,6 @@
 import { auth } from '@/auth';
 import { BaseResponse } from '@/types/api';
+
 const $fetch = async <T>({
   url = '',
   method,

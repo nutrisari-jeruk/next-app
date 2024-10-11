@@ -1,16 +1,16 @@
-import DataTable from '@/app/ui/data-table';
+import type { Metadata } from 'next';
+import type { Params } from '@/types/params';
+import { TwHeader } from '@/components';
 import RowProvider from '@/providers/row';
 import Search from '@/components/tw-search';
+import DataTable from '@/app/ui/data-table';
 import { Pagination } from '@/app/ui/data-table/partials';
-import { TwHeader } from '@/components';
-import { fetchList } from '@/actions/mapping/expenditure-050/to-expenditure-sap-13';
-import type { Params } from '@/types/params';
 import type { Column, Row } from '@/types/table';
-import type { Metadata } from 'next';
+import { fetchList } from '@/actions/mapping/expenditure-050/to-debt-sap-13';
 
 export const metadata: Metadata = {
-  title: 'Mapping',
-};
+    title: 'Mapping',
+  };
 
 export default async function Page({
   searchParams: {
@@ -69,7 +69,7 @@ export default async function Page({
   return (
     <>
       <div className="flex items-center justify-between">
-        <TwHeader title="Mapping Kode Rekening Belanja" />
+        <TwHeader title="Mapping Kode Rekening Utang" />
       </div>
 
       <div className="mt-4 flex w-full flex-col space-y-2">

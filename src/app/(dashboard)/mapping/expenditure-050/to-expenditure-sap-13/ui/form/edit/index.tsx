@@ -31,7 +31,7 @@ function SubmitButton() {
   return (
     <TwButton
       type="submit"
-      title="Save"
+      title="Simpan"
       variant="success"
       disabled={pending}
       isLoading={pending}

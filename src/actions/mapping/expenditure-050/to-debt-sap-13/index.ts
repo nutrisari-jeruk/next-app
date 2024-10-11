@@ -1,7 +1,7 @@
 'use server';
 
 import $fetch from '@/lib/fetch';
-import { MapSchema } from '@/schemas/expenditure-050/to-expenditure-sap-13';
+import { MapSchema } from '@/schemas/expenditure-050/to-debt-sap-13';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { setFlash } from '@/lib/flash-toaster';
@@ -39,7 +39,7 @@ const fetchList = async ({
   const urlParams = new URLSearchParams(params).toString();
   const data = await $fetch<Pagination<List[]>>({
     method: 'GET',
-    url: `/v1/mappings/expenditure-050/expenditure-sap13?${urlParams}`,
+    url: `/v1/mappings/expenditure-050/debt-sap13?${urlParams}`,
   });
 
   if (data.success) {
@@ -51,7 +51,7 @@ const fetchList = async ({
 
 const mapOnAccount = async (_prevState: unknown, formData: FormData) => {
   const id = formData.get('id');
-  const page = formData.get('page');
+  const page = formData.get('page') || '1';
 
   const validatedFields = MapSchema.safeParse({
     kr050_id: Number(formData.get('kr050_id')),
@@ -79,22 +79,24 @@ const mapOnAccount = async (_prevState: unknown, formData: FormData) => {
   };
 
   try {
-    if (!!id) {
+    if (!id) {
       await $fetch({
-        url: `/v1/mappings/expenditure-050/expenditure-sap13/${id}`,
+        url: `/v1/mappings/expenditure-050/debt-sap13/${id}`,
         method: 'PUT',
         payload: payload,
       });
+
     } else {
+
       await $fetch({
-        url: '/v1/mappings/expenditure-050/expenditure-sap13',
+        url: '/v1/mappings/expenditure-050/debt-sap13',
         method: 'POST',
         payload: payload,
       });
     }
   } catch (error) {
     return {
-      message: 'Failed to map on account',
+      message: 'Failed to map on account: ' + error,
     };
   }
 
@@ -103,8 +105,9 @@ const mapOnAccount = async (_prevState: unknown, formData: FormData) => {
     message: 'Data berhasil disimpan',
     tag: new Date().toLocaleString(),
   });
-  revalidatePath(`/mapping/expenditure-050/to-expenditure-sap-13?page=${page}`);
-  redirect(`/mapping/expenditure-050/to-expenditure-sap-13?page=${page}`);
+
+  revalidatePath(`/mapping/expenditure-050/to-debt-sap-13?page=${page}`);
+  redirect(`/mapping/expenditure-050/to-debt-sap-13?page=${page}`);
 };
 
 export { fetchList, mapOnAccount };
