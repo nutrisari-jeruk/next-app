@@ -7,7 +7,7 @@ export const PenutupSchema = z.object({
       invalid_type_error: 'Jenis Penutup must be a string',
     })
     .min(1, 'Jenis Penutup is required'),
-  accounts_id: z.array(
+    accounts: z.array(
     z.object({
       is_credit: z.boolean({
         required_error: 'Is Credit is required',

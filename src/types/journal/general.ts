@@ -8,8 +8,8 @@ export interface PaginateList {
 
 export interface List {
   id: number;
-  journal_kind_kode: string;
-  journal_kind_jenis: string;
+  journal_code: string;
+  journal_kind: string;
   accounts: KodeRekening[];
 }
 

@@ -46,7 +46,7 @@ export default function CreateForm(props: Props) {
   const handleSubmit = async () => {
     const formData = new FormData();
     formData.append('journal_kind', jenis);
-    formData.append('accounts_id', JSON.stringify(accountList));
+    formData.append('accounts', JSON.stringify(accountList));
 
     return formAction(formData);
   };
