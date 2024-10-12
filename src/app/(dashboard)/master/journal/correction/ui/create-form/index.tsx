@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import AccountModal from '../../components/account-modal';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
 import { TwButton, TwInput, TwSelect } from '@/components';
 import {
