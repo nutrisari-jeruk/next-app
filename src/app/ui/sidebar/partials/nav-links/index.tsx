@@ -86,7 +86,7 @@ const adminMaps: Menu[] = [
     href: '#',
     children: [
       {
-        name: 'Beban Aset SAP 13',
+        name: 'Beban & Aset SAP 13',
         href: '/mapping/expenditure-sap-13/to-burden-assets-sap-13',
         initial: 'BA',
         current: false,

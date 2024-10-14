@@ -54,8 +54,8 @@ const mapOnAccount = async (_prevState: unknown, formData: FormData) => {
   const page = formData.get('page');
 
   const validatedFields = MapSchema.safeParse({
-    kr050_id: Number(formData.get('kr050_id')),
-    sap13_id: Number(formData.get('sap13_id')),
+    sap13_id_expend: Number(formData.get('sap13_id_expend')),
+    sap13_id_burden_asset: Number(formData.get('sap13_id_burden_asset')),
   });
 
   if (!validatedFields.success) {
@@ -68,12 +68,12 @@ const mapOnAccount = async (_prevState: unknown, formData: FormData) => {
   const payload: Payload = {
     data: [
       {
-        label: 'kr050_id',
-        value: validatedFields.data.kr050_id,
+        label: 'sap13_id',
+        value: validatedFields.data.sap13_id_expend,
       },
       {
         label: 'sap13_id',
-        value: validatedFields.data.sap13_id,
+        value: validatedFields.data.sap13_id_burden_asset,
       },
     ],
   };
@@ -81,13 +81,13 @@ const mapOnAccount = async (_prevState: unknown, formData: FormData) => {
   try {
     if (!!id) {
       await $fetch({
-        url: `/v1/mappings/expenditure-050/expenditure-sap13/${id}`,
+        url: `/v1/mappings/expenditure-sap13/burden-asset-sap13/${id}`,
         method: 'PUT',
         payload: payload,
       });
     } else {
       await $fetch({
-        url: '/v1/mappings/expenditure-050/expenditure-sap13',
+        url: '/v1/mappings/expenditure-sap13/burden-asset-sap13',
         method: 'POST',
         payload: payload,
       });
@@ -103,8 +103,8 @@ const mapOnAccount = async (_prevState: unknown, formData: FormData) => {
     message: 'Data berhasil disimpan',
     tag: new Date().toLocaleString(),
   });
-  revalidatePath(`/mapping/expenditure-050/to-expenditure-sap-13?page=${page}`);
-  redirect(`/mapping/expenditure-050/to-expenditure-sap-13?page=${page}`);
+  revalidatePath(`/mapping/expenditure-sap-13/to-burden-assets-sap-13?page=${page}`);
+  redirect(`/mapping/expenditure-sap-13/to-burden-assets-sap-13?page=${page}`);
 };
 
 export { fetchList, mapOnAccount };
