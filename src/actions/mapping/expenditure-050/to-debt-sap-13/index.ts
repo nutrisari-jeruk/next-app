@@ -79,7 +79,7 @@ const mapOnAccount = async (_prevState: unknown, formData: FormData) => {
   };
 
   try {
-    if (!id) {
+    if (!!id) {
       await $fetch({
         url: `/v1/mappings/expenditure-050/debt-sap13/${id}`,
         method: 'PUT',
