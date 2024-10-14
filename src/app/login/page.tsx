@@ -7,12 +7,11 @@ import {
   ExclamationCircleIcon,
 } from '@heroicons/react/24/outline';
 import { getUserRole } from '@/actions/auth/getUserRole';
-import { Suspense, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLoggedInUser } from '@/store/user';
 import { useRouter } from 'next/navigation';
 import Loading from './loading';
 import ReCAPTCHA from 'react-google-recaptcha';
-import { set } from 'zod';
 
 const SubmitButton = (props: {
   captchaToken: string | null;
@@ -62,14 +61,12 @@ export default function Page({ searchParams }: any) {
   }, [ssoToken, formAction]);
 
   const handleInputChange = () => {
-    // Reset reCAPTCHA saat input berubah
-    if (recaptchaRef.current) {
+    if (recaptchaRef.current && captchaToken) {
       recaptchaRef.current.reset();
       setCaptchaToken(null);
     }
   };
 
-  // Fungsi untuk menangani perubahan CAPTCHA
   const onCaptchaChange = (token: string | null) => {
     setCaptchaToken(token);
   };
@@ -82,7 +79,6 @@ export default function Page({ searchParams }: any) {
       return;
     }
 
-    // Submit form dengan captchaToken
     const formData = new FormData(event.currentTarget);
     formData.append('captchaToken', captchaToken);
     formAction(formData);
