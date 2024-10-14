@@ -69,7 +69,7 @@ export default async function Page({
   return (
     <>
       <div className="flex items-center justify-between">
-        <TwHeader title="Mapping Kode Rekening Beban Aset" />
+        <TwHeader title="Mapping Kode Rekening Beban dan Aset" />
       </div>
 
       <div className="mt-4 flex w-full flex-col space-y-2">
