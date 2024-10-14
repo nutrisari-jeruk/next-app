@@ -93,6 +93,18 @@ const adminMaps: Menu[] = [
       },
     ],
   },
+  {
+    name: 'Mapping Kode Rekening Pendapatan RS',
+    href: '#',
+    children: [
+      {
+        name: 'Pendapatan SAP 13',
+        href: '/mapping/income/to-income-sap-13',
+        initial: 'BA',
+        current: false,
+      },
+    ],
+  },
 ];
 
 export default function NavLink({ user }: { user: User }) {
