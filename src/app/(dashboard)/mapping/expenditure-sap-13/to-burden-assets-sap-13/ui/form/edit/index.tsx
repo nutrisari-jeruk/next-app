@@ -7,10 +7,10 @@ import { useState } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
 import { TwButton, TwInput } from '@/components';
 import { ArrowUturnLeftIcon, CheckIcon } from '@heroicons/react/24/outline';
-import { mapOnAccount } from '@/actions/mapping/income/to-income-sap-13';
+import { mapOnAccount } from '@/actions/mapping/expenditure-sap-13/to-burden-assets-sap-13';
 import { notFound } from 'next/navigation';
 import type { TreeNode } from '@/types/tree-view';
-import type { List } from '@/types/mapping';
+import type { BurdenAssetList as List } from '@/types/mapping';
 
 interface Props {
   treeData: TreeNode[];
@@ -50,18 +50,18 @@ export default function Form({ treeData, params }: Props) {
   }
 
   const id = Number(params.id);
-  const selectedRow = rows.find((row) => row.kr050_id === id) || null;
+  const selectedRow = rows.find((row) => row.sap13_id_expend === id) || null;
   const account: List = {
     id: selectedRow?.id! as number,
-    kr050_id: selectedRow?.kr050_id! as number,
-    account_050: selectedRow?.account_050! as string,
-    sap13_id: selectedRow?.sap13_id! as number,
-    account_sap13: selectedRow?.account_sap13! as string,
+    sap13_id_expend: selectedRow?.sap13_id_expend! as number,
+    account_sap13_expend: selectedRow?.account_sap13_expend! as string,
+    sap13_id_burden_asset: selectedRow?.sap13_id_burden_asset! as number,
+    account_sap13_burden_asset: selectedRow?.account_sap13_burden_asset! as string,
   };
 
   const defaultAccountSap13: TreeNode = {
-    id: account?.sap13_id!,
-    text: account?.account_sap13!,
+    id: account?.sap13_id_burden_asset!,
+    text: account?.account_sap13_burden_asset!,
     parent_id: null,
     is_selectable: true,
   };
@@ -85,8 +85,8 @@ export default function Form({ treeData, params }: Props) {
 
     formData.append('page', String(p.page));
     formData.append('id', String(selectedRow?.id ?? ''));
-    formData.append('kr050_id', String(account?.kr050_id!));
-    formData.append('sap13_id', String(accountSap13?.id!));
+    formData.append('sap13_id_expend', String(account?.sap13_id_expend!));
+    formData.append('sap13_id_burden_asset', String(accountSap13?.id!));
 
     formAction(formData);
   };
@@ -101,29 +101,29 @@ export default function Form({ treeData, params }: Props) {
           <div className="border-b border-gray-900/10 pb-12">
             <div className="flex flex-col space-y-4">
               <TwInput
-                id="kr050_id"
-                name="kr050_id"
+                id="sap13_id_expend"
+                name="sap13_id_expend"
                 className="w-full cursor-pointer"
-                label="Kode Rekening Belanja 050"
-                placeholder="Kode Rekening Pendapatan Rumah Sakit"
+                label="Kode Rekening Belanja SAP 13"
+                placeholder="Kode Rekening Belanja SAP 13"
                 required
                 readOnly
-                defaultValue={account?.account_050!}
-                isError={!!state?.errors?.kr050_id}
-                errorMessage={state?.errors?.kr050_id}
+                defaultValue={account?.account_sap13_expend!}
+                isError={!!state?.errors?.sap13_id_expend}
+                errorMessage={state?.errors?.sap13_id_expend}
               />
 
               <TwInput
-                id="sap13_id"
-                name="sap13_id"
+                id="sap13_id_burden_asset"
+                name="sap13_id_burden_asset"
                 className="w-full cursor-pointer"
-                label="Kode Rekening Pendapatan SAP 13"
-                placeholder="Kode Rekening PEndapatan SAP 13"
+                label="Kode Rekening Beban dan Aset SAP 13"
+                placeholder="Kode Rekening Beban dan Aset SAP 13"
                 required
                 readOnly
                 value={accountSap13?.text!}
-                isError={!!state?.errors?.sap13_id}
-                errorMessage={state?.errors?.sap13_id}
+                isError={!!state?.errors?.sap13_id_burden_asset}
+                errorMessage={state?.errors?.sap13_id_burden_asset}
                 onClick={() => setIsOpen(true)}
               />
             </div>
@@ -137,7 +137,7 @@ export default function Form({ treeData, params }: Props) {
         </div>
 
         <div className="mt-6 flex items-center justify-end gap-x-6">
-          <Link href={`/mapping/income/to-income-sap-13?page=${p.page}`}>
+          <Link href={`/mapping/expenditure-sap-13/to-burden-assets-sap-13?page=${p.page}`}>
             <TwButton
               type="button"
               title="Kembali"
