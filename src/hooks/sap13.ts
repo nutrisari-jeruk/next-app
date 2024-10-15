@@ -3,30 +3,44 @@ import { AxiosError } from 'axios';
 import type { TreeNode } from '@/types/tree-view';
 
 interface Props {
-  account?: string;
-  category?: string;
-  kind?: string;
-  object?: string;
-  object_details?: string;
-  sub_object_details?: string;
+  accounts?: string[];
+  categories?: string[];
+  kinds?: string[];
+  objects?: string[];
+  object_details?: string[];
+  sub_object_details?: string[];
 }
 
 export default async function useSap13(props?: Props): Promise<TreeNode[]> {
-  let sap13: TreeNode[];
-  const params = {
-    account: props?.account || '',
-    category: props?.category || '',
-    kind: props?.kind || '',
-    object: props?.object || '',
-    object_details: props?.object_details || '',
-    sub_object_details: props?.sub_object_details || '',
+  let sap13: TreeNode[] = [];
+  const params: {
+    [key: string]: string | string[];
+  } = {
+    accounts: props?.accounts || [],
+    categories: props?.categories || [],
+    kinds: props?.kinds || [],
+    objects: props?.objects || [],
+    object_details: props?.object_details || [],
+    sub_object_details: props?.sub_object_details || [],
   };
 
-  const urlParams = new URLSearchParams(params).toString();
+  const urlSearchParams = new URLSearchParams();
+
+  Object.keys(params).forEach(key => {
+    const value = params[key];
+    
+    if (Array.isArray(value)) {
+      value.forEach(val => {
+        urlSearchParams.append(`${key}[]`, val);
+      });
+    } else {
+      urlSearchParams.append(key, value);
+    }
+  });
 
   try {
     const data = await $fetch<TreeNode[]>({
-      url: '/v1/masters/accounts/sap13/tree?' + urlParams,
+      url: '/v1/masters/accounts/sap13/tree?' + urlSearchParams.toString(),
       method: 'GET',
     });
 

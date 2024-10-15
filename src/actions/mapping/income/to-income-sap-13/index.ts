@@ -106,8 +106,8 @@ const mapOnAccount = async (_prevState: unknown, formData: FormData) => {
     tag: new Date().toLocaleString(),
   });
 
-  revalidatePath(`/mapping/income-rs/income-sap13?page=${page}`);
-  redirect(`/mapping/income-rs/income-sap13?page=${page}`);
+  revalidatePath(`/mapping/income/to-income-sap13?page=${page}`);
+  redirect(`/mapping/income/to-income-sap13?page=${page}`);
 };
 
 export { fetchList, mapOnAccount };

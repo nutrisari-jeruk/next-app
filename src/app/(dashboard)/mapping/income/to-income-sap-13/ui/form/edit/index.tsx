@@ -137,7 +137,7 @@ export default function Form({ treeData, params }: Props) {
         </div>
 
         <div className="mt-6 flex items-center justify-end gap-x-6">
-          <Link href={`/mapping/expenditure-050/to-debt-sap-13?page=${p.page}`}>
+          <Link href={`/mapping/income/to-income-sap-13?page=${p.page}`}>
             <TwButton
               type="button"
               title="Kembali"
