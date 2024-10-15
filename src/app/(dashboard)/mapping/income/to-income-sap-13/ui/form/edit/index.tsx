@@ -117,8 +117,8 @@ export default function Form({ treeData, params }: Props) {
                 id="sap13_id"
                 name="sap13_id"
                 className="w-full cursor-pointer"
-                label="Kode Rekening Pendapaan SAP 13"
-                placeholder="Kode Rekening Pendapaan SAP 13 level 2"
+                label="Kode Rekening Pendapatan SAP 13"
+                placeholder="Kode Rekening Pendapatan SAP 13 level 2"
                 required
                 readOnly
                 value={accountSap13?.text!}
