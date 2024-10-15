@@ -14,10 +14,10 @@ interface Props {
 export default async function useSap13(props?: Props): Promise<TreeNode[]> {
   let sap13: TreeNode[];
   const params = {
-    account: props?.account || '',
-    category: props?.category || '',
-    kind: props?.kind || '',
-    object: props?.object || '',
+    accounts: props?.account || '',
+    categories: props?.category || '',
+    kinds: props?.kind || '',
+    objects: props?.object || '',
     object_details: props?.object_details || '',
     sub_object_details: props?.sub_object_details || '',
   };

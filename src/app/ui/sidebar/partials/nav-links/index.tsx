@@ -105,6 +105,18 @@ const adminMaps: Menu[] = [
       },
     ],
   },
+  {
+    name: 'Pencatatan Jurnal',
+    href: '#',
+    children: [
+      {
+        name: 'Jurnal Umum',
+        href: '/transaction/journal-entry/general',
+        initial: 'JU',
+        current: false,
+      },
+    ],
+  },
 ];
 
 export default function NavLink({ user }: { user: User }) {
@@ -201,8 +213,7 @@ export default function NavLink({ user }: { user: User }) {
                     <Link
                       href={v.href}
                       className={clsx(
-                        v.name !== 'Dashboard' &&
-                          pathname.startsWith(v.href)
+                        v.name !== 'Dashboard' && pathname.startsWith(v.href)
                           ? 'bg-indigo-100 text-indigo-600'
                           : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600',
                         'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6',
@@ -210,11 +221,10 @@ export default function NavLink({ user }: { user: User }) {
                     >
                       <span
                         className={clsx(
-                          v.name !== 'Dashboard' &&
-                            pathname.startsWith(v.href)
+                          v.name !== 'Dashboard' && pathname.startsWith(v.href)
                             ? 'border-indigo-600 text-indigo-600'
                             : 'border-gray-200 text-gray-400 group-hover:border-indigo-600 group-hover:text-indigo-600',
-                          'flex h-6 w-6 shrink-0 vs-center justify-center rounded-lg border bg-white text-[0.625rem] font-medium',
+                          'vs-center flex h-6 w-6 shrink-0 justify-center rounded-lg border bg-white text-[0.625rem] font-medium',
                         )}
                       >
                         {v.initial}

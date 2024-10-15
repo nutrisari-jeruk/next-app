@@ -18,6 +18,6 @@ export const authRoutes = ['/login', '/role-select'];
  */
 export const apiAuthPrefix = '/api/auth';
 
-export const adminRoutes = ['/master', '/mapping'];
+export const adminRoutes = ['/master', '/mapping', '/transaction'];
 
 export const DEFAULT_LOGIN_REDIRECT = '/';
