@@ -1,22 +1,16 @@
 'use client';
 
-import clsx from 'clsx';
 import Link from 'next/link';
+import useRowStore from '@/store/row';
 import AccountsTree from '../../accounts-tree';
 import { useState } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
-import { TwButton, TwInput, TwSelect } from '@/components';
-import {
-  ArrowUturnLeftIcon,
-  CheckIcon,
-  FolderPlusIcon,
-} from '@heroicons/react/24/outline';
-import useRowStore from '@/store/row';
+import { TwButton, TwInput } from '@/components';
+import { ArrowUturnLeftIcon, CheckIcon } from '@heroicons/react/24/outline';
 import { mapOnAccount } from '@/actions/mapping/expenditure-050/to-expenditure-sap-13';
 import { notFound } from 'next/navigation';
-
 import type { TreeNode } from '@/types/tree-view';
-import type { Option } from '@/types/option';
+import type { List } from '@/types/mapping';
 
 interface Props {
   treeData: TreeNode[];
@@ -51,30 +45,31 @@ export default function Form({ treeData, params }: Props) {
     },
   } = useRowStore.getState();
 
-  const id = params.id;
-  const account = rows.find((row) => row.kr050_id === Number(id));
-
-  const [accountSap13, setAccountSap13] = useState<TreeNode>();
-  const [isOpen, setIsOpen] = useState(false);
-  const [sap13Options, setSap13Options] = useState<Option[]>([
-    {
-      label: account?.account_sap13! as string,
-      value: account?.sap13_id! as string,
-    },
-  ]);
-
-  const [state, formAction] = useFormState(mapOnAccount, undefined);
-
   if (!rows.length) {
     notFound();
   }
 
-  const expenditureOptions: Option[] = [
-    {
-      label: account?.account_050! as string,
-      value: account?.kr050_id! as string,
-    },
-  ];
+  const id = Number(params.id);
+  const selectedRow = rows.find((row) => row.kr050_id === id) || null;
+  const account: List = {
+    id: selectedRow?.id! as number,
+    kr050_id: selectedRow?.kr050_id! as number,
+    account_050: selectedRow?.account_050! as string,
+    sap13_id: selectedRow?.sap13_id! as number,
+    account_sap13: selectedRow?.account_sap13! as string,
+  };
+
+  const defaultAccountSap13: TreeNode = {
+    id: account?.sap13_id!,
+    text: account?.account_sap13!,
+    parent_id: null,
+    is_selectable: true,
+  };
+
+  const [state, formAction] = useFormState(mapOnAccount, undefined);
+  const [isOpen, setIsOpen] = useState(false);
+  const [accountSap13, setAccountSap13] =
+    useState<TreeNode>(defaultAccountSap13);
 
   const handleClose = () => {
     setIsOpen(false);
@@ -83,76 +78,69 @@ export default function Form({ treeData, params }: Props) {
   const handleKodeRekeningNodeSelect = (node: TreeNode) => {
     handleClose();
     setAccountSap13(node);
+  };
 
-    setSap13Options([
-      {
-        label: node.text,
-        value: node.id,
-      },
-    ]);
+  const handleSubmit = () => {
+    const formData = new FormData();
+
+    formData.append('page', String(p.page));
+    formData.append('id', String(selectedRow?.id ?? ''));
+    formData.append('kr050_id', String(account?.kr050_id!));
+    formData.append('sap13_id', String(accountSap13?.id!));
+
+    formAction(formData);
   };
 
   return (
     <>
-      <form action={formAction} className="mt-4 rounded-lg bg-white p-4 shadow">
+      <form
+        action={handleSubmit}
+        className="mt-4 rounded-lg bg-white p-4 shadow"
+      >
         <div className="space-y-12">
           <div className="border-b border-gray-900/10 pb-12">
             <div className="flex flex-col space-y-4">
-              <TwSelect
+              <TwInput
+                id="kr050_id"
                 name="kr050_id"
-                label="Kode Rekening Belanja 050"
+                className="w-full cursor-pointer"
+                label="Kode Rekening Pendapatan 050"
+                placeholder="Kode Rekening Pendaptan 050"
                 required
-                options={expenditureOptions}
-                defaultValue={account?.kr050_id! as string}
+                readOnly
+                defaultValue={account?.account_050!}
                 isError={!!state?.errors?.kr050_id}
                 errorMessage={state?.errors?.kr050_id}
               />
-              <div
-                className={clsx(
-                  'flex w-full items-end justify-between space-x-2',
-                )}
-              >
-                <div className="w-full">
-                  <TwSelect
-                    name="sap13_id"
-                    label="Kode Rekening SAP 13"
-                    required
-                    options={sap13Options}
-                    defaultValue={accountSap13?.id}
-                    isError={!!state?.errors?.sap13_id}
-                    errorMessage={state?.errors?.sap13_id}
-                  />
-                </div>
-                <div>
-                  <TwButton
-                    icon={<FolderPlusIcon className="h-5 w-5" />}
-                    type="button"
-                    size="md"
-                    title="Pilih"
-                    onClick={() => setIsOpen(true)}
-                  />
-                </div>
-              </div>
 
               <TwInput
-                name="id"
+                id="sap13_id"
+                name="sap13_id"
+                className="w-full cursor-pointer"
+                label="Kode Rekening Belanja SAP 13"
+                placeholder="Kode Rekening Belanja SAP 13 level 5"
+                required
                 readOnly
-                hidden
-                defaultValue={account?.id! as string}
+                value={accountSap13?.text!}
+                isError={!!state?.errors?.sap13_id}
+                errorMessage={state?.errors?.sap13_id}
+                onClick={() => setIsOpen(true)}
               />
-
-              <TwInput name="page" readOnly hidden defaultValue={p.page} />
             </div>
+
+            {!!state?.message && (
+              <div className="mt-4 text-red-500">
+                <p>{state.message}</p>
+              </div>
+            )}
           </div>
         </div>
 
         <div className="mt-6 flex items-center justify-end gap-x-6">
-          <Link
-            href={`/mapping/expenditure-050/to-expenditure-sap-13?page=${p.page}`}
-          >
+          <Link href={`/mapping/expenditure-050/to-expenditure-sap-13?page=${p.page}`}>
             <TwButton
               type="button"
-              title="Cancel"
+              title="Kembali"
               variant="secondary"
               icon={
                 <ArrowUturnLeftIcon className="h-5 w-5" aria-hidden="true" />

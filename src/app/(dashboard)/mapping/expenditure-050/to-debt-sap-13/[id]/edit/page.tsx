@@ -4,7 +4,7 @@ import useSap13 from '@/hooks/sap13';
 import type { TreeNode } from '@/types/tree-view';
 
 export default async function Page({ params }: { params: { id: string } }) {
-  const treeData: TreeNode[] = await useSap13({account: '2'});
+  const treeData: TreeNode[] = await useSap13({accounts: ['2']});
 
   return (
     <>

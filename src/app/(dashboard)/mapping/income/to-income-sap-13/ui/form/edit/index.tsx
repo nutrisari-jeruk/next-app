@@ -117,8 +117,8 @@ export default function Form({ treeData, params }: Props) {
                 id="sap13_id"
                 name="sap13_id"
                 className="w-full cursor-pointer"
-                label="Kode Rekening Pendapaan SAP 13"
-                placeholder="Kode Rekening Pendapaan SAP 13 level 2"
+                label="Kode Rekening Pendapatan SAP 13"
+                placeholder="Kode Rekening Pendapatan SAP 13 level 2"
                 required
                 readOnly
                 value={accountSap13?.text!}
@@ -137,7 +137,7 @@ export default function Form({ treeData, params }: Props) {
         </div>
 
         <div className="mt-6 flex items-center justify-end gap-x-6">
-          <Link href={`/mapping/expenditure-050/to-debt-sap-13?page=${p.page}`}>
+          <Link href={`/mapping/income/to-income-sap-13?page=${p.page}`}>
             <TwButton
               type="button"
               title="Kembali"
