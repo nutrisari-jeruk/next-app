@@ -1,7 +1,12 @@
 'use server';
 
 import $fetch from '@/lib/fetch';
-import { List, Params } from '@/types/journal-entry/general';
+import { BaseResponse } from '@/types/api';
+import {
+  JournalKindAutoComplete,
+  List,
+  Params,
+} from '@/types/journal-entry/general';
 import { Pagination } from '@/types/pagination';
 import dayjs from 'dayjs';
 
@@ -46,4 +51,27 @@ const fetchList = async ({
 
   return list;
 };
-export { fetchList };
+
+const journalKindAutoComplete = async (
+  journal_kind: string = '',
+): Promise<JournalKindAutoComplete[]> => {
+  const params = {
+    journal_kind,
+  };
+
+  const urlParams = new URLSearchParams(params).toString();
+  const data = await $fetch<JournalKindAutoComplete[]>({
+    method: 'GET',
+    url: `/v1/masters/journals/general/autocomplete?${urlParams}`,
+  });
+
+  let options: JournalKindAutoComplete[] = [];
+
+  if (data.success) {
+    options = data.data!;
+  }
+
+  return options;
+};
+
+export { fetchList, journalKindAutoComplete };

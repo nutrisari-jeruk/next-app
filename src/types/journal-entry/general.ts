@@ -1,5 +1,5 @@
 import type { Params as GlobalParams } from '@/types/params';
-
+import type { Option as globalOption } from '@/types/option';
 export interface PaginateList {
   data: List[];
   links: Links[];
@@ -56,4 +56,26 @@ export interface Account {
 
 export interface Params extends GlobalParams {
   period: string;
+}
+
+export interface JournalKindAutoComplete {
+  id: number;
+  journal_code: string;
+  journal_kind: string;
+  accounts: {
+    id: number;
+    code: string;
+    debit: string | null;
+    credit: string | null;
+  }[];
+}
+
+export interface Option extends globalOption {
+  accounts: {
+    id: number;
+    code: string;
+    debit: string | null;
+    credit: string | null;
+    amount?: number | null;
+  }[];
 }
