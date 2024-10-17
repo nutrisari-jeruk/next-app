@@ -26,11 +26,11 @@ export default async function useSap13(props?: Props): Promise<TreeNode[]> {
 
   const urlSearchParams = new URLSearchParams();
 
-  Object.keys(params).forEach(key => {
+  Object.keys(params).forEach((key) => {
     const value = params[key];
-    
+
     if (Array.isArray(value)) {
-      value.forEach(val => {
+      value.forEach((val) => {
         urlSearchParams.append(`${key}[]`, val);
       });
     } else {
