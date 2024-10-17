@@ -42,15 +42,14 @@ export interface Meta {
 }
 
 export interface Payload {
-  transaction_date: string;
   journal_id: number;
+  transaction_date: string;
   descriptions: string;
   accounts: Account[];
 }
 
 export interface Account {
-  is_credit: boolean;
-  sap13_id: number;
+  id: number;
   amount: number;
 }
 
@@ -71,6 +70,7 @@ export interface JournalKindAutoComplete {
 }
 
 export interface Option extends globalOption {
+  id: number;
   accounts: {
     id: number;
     code: string;

@@ -1,24 +1,29 @@
 'use client';
-import { TwButton, TwInput } from '@/components';
+import { TwButton, TwInput, TwTextarea } from '@/components';
 import dayjs from 'dayjs';
 import 'dayjs/locale/id';
 import JournalKindAutoComplete from '../../component/journal-kind-auto-complete';
 import { useState } from 'react';
-import { journalKindAutoComplete as getOptionJournalKindAutoComplete } from '@/actions/transaction/journal-entry/general';
+import {
+  createJournalEntry,
+  journalKindAutoComplete as getOptionJournalKindAutoComplete,
+} from '@/actions/transaction/journal-entry/general';
 import { Option } from '@/types/journal-entry/general';
 import { ArrowUturnLeftIcon, CheckIcon } from '@heroicons/react/24/outline';
-import { useFormStatus } from 'react-dom';
+import { useFormState, useFormStatus } from 'react-dom';
 import Link from 'next/link';
 import { set } from 'zod';
+import { Input } from '@headlessui/react';
 
-function SubmitButton() {
+function SubmitButton(props: { difference: number }) {
+  const { difference } = props;
   const { pending } = useFormStatus();
   return (
     <TwButton
       type="submit"
       title="Save"
       isLoading={pending}
-      disabled={pending}
+      disabled={pending || difference != 0}
       variant="success"
       icon={<CheckIcon className="h-5 w-5" aria-hidden="true" />}
     />
@@ -28,18 +33,37 @@ function SubmitButton() {
 export default function Create() {
   dayjs.locale('id');
   const [transactionDate, setTransactionDate] = useState<string>('');
+  const [descriptions, setDescriptions] = useState<string>('');
   const [selectedJournalKind, setSelectedJournalKind] = useState<Option | null>(
     null,
   );
   const [totalDebit, setTotalDebit] = useState<number>(0);
   const [totalCredit, setTotalCredit] = useState<number>(0);
   const [difference, setDifference] = useState<number>(0);
+  const [state, formAction] = useFormState(createJournalEntry, undefined);
 
-  const onSubmit = () => {
-    alert('submit');
+  const handleSubmit = async () => {
+    const formData = new FormData();
+    if (selectedJournalKind) {
+      const accounts = selectedJournalKind.accounts.map((account) => ({
+        id: account.id,
+        amount: account.amount,
+      }));
+
+      formData.append('journal_id', selectedJournalKind.id.toString());
+      formData.append('accounts', JSON.stringify(accounts));
+      formData.append('transaction_date', transactionDate);
+      formData.append('descriptions', descriptions);
+    }
+
+    return formAction(formData);
   };
 
   const onSelectedJurnalKind = (value: Option) => {
+    if (!value) {
+      setSelectedJournalKind(null);
+      return;
+    }
     const temp = {
       ...value,
       accounts: value.accounts.map((account) => ({
@@ -86,18 +110,22 @@ export default function Create() {
 
   return (
     <div>
-      <form onSubmit={onSubmit} className="rounded-lg">
+      <form action={handleSubmit} className="rounded-lg">
         <div className="mb-6 space-y-2 rounded-lg bg-white p-4 shadow">
           <TwInput
             name="transaction_date"
             label="Tanggal Transaksi"
             type="date"
+            required
             onChange={(e) => setTransactionDate(e.target.value)}
             value={transactionDate}
+            isError={!!state?.validationErrors?.transaction_date}
+            errorMessage={state?.validationErrors?.transaction_date}
           />
+
           <JournalKindAutoComplete
             name="journal_kind"
-            placeholder="cari Jenis Journal"
+            placeholder="Cari Jenis Journal"
             label="Jenis Jurnal"
             setSelectedOption={(value: Option) => onSelectedJurnalKind(value)}
             selectedOption={selectedJournalKind}
@@ -105,11 +133,16 @@ export default function Create() {
               getOptionJournalKindAutoComplete(query)
             }
           />
-          <TwInput
+
+          <TwTextarea
+            required
             name="descriptions"
             label="Keterangan"
             placeholder="Masukkan Keterangan"
-            required
+            onChange={(e) => setDescriptions(e.target.value)}
+            value={descriptions}
+            isError={!!state?.validationErrors?.descriptions}
+            errorMessage={state?.validationErrors?.descriptions}
           />
         </div>
         <div className="mb-3 space-y-1">
@@ -129,7 +162,9 @@ export default function Create() {
                 <div className="w-1/2">{account?.debit ?? account?.credit}</div>
                 <div className="w-1/5">
                   {account?.debit && (
-                    <TwInput
+                    <Input
+                      className="block size-8 w-full rounded-md border-0 py-1.5 ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
+                      required
                       type="number"
                       name={`details-${account?.code}`}
                       onChange={(e) =>
@@ -140,7 +175,9 @@ export default function Create() {
                 </div>
                 <div className="w-1/5">
                   {account?.credit && (
-                    <TwInput
+                    <Input
+                      className="block size-8 w-full rounded-md border-0 py-1.5 ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
+                      required
                       type="number"
                       name={`details-${account?.code}`}
                       onChange={(e) =>
@@ -160,18 +197,26 @@ export default function Create() {
           )}
         </div>
 
-        <div className="grid h-fit w-full justify-items-end font-bold">
-          <div className="flex w-1/2">
-            <span className="w-1/3">Total Debit</span>
-            <span className="w-1/5 text-right">: Rp {totalDebit}</span>
+        <div className="flex space-x-2 rounded-lg bg-white">
+          <div>
+            {!!state && <div className="text-red-500">{state.message}</div>}
           </div>
-          <div className="flex w-1/2">
-            <span className="w-1/3">Total Kredit</span>
-            <span className="w-1/5 text-right">: Rp {totalCredit}</span>
-          </div>
-          <div className="flex w-1/2">
-            <span className="w-1/3">Selisih</span>
-            <span className="w-1/5 text-right">: Rp {difference}</span>
+          <div className="grid h-fit w-full justify-items-end font-bold">
+            <div className="flex w-1/2 justify-end">
+              <span className="w-1/3">Total Debit</span>
+              <span className="w-1/10 text-right">: Rp</span>
+              <span className="w-2/5 text-right">{totalDebit}</span>
+            </div>
+            <div className="flex w-1/2 justify-end">
+              <span className="w-1/3">Total Kredit</span>
+              <span className="w-1/10 text-right">: Rp</span>
+              <span className="w-2/5 text-right">{totalCredit}</span>
+            </div>
+            <div className="flex w-1/2 justify-end">
+              <span className="w-1/3">Selisih</span>
+              <span className="w-1/10 text-right">: Rp</span>
+              <span className="w-2/5 text-right">{difference}</span>
+            </div>
           </div>
         </div>
 
@@ -186,7 +231,7 @@ export default function Create() {
               }
             />
           </Link>
-          <SubmitButton />
+          <SubmitButton difference={difference} />
         </div>
       </form>
     </div>

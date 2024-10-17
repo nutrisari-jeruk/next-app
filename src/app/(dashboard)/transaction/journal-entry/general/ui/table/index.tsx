@@ -39,8 +39,11 @@ export default function Table({ searchField = '', data }: Props) {
     {
       label: 'Tanggal Transaksi',
       accessor: 'transaction_date',
-      width: '50px',
+      width: '150px',
       sortable: true,
+      render: (item: Row) => {
+        return <p className="text-nowrap">{`${item.transaction_date}`}</p>;
+      },
     },
     {
       label: 'No Bukti',
@@ -53,6 +56,9 @@ export default function Table({ searchField = '', data }: Props) {
       accessor: 'description',
       width: '50px',
       sortable: true,
+      render: (item: Row) => {
+        return <p className="text-justify">{`${item.description}`}</p>;
+      },
     },
     {
       label: 'View',

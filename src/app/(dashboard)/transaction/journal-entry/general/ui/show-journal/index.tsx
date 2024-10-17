@@ -72,7 +72,7 @@ export default function Show({
                         <dt className="text-sm font-bold leading-6 text-gray-900">
                           Keterangan
                         </dt>
-                        <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                        <dd className="mt-1 text-justify text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                           {data.data.description}
                         </dd>
                       </div>

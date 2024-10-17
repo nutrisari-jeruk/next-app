@@ -91,7 +91,7 @@ export default function JournalKindAutoComplete(props: Props) {
             isError &&
               'text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500',
             (disabled || readonly) && 'cursor-not-allowed bg-gray-100',
-            'w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6',
+            'w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-10 text-gray-900 shadow-sm ring-1 ring-inset focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6',
           )}
           onChange={(event) => setQuery(event.target.value)}
           onBlur={() => setQuery('')}
