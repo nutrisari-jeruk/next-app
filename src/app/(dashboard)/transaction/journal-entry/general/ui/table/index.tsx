@@ -1,15 +1,16 @@
 'use client';
-import { TwButton } from '@/components';
 import React, { useState } from 'react';
-import ShowJournal from '../show-journal';
-import type { Meta, Pagination as PaginationType } from '@/types/pagination';
-import type { Column, Row } from '@/types/table';
-import { List } from '@/types/journal-entry/general';
 import dayjs from 'dayjs';
 import 'dayjs/locale/id';
+import { TwButton, TwInput } from '@/components';
+import { Pagination } from '@/app/ui/data-table/partials';
 import Search from '@/components/tw-search';
 import DataTable from '@/app/ui/data-table';
-import { Pagination } from '@/app/ui/data-table/partials';
+import ShowJournal from '../show-journal';
+import TableHeader from '../../component/table-header';
+import type { Pagination as PaginationType } from '@/types/pagination';
+import type { Column, Row } from '@/types/table';
+import type { List } from '@/types/journal-entry/general';
 
 function View(data: Row) {
   const [isOpen, setIsOpen] = useState(false);
@@ -83,7 +84,7 @@ export default function Table({ searchField = '', data }: Props) {
   return (
     <>
       <div className="flex w-full flex-col space-y-2">
-        <Search placeholder="Cari No Bukti" searchField={searchField} />
+        <TableHeader searchField={searchField} />
         <DataTable {...{ rows, columns, meta, searchField }} />
         <Pagination {...{ meta }} />
       </div>
