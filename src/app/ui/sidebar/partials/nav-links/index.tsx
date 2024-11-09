@@ -116,13 +116,19 @@ const adminMaps: Menu[] = [
         current: false,
       },
       {
-        name: 'Jurnal Koreksi',
-        href: '/transaction/journal-entry/correction',
-        initial: 'JU',
+        name: 'Jurnal Penyesuaian',
+        href: '/transaction/journal-entry/adjustment',
+        initial: 'JP',
         current: false,
       },
       {
-        name: 'Jurnal Penutup',
+        name: 'Jurnal Koreksi',
+        href: '/transaction/journal-entry/correction',
+        initial: 'JK',
+        current: false,
+      },
+      {
+        name: 'Jurnal Penutup', 
         href: '/transaction/journal-entry/closing',
         initial: 'JPP',
         current: false,
