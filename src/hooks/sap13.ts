@@ -11,7 +11,7 @@ interface Props {
   sub_object_details?: string[];
 }
 
-export async function useSap13(props?: Props): Promise<TreeNode[]> {
+export async function fetchSap13(props?: Props): Promise<TreeNode[]> {
   let sap13: TreeNode[] = [];
   const params: {
     [key: string]: string | string[];
