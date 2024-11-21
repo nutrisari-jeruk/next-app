@@ -6,6 +6,7 @@ export interface User {
   role_id: string;
   role: string;
   token: string;
+  fiscal_year: string;
 }
 
 export interface Role {

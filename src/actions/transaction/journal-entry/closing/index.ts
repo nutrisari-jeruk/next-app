@@ -87,7 +87,7 @@ const createJournalEntry = async (_prevState: unknown, formData: FormData) => {
     descriptions: formData.get('descriptions'),
     accounts: JSON.parse(formData.get('accounts') as string),
   });
-console.log(validatedFields);
+
   if (!validatedFields.success) {
     return {
       validationErrors: validatedFields.error.flatten().fieldErrors,
