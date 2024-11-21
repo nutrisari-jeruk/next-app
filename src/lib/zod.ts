@@ -24,4 +24,5 @@ export const ssoSignInSchema = object({
 export const selectRoleSchema = object({
   user_id: string({ required_error: 'User id is required' }),
   role_id: string({ required_error: 'Role id is required' }),
+  fiscal_year: string({ required_error: 'Fiscal year is required' }),
 });

@@ -9,8 +9,9 @@ export default {
       async authorize(credentials) {
         const validatedFields = selectRoleSchema.safeParse(credentials);
         if (validatedFields.success) {
-          const { user_id, role_id } = validatedFields.data!;
-          const user = await SelectRole({ user_id, role_id });
+          const { user_id, role_id, fiscal_year } = validatedFields.data!;
+          const user = await SelectRole({ user_id, role_id, fiscal_year });
+
           if (!user) return null;
 
           return user;
