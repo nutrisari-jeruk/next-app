@@ -1,5 +1,4 @@
 import $fetch from '@/lib/fetch';
-import { AxiosError } from 'axios';
 import type { TreeNode } from '@/types/tree-view';
 
 interface Props {
@@ -12,7 +11,6 @@ interface Props {
 }
 
 export async function fetchSap13(props?: Props): Promise<TreeNode[]> {
-  let sap13: TreeNode[] = [];
   const params: {
     [key: string]: string | string[];
   } = {
@@ -38,19 +36,12 @@ export async function fetchSap13(props?: Props): Promise<TreeNode[]> {
     }
   });
 
-  try {
-    const data = await $fetch<TreeNode[]>({
-      url: '/v1/masters/accounts/sap13/tree?' + urlSearchParams.toString(),
-      method: 'GET',
-    });
+  const { data } = await $fetch<TreeNode[]>({
+    url: '/v1/masters/accounts/sap13/tree?' + urlSearchParams.toString(),
+    method: 'GET',
+  });
 
-    sap13 = data?.data!;
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      return error.response?.data;
-    }
-    throw error;
-  }
+  const sap13: TreeNode[] = data || [];
 
   return sap13;
 }
