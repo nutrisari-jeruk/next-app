@@ -9,11 +9,11 @@ import { TwButton, TwInput } from '@/components';
 import { ArrowUturnLeftIcon, CheckIcon } from '@heroicons/react/24/outline';
 import { mapOnAccount } from '@/actions/mapping/expenditure-050/to-expenditure-sap-13';
 import { notFound } from 'next/navigation';
+import useFetchSap13 from '@/hooks/fetchSap13';
 import type { TreeNode } from '@/types/tree-view';
 import type { List } from '@/types/mapping';
 
 interface Props {
-  treeData: TreeNode[];
   params: {
     id: string;
   };
@@ -34,7 +34,9 @@ function SubmitButton() {
   );
 }
 
-export default function Form({ treeData, params }: Props) {
+export default function Form({ params }: Props) {
+  const { data: treeData } = useFetchSap13({ accounts: ['5'] });
+
   const {
     rows,
     params: p = {
@@ -137,7 +139,9 @@ export default function Form({ treeData, params }: Props) {
         </div>
 
         <div className="mt-6 flex items-center justify-end gap-x-6">
-          <Link href={`/mapping/expenditure-050/to-expenditure-sap-13?page=${p.page}`}>
+          <Link
+            href={`/mapping/expenditure-050/to-expenditure-sap-13?page=${p.page}`}
+          >
             <TwButton
               type="button"
               title="Kembali"
