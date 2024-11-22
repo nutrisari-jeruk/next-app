@@ -14,37 +14,63 @@ import { useLoggedInUser } from '@/store/user';
 
 import type { Option } from '@/types/option';
 import type { Role } from '@/types/user';
+import { getFiscalYear } from '@/actions/auth/getUserRole';
+import { Label } from '@headlessui/react';
+import dayjs from 'dayjs';
 
 export default function RoleSelect({ searchParams }: any) {
   const [errorMessage, formAction] = useFormState(authenticate, undefined);
   const { loggedInUser } = useLoggedInUser();
   const [pending, setPending] = useState(false);
+  const [selectedRole, setSelectedRole] = useState<Option | null>(null);
+  const [selectedFiscalYear, setSelectedFiscalYear] = useState<Option | null>(
+    null,
+  );
+  const [fiscalYearOptions, setFiscalYearOptions] = useState<Option[]>([
+    {
+      label: dayjs().format('YYYY'),
+      value: dayjs().format('YYYY'),
+    },
+  ]);
   const router = useRouter();
-
-  useEffect(() => {
-    if (!loggedInUser) {
-      router.push('/login');
-    }
-  }, [loggedInUser, router]);
 
   const options = loggedInUser?.roles.map((role: Role) => ({
     label: role.role,
     value: role.role_id,
   })) as Option[];
 
-  const [selectedRole, setSelectedRole] = useState<Option | null>(null);
+  const getFiscalYearOptions = async () => {
+    const data = await getFiscalYear();
+
+    if (!data) return;
+
+    const fiscalYearOptions = data?.map((option: number) => ({
+      label: option.toString(),
+      value: option,
+    })) as Option[];
+
+    setFiscalYearOptions(fiscalYearOptions);
+  };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setPending(true);
-    if (selectedRole) {
+    if (selectedRole && selectedFiscalYear) {
+      setPending(true);
       const formData = new FormData();
       formData.append('user_id', String(loggedInUser?.id));
       formData.append('role_id', String(selectedRole.value));
+      formData.append('fiscal_year', String(selectedFiscalYear.value));
       return formAction(formData);
     }
   };
 
+  useEffect(() => {
+    if (!loggedInUser) {
+      router.push('/login');
+    }
+
+    getFiscalYearOptions();
+  }, [loggedInUser, router]);
   return (
     <div>
       {(loggedInUser && (
@@ -58,13 +84,20 @@ export default function RoleSelect({ searchParams }: any) {
                 setSelectedData={setSelectedRole}
                 placeHolder="Select a role"
               />
+              <TwListbox
+                label="Select fiscal year"
+                options={fiscalYearOptions}
+                selectedData={selectedFiscalYear}
+                setSelectedData={setSelectedFiscalYear}
+                placeHolder="Select a fiscal year"
+              />
               <TwButton
                 type="submit"
                 title="Login"
                 className="w-full"
                 size="lg"
                 aria-disabled={pending}
-                disabled={pending || !selectedRole}
+                disabled={pending || !selectedRole || !selectedFiscalYear}
                 isLoading={pending}
                 icon={<ArrowRightEndOnRectangleIcon className="w-5" />}
               />

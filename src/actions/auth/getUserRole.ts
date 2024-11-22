@@ -104,9 +104,11 @@ export async function getUserRoleBySSOToken(
 export async function SelectRole({
   user_id,
   role_id,
+  fiscal_year,
 }: {
   user_id: string;
   role_id: string;
+  fiscal_year: string;
 }): Promise<User | null> {
   let user: User | null = null;
 
@@ -114,6 +116,7 @@ export async function SelectRole({
     const { data } = await $http.post<BaseResponse<User>>('/v1/user-role', {
       user_id,
       role_id,
+      fiscal_year,
     });
 
     user = data?.data!;
@@ -125,4 +128,23 @@ export async function SelectRole({
   }
 
   return user;
+}
+
+export async function getFiscalYear(): Promise<number[] | null> {
+  let fiscalYear: number[] | null = null;
+
+  try {
+    const { data } = await $http.get<BaseResponse<number[]>>(
+      'v1/settings/fiscal/year',
+    );
+
+    fiscalYear = data?.data!;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      return error.response?.data;
+    }
+    throw error;
+  }
+
+  return fiscalYear;
 }
