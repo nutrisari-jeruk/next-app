@@ -11,6 +11,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         token.role = user.role as string;
         token.role_id = user.role_id as string;
         token.token = user.token as string;
+        token.fiscal_year = user.fiscal_year as string;
       }
 
       return token;
@@ -22,7 +23,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user.role = token.role as string;
         session.user.role_id = token.role_id as string;
         session.user.token = token.token as string;
+        session.user.fiscal_year = token.fiscal_year as string;
       }
+
       return session;
     },
   },
