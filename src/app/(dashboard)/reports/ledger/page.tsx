@@ -9,10 +9,11 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <>
-      <div className="flex items-center justify-between">
-        <TwHeader title="Jurnal Umum" />
+      <TwHeader title="Jurnal Umum" />
+
+      <div className="mt-4 space-y-2 rounded-lg bg-white p-4 shadow">
+        <Form />
       </div>
-      <Form />
     </>
   );
 }
