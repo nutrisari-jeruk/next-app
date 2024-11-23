@@ -10,9 +10,14 @@ import { set } from 'zod';
 export default function Print() {
   const { data } = useSession();
   const fiscalYear = data?.user?.fiscal_year;
+
   const [filterType, setFilterType] = useState<string>('year'); // "year" atau "month"
-  const [period, setPeriod] = useState<string>(`${fiscalYear}`);
   const [monthFilter, setMonthFilter] = useState<string>(`01`);
+  const [reprotFilter, setreprotFilter] = useState<string>(`cash-flow`);
+
+  const [period, setPeriod] = useState<string>(`${fiscalYear}`);
+  const [url, setUrl] = useState<string>(`cash-flow`);
+
   const monthOptions: Option[] = [
     {
       label: 'Januari',
@@ -64,6 +69,37 @@ export default function Print() {
     },
   ];
 
+  const reportOptions: Option[] = [
+    {
+      label: 'Arus Kas',
+      value: 'cash-flow',
+    },
+    {
+      label: 'Kelebihan Perubahan Saldo',
+      value: 'balance-change-excess',
+    },
+    {
+      label: 'Neraca',
+      value: 'balance-sheet',
+    },
+    {
+      label: 'Operasional',
+      value: 'operational',
+    },
+    {
+      label: 'Performa',
+      value: 'performance',
+    },
+    {
+      label: 'Perubahan Ekuitas',
+      value: 'changes-in-equity',
+    },
+    {
+      label: 'Realisasi Anggaran',
+      value: 'budget-realization',
+    },
+  ];
+
   const changeFilterType = (type: string) => {
     setFilterType(type);
     switch (type) {
@@ -84,42 +120,55 @@ export default function Print() {
     setMonthFilter(month);
     setPeriod(`${fiscalYear}-${month}`);
   };
+
+  const changeReportType = (report: string) => {
+    setreprotFilter(report);
+    setUrl(report);
+  };
   return (
-    <div className="mt-4 flex w-1/2 items-end space-x-1">
-      <div className="w-1/2">
+    <div>
+      <div className="mb-6 space-y-2 rounded-lg bg-white p-4 shadow">
         <TwSelect
-          label="Periode"
+          label="Jenis Laporan"
+          value={reprotFilter}
+          onChange={(e) => changeReportType(e.target.value)}
+          options={reportOptions}
+        />
+        <TwSelect
+          label="Jenis Periode"
           value={filterType}
           onChange={(e) => changeFilterType(e.target.value)}
           options={[
             {
               value: 'year',
-              label: 'Tahun',
+              label: 'Tahunan',
             },
             {
               value: 'month',
-              label: 'Bulan',
+              label: 'Bulanan',
             },
           ]}
         />
-      </div>
 
-      {/* Input untuk memilih bulan */}
-      {filterType === 'month' && (
-        <div className="w-1/2">
+        {/* Input untuk memilih bulan */}
+        {filterType === 'month' && (
           <TwSelect
+            label="Bulan"
             options={monthOptions}
             value={monthFilter}
             onChange={(e) => changeMonthFIlter(e.target.value)}
           />
+        )}
+
+        <div>
+          <Link
+            target="_blank"
+            href={`${process.env.NEXT_PUBLIC_V1_REPORT_URL}/${url}?period=${period}`}
+          >
+            <TwButton title="Cetak" variant="primary" />
+          </Link>
         </div>
-      )}
-      <Link
-        target="_blank"
-        href={`${process.env.NEXT_PUBLIC_V1_REPORT_URL}/budget-realization?period=${period}`}
-      >
-        <TwButton title="Cetak" variant="primary" />
-      </Link>
+      </div>
     </div>
   );
 }
