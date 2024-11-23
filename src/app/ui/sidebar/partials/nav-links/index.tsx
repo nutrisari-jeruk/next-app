@@ -151,9 +151,9 @@ const adminReports: Menu[] = [
     href: '#',
     children: [
       {
-        name: 'Realisasi Anggaran',
-        href: '/report/budget-realization',
-        initial: 'RA',
+        name: 'laporan',
+        href: '/report/reports',
+        initial: 'LP',
         current: false,
       },
     ],

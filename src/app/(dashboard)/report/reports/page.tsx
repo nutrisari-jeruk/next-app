@@ -1,7 +1,7 @@
 import { TwHeader } from '@/components';
 
-import PrintForm from './ui/print-from';
 import { Metadata } from 'next';
+import PrintForm from './ui/print-from';
 
 export const metadata: Metadata = {
   title: 'Laporan Realisasi Anggaran',
@@ -9,9 +9,9 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    <div>
-      <TwHeader title="Laporan Realisasi Anggaran" />
+    <>
+      <TwHeader title="Laporan" />
       <PrintForm />
-    </div>
+    </>
   );
 }
