@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <>
-      <TwHeader title="Jurnal Umum" />
+      <TwHeader title="Laporan Buku Besar" />
 
       <div className="mt-4 space-y-2 rounded-lg bg-white p-4 shadow">
         <Form />
