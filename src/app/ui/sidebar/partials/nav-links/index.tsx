@@ -6,7 +6,6 @@ import { HomeIcon } from '@heroicons/react/24/outline';
 import { usePathname } from 'next/navigation';
 import { User } from '@/types/user';
 import type { Menu } from '@/types/menu';
-import { report } from 'process';
 
 const userNavigation: Menu[] = [
   {
@@ -110,6 +109,18 @@ const adminMaps: Menu[] = [
       },
     ],
   },
+  {
+    name: 'Mapping Kode Rekening Pembiayaan 050',
+    href: '#',
+    children: [
+      {
+        name: 'Pembiayaan SAP 13',
+        href: '/mapping/financing-050/to-financing-sap-13',
+        initial: 'FA',
+        current: false,
+      },
+    ],
+  },
 ];
 
 const adminTransactions: Menu[] = [
@@ -151,9 +162,15 @@ const adminReports: Menu[] = [
     href: '#',
     children: [
       {
-        name: 'laporan',
+        name: 'Buku Besar',
+        href: '/report/ledger',
+        initial: 'BB',
+        current: false,
+      },
+      {
+        name: 'Laporan Keuangan',
         href: '/report/reports',
-        initial: 'LP',
+        initial: 'LK',
         current: false,
       },
     ],
