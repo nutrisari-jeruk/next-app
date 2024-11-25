@@ -6,6 +6,7 @@ import { HomeIcon } from '@heroicons/react/24/outline';
 import { usePathname } from 'next/navigation';
 import { User } from '@/types/user';
 import type { Menu } from '@/types/menu';
+import { report } from 'process';
 
 const userNavigation: Menu[] = [
   {
@@ -20,6 +21,10 @@ const userNavigation: Menu[] = [
 const userJournals: Menu[] = [];
 
 const userMaps: Menu[] = [];
+
+const userTransactions: Menu[] = [];
+
+const userReports: Menu[] = [];
 
 const adminNavigation: Menu[] = [
   {
@@ -105,6 +110,9 @@ const adminMaps: Menu[] = [
       },
     ],
   },
+];
+
+const adminTransactions: Menu[] = [
   {
     name: 'Pencatatan Jurnal',
     href: '#',
@@ -128,9 +136,24 @@ const adminMaps: Menu[] = [
         current: false,
       },
       {
-        name: 'Jurnal Penutup', 
+        name: 'Jurnal Penutup',
         href: '/transaction/journal-entry/closing',
         initial: 'JPP',
+        current: false,
+      },
+    ],
+  },
+];
+
+const adminReports: Menu[] = [
+  {
+    name: 'Laporan',
+    href: '#',
+    children: [
+      {
+        name: 'laporan',
+        href: '/report/reports',
+        initial: 'LP',
         current: false,
       },
     ],
@@ -143,6 +166,9 @@ export default function NavLink({ user }: { user: User }) {
   const navigation = user.role === 'admin' ? adminNavigation : userNavigation;
   const journals = user.role === 'admin' ? adminJournals : userJournals;
   const maps = user.role === 'admin' ? adminMaps : userMaps;
+  const transactions =
+    user.role === 'admin' ? adminTransactions : userTransactions;
+  const reports = user.role === 'admin' ? adminReports : userReports;
   return (
     <>
       <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -221,6 +247,76 @@ export default function NavLink({ user }: { user: User }) {
         )}
         {maps.length > 0 &&
           maps.map((item, index) => (
+            <li key={index}>
+              <div className="text-xs font-semibold leading-6 text-gray-400">
+                {item.name}
+              </div>
+              <ul role="list" className="-mx-2 mt-2 space-y-1">
+                {item.children!.map((v) => (
+                  <li key={v.name}>
+                    <Link
+                      href={v.href}
+                      className={clsx(
+                        v.name !== 'Dashboard' && pathname.startsWith(v.href)
+                          ? 'bg-indigo-100 text-indigo-600'
+                          : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600',
+                        'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6',
+                      )}
+                    >
+                      <span
+                        className={clsx(
+                          v.name !== 'Dashboard' && pathname.startsWith(v.href)
+                            ? 'border-indigo-600 text-indigo-600'
+                            : 'border-gray-200 text-gray-400 group-hover:border-indigo-600 group-hover:text-indigo-600',
+                          'vs-center flex h-6 w-6 shrink-0 justify-center rounded-lg border bg-white text-[0.625rem] font-medium',
+                        )}
+                      >
+                        {v.initial}
+                      </span>
+                      <span className="truncate">{v.name}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ))}
+        {transactions.length > 0 &&
+          transactions.map((item, index) => (
+            <li key={index}>
+              <div className="text-xs font-semibold leading-6 text-gray-400">
+                {item.name}
+              </div>
+              <ul role="list" className="-mx-2 mt-2 space-y-1">
+                {item.children!.map((v) => (
+                  <li key={v.name}>
+                    <Link
+                      href={v.href}
+                      className={clsx(
+                        v.name !== 'Dashboard' && pathname.startsWith(v.href)
+                          ? 'bg-indigo-100 text-indigo-600'
+                          : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600',
+                        'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6',
+                      )}
+                    >
+                      <span
+                        className={clsx(
+                          v.name !== 'Dashboard' && pathname.startsWith(v.href)
+                            ? 'border-indigo-600 text-indigo-600'
+                            : 'border-gray-200 text-gray-400 group-hover:border-indigo-600 group-hover:text-indigo-600',
+                          'vs-center flex h-6 w-6 shrink-0 justify-center rounded-lg border bg-white text-[0.625rem] font-medium',
+                        )}
+                      >
+                        {v.initial}
+                      </span>
+                      <span className="truncate">{v.name}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ))}
+        {reports.length > 0 &&
+          reports.map((item, index) => (
             <li key={index}>
               <div className="text-xs font-semibold leading-6 text-gray-400">
                 {item.name}
