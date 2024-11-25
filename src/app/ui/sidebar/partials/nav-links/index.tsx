@@ -151,9 +151,15 @@ const adminReports: Menu[] = [
     href: '#',
     children: [
       {
-        name: 'laporan',
-        href: '/report/reports',
+        name: 'Buku besar',
+        href: '/report/ledger',
         initial: 'LP',
+        current: false,
+      },
+      {
+        name: 'Laporan-laporan',
+        href: '/report/reports',
+        initial: 'LBB',
         current: false,
       },
     ],
