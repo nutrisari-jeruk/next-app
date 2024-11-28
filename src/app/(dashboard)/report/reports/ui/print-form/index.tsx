@@ -163,7 +163,7 @@ export default function Print() {
         <div>
           <Link
             target="_blank"
-            href={`${process.env.NEXT_PUBLIC_V1_REPORT_URL}/${url}?period=${period}`}
+            href={`${process.env.NEXT_PUBLIC_REPORT_URL_V1}/${url}?period=${period}`}
           >
             <TwButton title="Cetak" variant="primary" />
           </Link>
