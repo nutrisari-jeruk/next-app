@@ -1,7 +1,7 @@
 import { TwHeader } from '@/components';
 
 import { Metadata } from 'next';
-import PrintForm from './ui/print-from';
+import PrintForm from './ui/print-form';
 
 export const metadata: Metadata = {
   title: 'Laporan Realisasi Anggaran',
