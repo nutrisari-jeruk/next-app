@@ -168,9 +168,9 @@ const adminReports: Menu[] = [
         current: false,
       },
       {
-        name: 'Laporan Keuangan',
+        name: 'Laporan Akuntansi',
         href: '/report/reports',
-        initial: 'LK',
+        initial: 'LA',
         current: false,
       },
     ],
