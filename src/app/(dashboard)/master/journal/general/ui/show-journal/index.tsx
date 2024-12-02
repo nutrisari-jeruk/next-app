@@ -45,26 +45,26 @@ export default function Show({
                 <div>
                   <div className="px-4 sm:px-0">
                     <h3 className="text-base font-semibold leading-7 text-gray-900">
-                      Informasi journal_kind
+                      Informasi Jurnal
                     </h3>
                   </div>
-                  <div className="mt-6 border-t border-gray-100 shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg px-3">
+                  <div className="mt-6 border-t border-gray-100 px-3 shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
                     <dl className="divide-y divide-gray-100">
                       <div className="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                         <dt className="text-sm font-bold leading-6 text-gray-900">
-                          Kode journal_kind
+                          Kode Jurnal
                         </dt>
                         <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                          {data.data.journal_kind_kode}
+                          {data.data.journal_code}
                         </dd>
                       </div>
 
                       <div className="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                         <dt className="text-sm font-bold leading-6 text-gray-900">
-                          Jenis journal_kind
+                          Jenis Jurnal
                         </dt>
                         <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                          {data.data.journal_kind_jenis}
+                          {data.data.journal_kind}
                         </dd>
                       </div>
                     </dl>
