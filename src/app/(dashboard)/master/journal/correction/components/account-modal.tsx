@@ -4,7 +4,7 @@
 import Sap13Modal from './sap13-modal';
 import { useEffect, useState } from 'react';
 import { XMarkIcon, PlusIcon } from '@heroicons/react/24/outline';
-import { TwButton, TwInput, TwRadio } from '@/components';
+import { TwButton, TwInput, TwRadio, TwSelect } from '@/components';
 import {
   Button,
   Description,
@@ -37,8 +37,10 @@ export default function AccountModal(props: Props) {
   const [isSapModalOpen, setIsSapModalOpen] = useState(false);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [equitasTypeId, setEquitasTypeId] = useState('231');
   const [account, setAccount] = useState<Account>({
     is_credit: false,
+    equitas_id: equitasTypeId,
     sap13_id: {} as TreeNode,
   });
 
@@ -47,6 +49,7 @@ export default function AccountModal(props: Props) {
     setAccount({
       is_credit: equitasType === 'menambah' ? false : true,
       sap13_id: node,
+      equitas_id: equitasTypeId,
     });
   };
 
@@ -114,6 +117,16 @@ export default function AccountModal(props: Props) {
                       Atur Kode Rekening
                     </DialogTitle>
                     <Description className="mb-2 space-y-4">
+                      <TwSelect
+                        label="Ekuitas"
+                        value={equitasTypeId}
+                        options={[
+                          { label: '3.1.01.01.01-Ekuitas', value: '231' },
+                          { label: '3.1.02.01.01-Ekuitas SAL', value: '739' },
+                        ]}
+                        onChange={(e) => setEquitasTypeId(e.target.value)}
+                      />
+
                       <div className="flex space-x-2">
                         <TwInput
                           id="sap13_id"

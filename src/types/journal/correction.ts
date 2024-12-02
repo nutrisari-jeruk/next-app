@@ -46,5 +46,6 @@ export interface Payload {
 
 export interface Account {
   is_credit: boolean;
+  equitas_id: string;
   sap13_id: TreeNode;
 }

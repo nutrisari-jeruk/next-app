@@ -39,9 +39,11 @@ export default function CreateForm(props: Props) {
   const { treeData } = props;
   const [jenis, setJenis] = useState('');
   const [isAccountModalOpen, setIsAccountModalOpen] = useState(false);
+  // const [accountList, setAccountList] = useState<Account[]>([]);
   const [accountList, setAccountList] = useState<Account[]>([
     {
       is_credit: true,
+      equitas_id: '231',
       sap13_id: {
         id: 231,
         text: '3.1.01.01.01 - Ekuitas',
@@ -64,7 +66,28 @@ export default function CreateForm(props: Props) {
   };
 
   const appendAccount = (accounts: Account) => {
-    accounts && setAccountList([...accountList, accounts]);
+    console.log('tesss', accounts.equitas_id);
+    let addArray = [];
+    let CpAccount = [...accountList];
+    if (accounts?.equitas_id === '739') {
+      let nParams = {
+        is_credit: true,
+        equitas_id: '739',
+        sap13_id: {
+          id: 739,
+          text: '3.1.02.01.01 - Ekuitas SAL',
+          parent_id: 230,
+          is_selectable: true,
+        },
+      };
+
+      CpAccount[0] = Object.assign({}, accounts);
+      addArray = [nParams, ...CpAccount];
+    } else {
+      addArray = [...CpAccount, accounts];
+    }
+
+    accounts && setAccountList(addArray);
   };
 
   const removeAccount = (index: number) => {
@@ -87,7 +110,7 @@ export default function CreateForm(props: Props) {
       case 'menambah':
         setAccountList(
           accountList.map((account) => {
-            if (account.sap13_id.id === 231) {
+            if (account.sap13_id.id === Number(account.equitas_id)) {
               return { ...account, is_credit: true };
             }
             return { ...account, is_credit: false };
@@ -97,7 +120,7 @@ export default function CreateForm(props: Props) {
       case 'mengurangi':
         setAccountList(
           accountList.map((account) => {
-            if (account.sap13_id.id === 231) {
+            if (account.sap13_id.id === Number(account.equitas_id)) {
               return { ...account, is_credit: false };
             }
             return { ...account, is_credit: true };
@@ -107,7 +130,7 @@ export default function CreateForm(props: Props) {
       default:
         setAccountList(
           accountList.map((account) => {
-            if (account.sap13_id.id === 231) {
+            if (account.sap13_id.id === Number(account.equitas_id)) {
               return { ...account, is_credit: true };
             }
             return { ...account, is_credit: false };
