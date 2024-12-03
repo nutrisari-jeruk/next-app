@@ -14,6 +14,7 @@ interface Props extends React.SelectHTMLAttributes<HTMLSelectElement> {
   options?: Option[];
   placeholder?: string;
   defaultValue?: string | number;
+  hidden?: boolean;
 }
 
 export default function TwSelect(props: Props) {
@@ -29,11 +30,12 @@ export default function TwSelect(props: Props) {
     options = [],
     placeholder = '',
     defaultValue,
+    hidden = false,
     ...attr
   } = props;
 
   return (
-    <Field className={clsx('w-full space-y-1', className)}>
+    <Field className={clsx('w-full space-y-1', className, hidden && 'hidden')}>
       <Label
         htmlFor={name}
         className={clsx(
