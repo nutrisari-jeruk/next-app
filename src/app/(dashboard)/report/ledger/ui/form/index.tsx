@@ -24,8 +24,8 @@ export default function Form({ fiscalYear }: { fiscalYear: number[] }) {
       value: 'monthly',
     },
     {
-      label: 'Harian',
-      value: 'daily',
+      label: 'Rentang Tanggal',
+      value: 'date_range',
     },
   ];
 
@@ -77,8 +77,8 @@ export default function Form({ fiscalYear }: { fiscalYear: number[] }) {
       setIsShown(false);
     }
 
-    if (e.target.value === 'daily') {
-      setType('daily');
+    if (e.target.value === 'date_range') {
+      setType('date_range');
       setEndDate(today);
       setEndDate(today);
       setIsShown(true);
@@ -103,7 +103,7 @@ export default function Form({ fiscalYear }: { fiscalYear: number[] }) {
       setTypeError('Pilih tipe periode terlebih dahulu');
       return;
     }
-    
+
     if (!period) {
       setPeriodError('Pilih periode terlebih dahulu');
       return;
@@ -125,7 +125,7 @@ export default function Form({ fiscalYear }: { fiscalYear: number[] }) {
       url += `&period=${currentFiscalYear}-${period}`;
     }
 
-    if (type === 'daily') {
+    if (type === 'date_range') {
       url += `&start_date=${startDate}&end_date=${endDate}`;
     }
 
@@ -138,7 +138,7 @@ export default function Form({ fiscalYear }: { fiscalYear: number[] }) {
         label="Pilih Tipe Periode"
         name="type"
         options={types}
-        defaultValue='yearly'
+        defaultValue="yearly"
         onChange={handleTypeChange}
         isError={!!typeError}
         errorMessage={typeError}
@@ -161,7 +161,9 @@ export default function Form({ fiscalYear }: { fiscalYear: number[] }) {
         className="w-full"
         label="Dari Tanggal"
         placeholder="Dari tanggal"
-        value={startDate}
+        defaultValue={startDate}
+        min={`${fiscalYear}-01-01`}
+        max={`${fiscalYear}-12-31`}
         onChange={(e) => setStartDate(e.target.value)}
         hidden={!isShown}
       />
@@ -172,7 +174,9 @@ export default function Form({ fiscalYear }: { fiscalYear: number[] }) {
         className="w-full"
         label="Sampai Tanggal"
         placeholder="Sampai tanggal"
-        value={endDate}
+        defaultValue={endDate}
+        min={startDate}
+        max={`${fiscalYear}-12-31`}
         onChange={(e) => setEndDate(e.target.value)}
         hidden={!isShown}
       />
