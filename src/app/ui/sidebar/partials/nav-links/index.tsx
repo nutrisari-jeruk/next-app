@@ -176,7 +176,7 @@ const adminReports: Menu[] = [
       {
         name: 'Laporan Akuntansi',
         href: '/report/reports',
-        initial: 'LK',
+        initial: 'LA',
         current: false,
       },
     ],
