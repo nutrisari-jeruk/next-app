@@ -158,7 +158,7 @@ const adminTransactions: Menu[] = [
 
 const adminReports: Menu[] = [
   {
-    name: 'Buku Besar',
+    name: 'Pembukuan',
     href: '#',
     children: [
       {
