@@ -85,9 +85,7 @@ const mapOnAccount = async (_prevState: unknown, formData: FormData) => {
         method: 'PUT',
         payload: payload,
       });
-
     } else {
-
       await $fetch({
         url: '/v1/mappings/income-rs/income-sap13',
         method: 'POST',
@@ -106,8 +104,8 @@ const mapOnAccount = async (_prevState: unknown, formData: FormData) => {
     tag: new Date().toLocaleString(),
   });
 
-  revalidatePath(`/mapping/income/to-income-sap13?page=${page}`);
-  redirect(`/mapping/income/to-income-sap13?page=${page}`);
+  revalidatePath(`/mapping/income/to-income-sap-13?page=${page}`);
+  redirect(`/mapping/income/to-income-sap-13?page=${page}`);
 };
 
 export { fetchList, mapOnAccount };

@@ -158,7 +158,7 @@ const adminTransactions: Menu[] = [
 
 const adminReports: Menu[] = [
   {
-    name: 'Laporan',
+    name: 'Pembukuan',
     href: '#',
     children: [
       {
@@ -167,10 +167,16 @@ const adminReports: Menu[] = [
         initial: 'BB',
         current: false,
       },
+    ],
+  },
+  {
+    name: 'Laporan',
+    href: '#',
+    children: [
       {
-        name: 'Laporan Keuangan',
+        name: 'Laporan Akuntansi',
         href: '/report/reports',
-        initial: 'LK',
+        initial: 'LA',
         current: false,
       },
     ],
