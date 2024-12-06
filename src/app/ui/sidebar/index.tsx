@@ -12,7 +12,7 @@ export default function Sidebar({ session }: { session: Session }) {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <>
-      <div className="flex h-svh w-1/3 grow flex-col gap-y-5 border-r border-gray-200 bg-white px-2 shadow">
+      <div className="flex h-svh w-96 grow flex-col gap-y-5 border-r border-gray-200 bg-white px-2 shadow">
         <div className="-mx-2 mt-auto flex h-16 shrink-0 items-center bg-indigo-600">
           <Link
             href="/"
