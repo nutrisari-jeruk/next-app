@@ -194,7 +194,7 @@ export default function Form({ fiscalYear }: { fiscalYear: number[] }) {
         errorMessage={sap13Error}
       />
 
-      <TwButton title="Cetak" onClick={show} />
+      <TwButton title="Tampilkan" onClick={show} />
 
       <Sap13Modal
         treeData={treeData}
