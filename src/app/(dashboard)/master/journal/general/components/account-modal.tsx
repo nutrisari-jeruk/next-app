@@ -1,7 +1,7 @@
 'use client';
 
 import Sap13Modal from './sap13-modal';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { XMarkIcon, PlusIcon } from '@heroicons/react/24/outline';
 import { TwButton, TwInput, TwRadio } from '@/components';
 import {
@@ -29,43 +29,38 @@ export default function AccountModal(props: Props) {
   const [isSapModalOpen, setIsSapModalOpen] = useState(false);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [account, setAccount] = useState<Account>({
-    is_credit: false,
-    sap13_id: {} as TreeNode,
-  });
+  const [isCredit, setIsCredit] = useState(false);
+  const [sap13Account, setSap13Account] = useState<TreeNode>({} as TreeNode);
 
   const handleAccountSelect = (node: TreeNode) => {
     setIsSapModalOpen(false);
-    setAccount({ is_credit: false, sap13_id: node });
+    setSap13Account(node);
+  };
+
+  const handleRadioChange = (value: string) => {
+    setIsCredit(value === 'credit');
   };
 
   const addAccount = () => {
-    if (!account.sap13_id.id) {
+    if (!sap13Account.id) {
       setIsError(true);
       setErrorMessage('Pilih akun terlebih dahulu');
 
-      return
+      return;
     }
 
-    !!account.sap13_id.id && handleAppendAction(account);
+    handleAppendAction({
+      sap13_id: sap13Account,
+      is_credit: isCredit,
+    });
 
     onClose();
-  };
-
-  const handleChange = (value: string) => {
-    setAccount((prevAccount) => ({
-      ...prevAccount,
-      is_credit: value === 'credit',
-    }));
   };
 
   return (
     <>
       <Transition show={isModalOpen}>
-        <Dialog
-          className="relative z-10"
-          onClose={() => onClose}
-        >
+        <Dialog className="relative z-10" onClose={() => onClose}>
           <TransitionChild
             enter="ease-out duration-300"
             enterFrom="opacity-0"
@@ -113,7 +108,7 @@ export default function AccountModal(props: Props) {
                           className="w-full cursor-pointer"
                           label="Kode Rekening SAP 13"
                           placeholder="Kode SAP 13 level 5"
-                          value={account?.sap13_id.text!}
+                          value={sap13Account.text!}
                           isError={isError}
                           errorMessage={errorMessage}
                           readOnly
@@ -126,8 +121,8 @@ export default function AccountModal(props: Props) {
                           { label: 'Debit', value: 'debit' },
                           { label: 'Credit', value: 'credit' },
                         ]}
-                        value={account?.is_credit ? 'credit' : 'debit'}
-                        handleChange={handleChange}
+                        value={isCredit ? 'credit' : 'debit'}
+                        handleChange={handleRadioChange}
                       />
 
                       <TwButton
