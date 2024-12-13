@@ -4,7 +4,7 @@ import { fetchSap13 } from '@/hooks/sap13';
 import type { TreeNode } from '@/types/tree-view';
 
 export default async function Page({ params }: { params: { id: string } }) {
-  const treeData: TreeNode[] = await fetchSap13({ accounts: ['8'] });
+  const treeData: TreeNode[] = await fetchSap13({ accounts: ['1', '8'] });
 
   return (
     <>
