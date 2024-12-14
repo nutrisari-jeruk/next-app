@@ -45,12 +45,12 @@ export default function Table({ searchField = '', data }: Props) {
       sortable: false,
     },
     {
-      label: 'Kode Jurnal',
+      label: 'Kode',
       accessor: 'journal_code',
       sortable: true,
     },
     {
-      label: 'Jenis Jurnal',
+      label: 'Jenis',
       accessor: 'journal_kind',
       sortable: true,
     },
