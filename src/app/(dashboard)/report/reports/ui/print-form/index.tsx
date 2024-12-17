@@ -183,7 +183,7 @@ export default function Print() {
               key={item.report_url}
               href={`${item.report_url}?${params}`}
             >
-              <div className="w-full rounded-md bg-indigo-600 p-1 text-center text-xs text-white shadow-md hover:bg-indigo-500 focus-visible:outline-indigo-600 disabled:bg-indigo-800">
+              <div className="w-full rounded-md bg-indigo-600 p-2 text-center text-lg text-white shadow-md hover:bg-indigo-500 focus-visible:outline-indigo-600 disabled:bg-indigo-800">
                 {item.report_name}
               </div>
             </Link>
