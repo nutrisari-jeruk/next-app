@@ -1,10 +1,10 @@
 import Link from 'next/link';
+import Table from './ui/table';
 import { Metadata } from 'next';
 import { TwButton, TwHeader } from '@/components';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import { fetchList } from '@/actions/master/journal/closing';
 import type { Params } from '@/types/params';
-import Table from './ui/table';
 
 export const metadata: Metadata = {
   title: 'Jurnal Penutup',
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default async function Page({ searchParams }: { searchParams: Params }) {
   const searchValue = searchParams?.searchValue || '';
-  const searchField = searchParams?.searchField || 'journal_code';
+  const searchField = searchParams?.searchField || 'journal_kind';
   const page = searchParams?.page || '1';
   const rowsPerPage = searchParams?.rowsPerPage || '10';
 
