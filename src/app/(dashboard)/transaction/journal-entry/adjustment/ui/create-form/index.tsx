@@ -12,8 +12,8 @@ import { Option } from '@/types/journal-entry/adjustment';
 import { ArrowUturnLeftIcon, CheckIcon } from '@heroicons/react/24/outline';
 import { useFormState, useFormStatus } from 'react-dom';
 import Link from 'next/link';
-import { set } from 'zod';
 import { Input } from '@headlessui/react';
+import { NumericFormat } from 'react-number-format';
 
 function SubmitButton(props: { difference: number }) {
   const { difference } = props;
@@ -162,27 +162,36 @@ export default function Create() {
                 <div className="w-1/2">{account?.debit ?? account?.credit}</div>
                 <div className="w-1/5">
                   {account?.debit && (
-                    <Input
-                      className="block size-8 w-full rounded-md border-0 py-1.5 ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
-                      required
-                      type="number"
+                    <NumericFormat
                       name={`details-${account?.code}`}
-                      onChange={(e) =>
-                        handleAmountChange(index, parseFloat(e.target.value))
+                      className="block size-8 w-full rounded-md border-0 py-1.5 ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
+                      prefix="Rp"
+                      thousandSeparator="."
+                      decimalSeparator=","
+                      decimalScale={2}
+                      allowNegative={false}
+                      fixedDecimalScale={true}
+                      onValueChange={(value) =>
+                        handleAmountChange(index, value.floatValue || 0)
                       }
+                      required
                     />
                   )}
                 </div>
                 <div className="w-1/5">
                   {account?.credit && (
-                    <Input
+                    <NumericFormat
                       className="block size-8 w-full rounded-md border-0 py-1.5 ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
-                      required
-                      type="number"
-                      name={`details-${account?.code}`}
-                      onChange={(e) =>
-                        handleAmountChange(index, parseFloat(e.target.value))
+                      prefix="Rp"
+                      thousandSeparator="."
+                      decimalSeparator=","
+                      decimalScale={2}
+                      allowNegative={false}
+                      fixedDecimalScale={true}
+                      onValueChange={(value) =>
+                        handleAmountChange(index, value.floatValue || 0)
                       }
+                      required
                     />
                   )}
                 </div>
@@ -205,17 +214,47 @@ export default function Create() {
             <div className="flex w-1/2 justify-end">
               <span className="w-1/3">Total Debit</span>
               <span className="w-1/10 text-right">: Rp</span>
-              <span className="w-2/5 text-right">{totalDebit}</span>
+              <NumericFormat
+                className="h-fit w-2/5 border-none p-0 pr-1 text-right"
+                thousandSeparator="."
+                decimalSeparator=","
+                disabled
+                allowNegative={false}
+                decimalScale={2}
+                fixedDecimalScale={true}
+                value={totalDebit}
+                required
+              />
             </div>
             <div className="flex w-1/2 justify-end">
               <span className="w-1/3">Total Kredit</span>
               <span className="w-1/10 text-right">: Rp</span>
-              <span className="w-2/5 text-right">{totalCredit}</span>
+              <NumericFormat
+                className="h-fit w-2/5 border-none p-0 pr-1 text-right"
+                thousandSeparator="."
+                decimalSeparator=","
+                disabled
+                allowNegative={false}
+                decimalScale={2}
+                fixedDecimalScale={true}
+                value={totalCredit}
+                required
+              />
             </div>
             <div className="flex w-1/2 justify-end">
               <span className="w-1/3">Selisih</span>
               <span className="w-1/10 text-right">: Rp</span>
-              <span className="w-2/5 text-right">{difference}</span>
+              <NumericFormat
+                className="h-fit w-2/5 border-none p-0 pr-1 text-right"
+                thousandSeparator="."
+                decimalSeparator=","
+                disabled
+                allowNegative={false}
+                decimalScale={2}
+                fixedDecimalScale={true}
+                value={difference}
+                required
+              />
             </div>
           </div>
         </div>
