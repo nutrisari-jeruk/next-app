@@ -7,10 +7,11 @@ import { fetchList } from '@/actions/mapping/expenditure-sap-13/to-burden-assets
 import type { Metadata } from 'next';
 import type { Params } from '@/types/params';
 import type { Column, Row } from '@/types/table';
+import MappingFilter from './mapping-filter';
 
 export const metadata: Metadata = {
-    title: 'Mapping',
-  };
+  title: 'Mapping',
+};
 
 export default async function Page({
   searchParams: {
@@ -18,6 +19,7 @@ export default async function Page({
     rowsPerPage = '10',
     searchField = 'account_sap13',
     searchValue = '',
+    mapping = '-1',
   },
 }: {
   searchParams: Params;
@@ -27,6 +29,7 @@ export default async function Page({
     rowsPerPage: rowsPerPage,
     searchField: searchField,
     searchValue: searchValue,
+    mapping: mapping,
   };
 
   const data = await fetchList(params);
@@ -74,10 +77,13 @@ export default async function Page({
 
       <div className="mt-4 flex w-full flex-col space-y-2">
         <RowProvider {...{ rows, params }}>
-          <Search
-            placeholder="Cari kode rekening"
-            searchField={searchField}
-          />
+          <div className="flex items-center justify-between space-x-2">
+            <Search
+              placeholder="Cari kode rekening"
+              searchField={searchField}
+            />
+            <MappingFilter mapping={mapping} />
+          </div>
           <DataTable {...{ columns, rows }} />
           <Pagination {...{ meta }} />
         </RowProvider>

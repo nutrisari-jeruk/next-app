@@ -14,12 +14,14 @@ const fetchList = async ({
   rowsPerPage = '10',
   searchField = 'account_050',
   searchValue = '',
+  mapping = '0',
 }: Params): Promise<Pagination<List[]>> => {
   const params = {
     page: page,
     rowsPerPage: rowsPerPage,
     searchField: searchField,
     searchValue: searchValue,
+    mapping: mapping,
   };
 
   let list: Pagination<List[]> = {
@@ -51,7 +53,8 @@ const fetchList = async ({
 
 const mapOnAccount = async (_prevState: unknown, formData: FormData) => {
   const id = formData.get('id');
-  const page = formData.get('page');
+  const page = formData.get('page') || '1';
+  const mapping = formData.get('mapping') || '-1';
 
   const validatedFields = MapSchema.safeParse({
     kr050_id: Number(formData.get('kr050_id')),
@@ -103,8 +106,12 @@ const mapOnAccount = async (_prevState: unknown, formData: FormData) => {
     message: 'Data berhasil disimpan',
     tag: new Date().toLocaleString(),
   });
-  revalidatePath(`/mapping/financing-050/to-financing-sap-13?page=${page}`);
-  redirect(`/mapping/financing-050/to-financing-sap-13?page=${page}`);
+  revalidatePath(
+    `/mapping/financing-050/to-financing-sap-13?mapping=${mapping}&page=${page}`,
+  );
+  redirect(
+    `/mapping/financing-050/to-financing-sap-13?mapping=${mapping}&page=${page}`,
+  );
 };
 
 export { fetchList, mapOnAccount };
