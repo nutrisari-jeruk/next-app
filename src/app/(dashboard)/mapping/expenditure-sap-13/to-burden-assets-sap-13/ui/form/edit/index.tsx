@@ -42,6 +42,7 @@ export default function Form({ treeData, params }: Props) {
       rowsPerPage: '10',
       searchField: '',
       searchValue: '',
+      mapping: '-1',
     },
   } = useRowStore.getState();
 
@@ -56,7 +57,8 @@ export default function Form({ treeData, params }: Props) {
     sap13_id_expend: selectedRow?.sap13_id_expend! as number,
     account_sap13_expend: selectedRow?.account_sap13_expend! as string,
     sap13_id_burden_asset: selectedRow?.sap13_id_burden_asset! as number,
-    account_sap13_burden_asset: selectedRow?.account_sap13_burden_asset! as string,
+    account_sap13_burden_asset:
+      selectedRow?.account_sap13_burden_asset! as string,
   };
 
   const defaultAccountSap13: TreeNode = {
@@ -84,6 +86,7 @@ export default function Form({ treeData, params }: Props) {
     const formData = new FormData();
 
     formData.append('page', String(p.page));
+    formData.append('mapping', String(p.mapping));
     formData.append('id', String(selectedRow?.id ?? ''));
     formData.append('sap13_id_expend', String(account?.sap13_id_expend!));
     formData.append('sap13_id_burden_asset', String(accountSap13?.id!));
@@ -137,7 +140,9 @@ export default function Form({ treeData, params }: Props) {
         </div>
 
         <div className="mt-6 flex items-center justify-end gap-x-6">
-          <Link href={`/mapping/expenditure-sap-13/to-burden-assets-sap-13?page=${p.page}`}>
+          <Link
+            href={`/mapping/expenditure-sap-13/to-burden-assets-sap-13?page=${p.page}`}
+          >
             <TwButton
               type="button"
               title="Kembali"

@@ -35,7 +35,6 @@ function SubmitButton() {
 }
 
 export default function Form({ treeData, params }: Props) {
-
   const {
     rows,
     params: p = {
@@ -43,6 +42,7 @@ export default function Form({ treeData, params }: Props) {
       rowsPerPage: '10',
       searchField: '',
       searchValue: '',
+      mapping: '-1',
     },
   } = useRowStore.getState();
 
@@ -85,6 +85,7 @@ export default function Form({ treeData, params }: Props) {
     const formData = new FormData();
 
     formData.append('page', String(p.page));
+    formData.append('mapping', String(p.mapping));
     formData.append('id', String(selectedRow?.id ?? ''));
     formData.append('kr050_id', String(account?.kr050_id!));
     formData.append('sap13_id', String(accountSap13?.id!));

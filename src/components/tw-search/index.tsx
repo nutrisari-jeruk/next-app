@@ -20,7 +20,7 @@ export default function Search({
     const params = new URLSearchParams(searchParams);
     params.set('searchField', searchField);
 
-    if (term) {
+    if (term.length >= 3) {
       params.set('searchValue', term);
     } else {
       params.delete('searchValue');

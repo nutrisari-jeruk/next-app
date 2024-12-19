@@ -5,4 +5,5 @@ export interface Params {
   searchValue?: string;
   toastMessage?: string;
   toastStatus?: string;
+  mapping?: string;
 }
