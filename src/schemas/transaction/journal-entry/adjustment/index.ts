@@ -31,7 +31,7 @@ export const GeneralEntrySchema = z.object({
           required_error: 'amount is required',
           invalid_type_error: 'amount must be a string',
         })
-        .min(1, 'amount is required'),
+        .min(0, 'amount is required'),
     }),
   ),
 });

@@ -10,7 +10,7 @@ export default function PeriodFilter() {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
-  const [filterType, setFilterType] = useState('month'); // "year" atau "month"
+  const [filterType, setFilterType] = useState('year'); // "year" atau "month"
   const [selectedYear, setSelectedYear] = useState(dayjs().format('YYYY'));
   const [selectedMonth, setSelectedMonth] = useState(dayjs().format('YYYY-MM'));
 

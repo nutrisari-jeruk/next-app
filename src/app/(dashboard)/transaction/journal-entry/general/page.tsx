@@ -18,7 +18,7 @@ export default async function page({
     rowsPerPage = '10',
     searchField = 'description',
     searchValue = '',
-    period = dayjs().format('YYYY-MM'),
+    period = dayjs().format('YYYY'),
   },
 }: {
   searchParams: Params;
