@@ -23,7 +23,9 @@ function SubmitButton(props: { difference: number }) {
       type="submit"
       title="Save"
       isLoading={pending}
-      disabled={pending || difference != 0}
+      disabled={
+        pending || Number(difference.toFixed(10)) !== Number((0).toFixed(10))
+      }
       variant="success"
       icon={<CheckIcon className="h-5 w-5" aria-hidden="true" />}
     />
