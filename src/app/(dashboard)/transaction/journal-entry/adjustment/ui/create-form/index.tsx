@@ -24,7 +24,7 @@ function SubmitButton(props: { difference: number }) {
       title="Save"
       isLoading={pending}
       disabled={
-        pending || Number(difference.toFixed(10)) !== Number((0).toFixed(10))
+        pending || Number(difference.toFixed(2)) !== Number((0).toFixed(2))
       }
       variant="success"
       icon={<CheckIcon className="h-5 w-5" aria-hidden="true" />}
@@ -97,15 +97,18 @@ export default function Create() {
         }
       });
 
-      difference = totalDebit - totalCredit;
+      const fixedTotalDebit = Number(totalDebit.toFixed(2));
+      const fixedTotalCredit = Number(totalCredit.toFixed(2));
+
+      difference = fixedTotalDebit - fixedTotalCredit;
 
       setSelectedJournalKind({
         ...selectedJournalKind,
         accounts: updatedAccounts,
       });
 
-      setTotalDebit(totalDebit);
-      setTotalCredit(totalCredit);
+      setTotalDebit(fixedTotalDebit);
+      setTotalCredit(fixedTotalCredit);
       setDifference(difference);
     }
   };
