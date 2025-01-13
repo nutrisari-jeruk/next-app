@@ -107,6 +107,20 @@ export default function Print() {
     setParams(`type=monthly&period=${fiscalYear}-${month}`);
   };
 
+  const changeDateRangeFilter = (startDate: string, endDate: string) => {
+    if (dayjs(startDate) > dayjs(endDate)) {
+      setStartDate(startDate);
+      setEndDate(startDate);
+      setParams(
+        `type=date_range&start_date=${startDate}&end_date=${startDate}`,
+      );
+    } else {
+      setStartDate(startDate);
+      setEndDate(endDate);
+      setParams(`type=date_range&start_date=${startDate}&end_date=${endDate}`);
+    }
+  };
+
   useEffect(() => {
     async function fetchReportList(year: string) {
       const list = await fetchList(year);
@@ -160,7 +174,7 @@ export default function Print() {
               min={`${fiscalYear}-01-01`}
               max={`${fiscalYear}-12-31`}
               value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
+              onChange={(e) => changeDateRangeFilter(e.target.value, endDate)}
             />
 
             <TwInput
@@ -170,7 +184,7 @@ export default function Print() {
               min={startDate}
               max={`${fiscalYear}-12-31`}
               value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
+              onChange={(e) => changeDateRangeFilter(startDate, e.target.value)}
             />
           </>
         )}
