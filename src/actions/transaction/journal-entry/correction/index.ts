@@ -1,6 +1,5 @@
 'use server';
 
-import $http from '@/lib/axios';
 import $fetch from '@/lib/fetch';
 import { setFlash } from '@/lib/flash-toaster';
 import { GeneralEntrySchema } from '@/schemas/transaction/journal-entry/correction';
@@ -96,7 +95,11 @@ const createJournalEntry = async (_prevState: unknown, formData: FormData) => {
   const payload: Payload = validatedFields.data;
 
   try {
-    await $http.post('/v1/transactions/journal-entries/correction', payload);
+    const data = await $fetch<JournalKindAutoComplete[]>({
+      method: 'POST',
+      url: `/v1/transactions/journal-entries/correction`,
+      payload: payload,
+    });
   } catch (error) {
     if (error instanceof AxiosError) {
       if (error.response?.data?.message) {
