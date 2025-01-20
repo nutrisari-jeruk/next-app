@@ -66,7 +66,6 @@ export default function CreateForm(props: Props) {
   };
 
   const appendAccount = (accounts: Account) => {
-    console.log('tesss', accounts.equitas_id);
     let addArray = [];
     let CpAccount = [...accountList];
     if (accounts?.equitas_id === '739') {
@@ -218,6 +217,11 @@ export default function CreateForm(props: Props) {
           )}
 
           {!!state && <div className="text-red-500">{state.message}</div>}
+          {!!state?.validationErrors?.accounts && (
+            <div className="text-red-500">
+              {state.validationErrors.accounts}
+            </div>
+          )}
         </div>
 
         <div className="flex items-center justify-end gap-x-6">

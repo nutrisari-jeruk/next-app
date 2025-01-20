@@ -15,7 +15,6 @@ import { createJournal } from '@/actions/master/journal/closing';
 import type { TreeNode } from '@/types/tree-view';
 import type { Account } from '@/types/journal/closing';
 
-
 interface Props {
   treeData: TreeNode[];
 }
@@ -100,14 +99,17 @@ export default function CreateForm(props: Props) {
             accountList.map((account, index) => (
               <div
                 key={index}
-                className="flex items-center justify-center w-full rounded bg-white px-3 py-2 shadow gap-1"
+                className="flex w-full items-center justify-center gap-1 rounded bg-white px-3 py-2 shadow"
               >
                 <div className="w-full">{account?.sap13_id.text}</div>
                 <div className="w-1/3">
                   {account?.is_credit ? 'Kredit' : 'Debit'}
                 </div>
                 <div className="w-1/4">
-                  <button className="text-red-500" onClick={() => removeAccount(index)}>
+                  <button
+                    className="text-red-500"
+                    onClick={() => removeAccount(index)}
+                  >
                     <TrashIcon className="h-5 w-5" aria-hidden="true" />
                   </button>
                 </div>
@@ -123,6 +125,11 @@ export default function CreateForm(props: Props) {
           )}
 
           {!!state && <div className="text-red-500">{state.message}</div>}
+          {!!state?.validationErrors?.accounts && (
+            <div className="text-red-500">
+              {state.validationErrors.accounts}
+            </div>
+          )}
         </div>
 
         <div className="flex items-center justify-end gap-x-6">

@@ -125,6 +125,11 @@ export default function CreateForm(props: Props) {
           )}
 
           {!!state && <div className="text-red-500">{state.message}</div>}
+          {!!state?.validationErrors?.accounts && (
+            <div className="text-red-500">
+              {state.validationErrors.accounts}
+            </div>
+          )}
         </div>
 
         <div className="flex items-center justify-end gap-x-6">
