@@ -18,7 +18,7 @@ export default function TableHeader(props: Props) {
     <div>
       <div className="flex items-center justify-between space-x-2">
         <PeriodFilter />
-        <Search placeholder="Cari No Bukti" searchField={searchField} />
+        <Search placeholder="Cari Keterangan" searchField={searchField} />
       </div>
     </div>
   );
