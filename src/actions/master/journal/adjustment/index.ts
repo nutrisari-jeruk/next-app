@@ -1,22 +1,27 @@
 'use server';
 
-import $http from '@/lib/axios';
 import { AdjustmentSchema } from '@/schemas/master/journal/adjustment';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { AxiosError } from 'axios';
 import type { List, Payload } from '@/types/journal/adjustment';
 import type { Params } from '@/types/params';
-import type { BaseResponse } from '@/types/api';
 import { Pagination } from '@/types/pagination';
 import { setFlash } from '@/lib/flash-toaster';
+import $fetch from '@/lib/fetch';
 
 const fetchList = async ({
-  page,
-  rowsPerPage,
-  searchField,
-  searchValue,
+  page = '1',
+  rowsPerPage = '10',
+  searchField = 'journal_kind',
+  searchValue = '',
 }: Params): Promise<Pagination<List[]>> => {
+  const params = {
+    page: page,
+    rowsPerPage: rowsPerPage,
+    searchField: searchField,
+    searchValue: searchValue,
+  };
   let list: Pagination<List[]> = {
     data: [],
     links: [],
@@ -32,17 +37,11 @@ const fetchList = async ({
   };
 
   try {
-    const { data } = await $http.get<BaseResponse<Pagination<List[]>>>(
-      '/v1/masters/journals/adjustment',
-      {
-        params: {
-          page: page,
-          rowsPerPage: rowsPerPage,
-          searchField: searchField,
-          searchValue: searchValue,
-        },
-      },
-    );
+    const urlParams = new URLSearchParams(params).toString();
+    const data = await $fetch<Pagination<List[]>>({
+      method: 'GET',
+      url: `/v1/masters/journals/adjustment?${urlParams}`,
+    });
 
     if (data.success) {
       list = data?.data!;
@@ -79,7 +78,11 @@ const createJournal = async (_prevState: unknown, formData: FormData) => {
   };
 
   try {
-    await $http.post('/v1/masters/journals/adjustment', payload);
+    const data = await $fetch({
+      method: 'POST',
+      url: `/v1/masters/journals/adjustment`,
+      payload: payload,
+    });
   } catch (error) {
     if (error instanceof AxiosError) {
       if (error.response?.data?.message) {
