@@ -79,7 +79,7 @@ export default function Form() {
     if (e.target.value === 'date_range') {
       setType('date_range');
       setEndDate(today);
-      setEndDate(today)
+      setEndDate(today);
       setMonthIsShown(false);
       setDateIsShown(true);
     }
@@ -96,7 +96,7 @@ export default function Form() {
     setSap13Error('');
   };
 
-  const show = () => {
+  const show = (excel = false) => {
     const id = sap13?.id;
 
     if (!type) {
@@ -115,6 +115,10 @@ export default function Form() {
     }
 
     let url = `${process.env.NEXT_PUBLIC_REPORT_URL_V1}/ledger?type=${type}&sap13_id=${id}`;
+
+    if (excel) {
+      url += `&excel=1`;
+    }
 
     if (type === 'yearly') {
       url += `&period=${period}`;
@@ -194,7 +198,14 @@ export default function Form() {
         />
       </div>
 
-      <TwButton title="Tampilkan" onClick={show} />
+      <div className="flex justify-start gap-2">
+        <TwButton title="Tampilkan" onClick={() => show()} />
+        <TwButton
+          variant="success"
+          title="Export Excel"
+          onClick={() => show(true)}
+        />
+      </div>
 
       <Sap13Modal
         treeData={treeData}
