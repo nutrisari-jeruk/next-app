@@ -15,11 +15,14 @@ function View(data: Row) {
   return (
     <>
       <TwButton size="xs" title="View" onClick={() => setIsOpen(true)} />
-      <ShowJournal data={data} isOpen={isOpen} handleClose={() => setIsOpen(false)} />
+      <ShowJournal
+        data={data}
+        isOpen={isOpen}
+        handleClose={() => setIsOpen(false)}
+      />
     </>
   );
 }
-
 
 interface Props {
   searchField?: string;
@@ -64,7 +67,7 @@ export default function Table({ searchField = '', data }: Props) {
   const meta: Meta = data.meta;
   return (
     <div className="flex w-full flex-col space-y-2">
-      <Search placeholder="Cari kode rekening" searchField={searchField} />
+      <Search placeholder="Cari Jenis Jurnal" searchField={searchField} />
       <DataTable {...{ rows, columns, meta, searchField }} />
       <Pagination {...{ meta }} />
     </div>
