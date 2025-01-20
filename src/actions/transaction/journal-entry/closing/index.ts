@@ -1,6 +1,5 @@
 'use server';
 
-import $http from '@/lib/axios';
 import $fetch from '@/lib/fetch';
 import { setFlash } from '@/lib/flash-toaster';
 import { ClosingEntrySchema } from '@/schemas/transaction/journal-entry/closing';
@@ -96,7 +95,11 @@ const createJournalEntry = async (_prevState: unknown, formData: FormData) => {
   const payload: Payload = validatedFields.data;
 
   try {
-    await $http.post('/v1/transactions/journal-entries/closing', payload);
+    const data = await $fetch<JournalKindAutoComplete[]>({
+      method: 'POST',
+      url: `/v1/transactions/journal-entries/closing`,
+      payload: payload,
+    });
   } catch (error) {
     if (error instanceof AxiosError) {
       if (error.response?.data?.message) {
