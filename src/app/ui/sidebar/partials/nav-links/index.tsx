@@ -64,6 +64,13 @@ const adminJournals: Menu[] = [
     initial: 'JPP',
     current: false,
   },
+  {
+    id: 5,
+    name: 'SAP 13',
+    href: '/master/sap-13',
+    initial: 'S13',
+    current: false,
+  },
 ];
 
 const adminMaps: Menu[] = [

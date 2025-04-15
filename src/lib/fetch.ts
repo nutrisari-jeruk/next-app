@@ -23,7 +23,9 @@ const $fetch = async <T>({
     };
   }
 
+  //Mock
   const response = await fetch(process.env.NEXT_PUBLIC_API_URL + url, {
+  // const response = await fetch(url, {
     method: method,
     headers: {
       'Content-Type': 'application/json',
@@ -32,6 +34,7 @@ const $fetch = async <T>({
     ...(!!payload && { body: JSON.stringify(payload) }),
   });
 
+  
   if (!response.ok) {
     throw new Error(response.statusText);
   }
