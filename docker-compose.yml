@@ -1,5 +1,7 @@
 services:
   nextjs:
+    container_name: app-akuntansi         # nama container
+    image: app-akuntansi-image:latest         # nama image custom
     build:
       context: .
       dockerfile: Dockerfile
