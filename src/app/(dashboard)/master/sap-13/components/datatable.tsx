@@ -5,50 +5,38 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import type { Column, Row } from '@/types/table';
+import type { List } from '@/types/sap13/sap13';
 
-interface Props {
-  rows: Row[];
+export default function DataTable({ 
+  data,
+  columns,
+  itemsPerPage,
+  currentPage,
+  sortField,
+  order,
+  setOrder,
+  setSortField,
+}: { 
+  data: Row[];
   columns: Column[];
-}
-
-export default function DataTable({ rows, columns }: Props) {
-  const [tableData, setTableData] = useState<Row[]>(rows);
-  const [sortField, setSortField] = useState('');
-  const [order, setOrder] = useState('asc');
+  itemsPerPage: number;
+  currentPage: number;
+  sortField: string;
+  order: string;
+  setOrder: any;
+  setSortField: any;
+}) {
+  const [tableData, setTableData] = useState<Row[]>(data);
 
   const pathname = usePathname();
 
   useEffect(() => {
-    setTableData(rows);
-  }, [rows]);
-
-  const sort = (sortField: string, sortOrder: string) => {
-    if (sortField) {
-      const sorted = [...tableData].sort((a, b) => {
-        if (a[sortField] === null) return 1;
-        if (b[sortField] === null) return -1;
-        if (a[sortField] === null && b[sortField] === null) return 0;
-        return (
-          a[sortField].toString().localeCompare(b[sortField].toString(), 'en', {
-            numeric: true,
-          }) * (sortOrder === 'asc' ? 1 : -1)
-        );
-      });
-      setTableData(sorted);
-    }
-  };
-
-  const handleSortingChange = (accessor: string) => {
-    const sortOrder =
-      accessor === sortField && order === 'asc' ? 'desc' : 'asc';
-    setSortField(accessor);
-    setOrder(sortOrder);
-    sort(accessor, sortOrder);
-  };
+    setTableData(data);
+  }, [data]);
 
   const renderRow = (index: number, column: Column, item: Row) => {
     if (column.accessor === '#') {
-      return `${index + 1}.`;
+      return `${(index)+(itemsPerPage*(currentPage-1))}.`;
     }
 
     if (column.render) {
@@ -71,6 +59,13 @@ export default function DataTable({ rows, columns }: Props) {
     const data = item[column.accessor] ? item[column.accessor] : '-';
 
     return data;
+  };
+
+  const handleSortingChange = (accessor: string) => {
+    const sortOrder =
+      accessor === sortField && order === 'asc' ? 'desc' : 'asc';
+    setSortField(accessor);
+    setOrder(sortOrder);
   };
 
   return (

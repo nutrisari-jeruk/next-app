@@ -2,6 +2,7 @@ import AppLogo from './app-logo';
 import TwButton from './tw-button';
 import TwHeader from './tw-header';
 import TwTreeView from './tw-tree-view';
+import TwTreeViewReverse from './tw-tree-view-reverse';
 import TwInput from './tw-input';
 import TwKbd from './tw-kbd';
 import Input from './input';
@@ -19,6 +20,7 @@ export {
   TwHeader,
   TwInput,
   TwTreeView,
+  TwTreeViewReverse,
   Input,
   TwKbd,
   TwConfirm,
