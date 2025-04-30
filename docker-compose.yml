@@ -1,0 +1,18 @@
+services:
+  nextjs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "1235:3000"        # Host:Container (akses dari localhost:1234)
+    restart: always
+    env_file:
+      - .env.production
+    environment:
+      NODE_ENV: production # Bisa eksplisit kalau ingin menekankan
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
