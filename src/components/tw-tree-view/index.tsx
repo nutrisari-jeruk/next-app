@@ -93,9 +93,7 @@ export default function TwTreeView(props: Props) {
   // Handle click to expand or collapse node
   const handleNodeClick = (node: TreeNode) => {
     return () => {
-      if (node.is_selectable) {
-        onNodeSelect(node); // Panggil handler yang di-passing dari props
-      } else {
+      if (node.nodes && node.nodes.length > 0) {
         setExpandedNodes((prev) => {
           const newSet = new Set(prev);
           if (newSet.has(node.id)) {
@@ -105,6 +103,10 @@ export default function TwTreeView(props: Props) {
           }
           return newSet;
         });
+      }
+
+      if (node.is_selectable) {
+        onNodeSelect(node);
       }
     };
   };
@@ -126,15 +128,22 @@ export default function TwTreeView(props: Props) {
 
       return (
         <div key={node.id}>
-          <Button
-            onClick={handleNodeClick(node)}
-            className={clsx(
-              'mb-1 flex w-full rounded-sm border px-2 py-1 shadow-sm',
-              className,
-            )}
-          >
+          <div className="mb-1 flex w-full items-center rounded-sm border px-2 py-1 shadow-sm">
             {node.nodes && (
-              <span>
+              <span
+                onClick={() => {
+                  setExpandedNodes((prev) => {
+                    const newSet = new Set(prev);
+                    if (newSet.has(node.id)) {
+                      newSet.delete(node.id);
+                    } else {
+                      newSet.add(node.id);
+                    }
+                    return newSet;
+                  });
+                }}
+                className="cursor-pointer"
+              >
                 {isExpanded ? (
                   <ChevronDownIcon className="h-4 w-4 text-gray-500" />
                 ) : (
@@ -142,15 +151,23 @@ export default function TwTreeView(props: Props) {
                 )}
               </span>
             )}
-            <span
+
+            <button
+              type="button"
+              onClick={() => {
+                if (node.is_selectable) {
+                  onNodeSelect(node);
+                }
+              }}
               className={clsx(
                 'ml-2 text-left font-mono text-sm text-gray-500',
                 node.is_selectable && 'font-bold text-gray-600 underline',
               )}
             >
               {resolveNodeText(node.text)}
-            </span>
-          </Button>
+            </button>
+          </div>
+
           {node.nodes && isExpanded && (
             <div className="ml-4 border-l border-l-gray-200 pl-4">
               {renderTreeNodes(node.nodes)}
