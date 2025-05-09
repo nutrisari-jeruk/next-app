@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import type { Option } from '@/types/option';
-import { TwInput, TwSelect } from '@/components';
+import { TwInput, TwSelect, TwToggle } from '@/components';
 import { useSession } from 'next-auth/react';
 import dayjs from 'dayjs';
 import Link from 'next/link';
@@ -13,6 +13,7 @@ export default function Print() {
   const { data } = useSession();
 
   const [reportList, setReportList] = useState<List[]>([]);
+  const [showDetail, setShowDetail] = useState(false);
 
   const fiscalYear = data?.user?.fiscal_year;
 
@@ -75,11 +76,17 @@ export default function Print() {
 
   const [params, setParams] = useState(`type=yearly&period=${fiscalYear}`);
 
+  const updateParams = (baseParams: string) => {
+    return showDetail ? `${baseParams}&is_detail=true` : baseParams;
+  };
+
   const changeFilterType = (type: string) => {
     setFilterType(type);
     switch (type) {
       case 'month':
-        setParams(`type=monthly&period=${fiscalYear}-${monthFilter}`);
+        setParams(
+          updateParams(`type=monthly&period=${fiscalYear}-${monthFilter}`),
+        );
         setStartDate(dayjs().format('YYYY-MM-DD'));
         setEndDate(dayjs().format('YYYY-MM-DD'));
         break;
@@ -88,13 +95,15 @@ export default function Print() {
         setMonthFilter('01');
         setStartDate(dayjs().format('YYYY-MM-DD'));
         setEndDate(dayjs().format('YYYY-MM-DD'));
-        setParams(`type=yearly&period=${fiscalYear}`);
+        setParams(updateParams(`type=yearly&period=${fiscalYear}`));
         break;
 
       case 'date_range':
         setMonthFilter('01');
         setParams(
-          `type=date_range&start_date=${startDate}&end_date=${endDate}`,
+          updateParams(
+            `type=date_range&start_date=${startDate}&end_date=${endDate}`,
+          ),
         );
         break;
       default:
@@ -104,7 +113,7 @@ export default function Print() {
 
   const changeMonthFIlter = (month: string) => {
     setMonthFilter(month);
-    setParams(`type=monthly&period=${fiscalYear}-${month}`);
+    setParams(updateParams(`type=monthly&period=${fiscalYear}-${month}`));
   };
 
   const changeDateRangeFilter = (startDate: string, endDate: string) => {
@@ -112,18 +121,50 @@ export default function Print() {
       setStartDate(startDate);
       setEndDate(startDate);
       setParams(
-        `type=date_range&start_date=${startDate}&end_date=${startDate}`,
+        updateParams(
+          `type=date_range&start_date=${startDate}&end_date=${startDate}`,
+        ),
       );
     } else {
       setStartDate(startDate);
       setEndDate(endDate);
-      setParams(`type=date_range&start_date=${startDate}&end_date=${endDate}`);
+      setParams(
+        updateParams(
+          `type=date_range&start_date=${startDate}&end_date=${endDate}`,
+        ),
+      );
+    }
+  };
+
+  const handleToggleChange = (value: boolean) => {
+    setShowDetail(value);
+
+    // Update params based on current filter type
+    if (filterType === 'year') {
+      setParams(
+        value
+          ? `type=yearly&period=${fiscalYear}&is_detail=true`
+          : `type=yearly&period=${fiscalYear}`,
+      );
+    } else if (filterType === 'month') {
+      setParams(
+        value
+          ? `type=monthly&period=${fiscalYear}-${monthFilter}&is_detail=true`
+          : `type=monthly&period=${fiscalYear}-${monthFilter}`,
+      );
+    } else if (filterType === 'date_range') {
+      setParams(
+        value
+          ? `type=date_range&start_date=${startDate}&end_date=${endDate}&is_detail=true`
+          : `type=date_range&start_date=${startDate}&end_date=${endDate}`,
+      );
     }
   };
 
   useEffect(() => {
     async function fetchReportList(year: string) {
       const list = await fetchList(year);
+
       setReportList(list);
     }
 
@@ -188,20 +229,38 @@ export default function Print() {
             />
           </>
         )}
+
+        <TwToggle
+          name="showDetail"
+          label="Tampilan Detail"
+          enabled={showDetail}
+          setEnabled={handleToggleChange}
+        />
       </div>
       <div className="space-y-2 rounded-lg bg-white p-4 shadow">
         <div className="grid grid-cols-3 gap-2">
-          {reportList.map((item) => (
-            <Link
-              target="_blank"
-              key={item.report_url}
-              href={`${item.report_url}?${params}`}
-            >
-              <div className="w-full rounded-md bg-indigo-600 p-2 text-center text-lg text-white shadow-md hover:bg-indigo-500 focus-visible:outline-indigo-600 disabled:bg-indigo-800">
-                {item.report_name}
-              </div>
-            </Link>
-          ))}
+          {reportList.map((item) => {
+            const isDisabled = showDetail && !item.has_detail;
+
+            return (
+              <Link
+                target="_blank"
+                key={item.report_url}
+                href={isDisabled ? '#' : `${item.report_url}?${params}`}
+                onClick={isDisabled ? (e) => e.preventDefault() : undefined}
+              >
+                <div
+                  className={`w-full rounded-md p-2 text-center text-lg text-white shadow-md ${
+                    isDisabled
+                      ? 'cursor-not-allowed bg-gray-400'
+                      : 'bg-indigo-600 hover:bg-indigo-500 focus-visible:outline-indigo-600'
+                  }`}
+                >
+                  {item.report_name}
+                </div>
+              </Link>
+            );
+          })}
         </div>
       </div>
     </div>

@@ -13,6 +13,7 @@ import TwSelect from './tw-select';
 import TwListbox from './tw-listbox';
 import TwRadio from './tw-radio';
 import TwTextarea from './tw-textarea';
+import TwToggle from './tw-toggle';
 
 export {
   AppLogo,
@@ -30,4 +31,5 @@ export {
   TwListbox,
   TwRadio,
   TwTextarea,
+  TwToggle,
 };
