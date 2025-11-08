@@ -36,10 +36,12 @@ export async function fetchSap13(props?: Props): Promise<TreeNode[]> {
     }
   });
 
+  const query = urlSearchParams.toString();
+
   // Mock
   const { data } = await $fetch<TreeNode[]>({
-    // url: 'https://run.mocky.io/v3/d903d251-e479-4592-909c-55d16df7584b?' + urlSearchParams.toString(),
-    url: '/v1/masters/accounts/sap13/tree' + urlSearchParams.toString(),
+    // url: 'https://run.mocky.io/v3/d903d251-e479-4592-909c-55d16df7584b?' + query,
+    url: `/v1/masters/accounts/sap13/tree${query ? `?${query}` : ''}`,
     method: 'GET',
   });
 
@@ -74,10 +76,12 @@ export async function fetchSap13Reverse(props?: Props): Promise<TreeNode[]> {
     }
   });
 
+  const query = urlSearchParams.toString();
+
   // Mock
   const { data } = await $fetch<TreeNode[]>({
-    // url: 'https://run.mocky.io/v3/d903d251-e479-4592-909c-55d16df7584b?' + urlSearchParams.toString(),
-    url: '/v1/masters/accounts/sap13/tree/reverse' + urlSearchParams.toString(),
+    // url: 'https://run.mocky.io/v3/d903d251-e479-4592-909c-55d16df7584b?' + query,
+    url: `/v1/masters/accounts/sap13/tree/reverse${query ? `?${query}` : ''}`,
     method: 'GET',
   });
 
