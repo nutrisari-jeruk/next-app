@@ -7,10 +7,10 @@ import { usePathname } from 'next/navigation';
 import type { Column, Row } from '@/types/table';
 
 interface Props {
-  itemsPerPage: number;
-  currentPage: number;
   rows: Row[];
   columns: Column[];
+  itemsPerPage?: number;
+  currentPage?: number;
 }
 
 export default function DataTable({
@@ -19,6 +19,9 @@ export default function DataTable({
   itemsPerPage,
   currentPage,
 }: Props) {
+  const pageSize = Math.max(itemsPerPage ?? rows.length ?? 1, 1);
+  const page = currentPage ?? 1;
+
   const [tableData, setTableData] = useState<Row[]>(rows);
   const [sortField, setSortField] = useState('');
   const [order, setOrder] = useState('asc');
@@ -55,7 +58,7 @@ export default function DataTable({
 
   const renderRow = (index: number, column: Column, item: Row) => {
     if (column.accessor === '#') {
-      return `${index + itemsPerPage * (currentPage - 1)}.`;
+      return `${index + pageSize * (page - 1)}.`;
     }
 
     if (column.render) {

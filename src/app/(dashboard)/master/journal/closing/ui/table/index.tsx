@@ -65,10 +65,21 @@ export default function Table({ searchField = '', data }: Props) {
   ];
 
   const meta: Meta = data.meta;
+  const {
+    per_page: itemsPerPage,
+    current_page: currentPage,
+  } = meta;
   return (
     <div className="flex w-full flex-col space-y-2">
       <Search placeholder="Cari Jenis Jurnal" searchField={searchField} />
-      <DataTable {...{ rows, columns, meta, searchField }} />
+      <DataTable
+        {...{
+          rows,
+          columns,
+          itemsPerPage,
+          currentPage,
+        }}
+      />
       <Pagination {...{ meta }} />
     </div>
   );
