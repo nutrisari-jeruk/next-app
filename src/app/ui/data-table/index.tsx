@@ -7,11 +7,18 @@ import { usePathname } from 'next/navigation';
 import type { Column, Row } from '@/types/table';
 
 interface Props {
+  itemsPerPage: number;
+  currentPage: number;
   rows: Row[];
   columns: Column[];
 }
 
-export default function DataTable({ rows, columns }: Props) {
+export default function DataTable({
+  rows,
+  columns,
+  itemsPerPage,
+  currentPage,
+}: Props) {
   const [tableData, setTableData] = useState<Row[]>(rows);
   const [sortField, setSortField] = useState('');
   const [order, setOrder] = useState('asc');
@@ -48,7 +55,7 @@ export default function DataTable({ rows, columns }: Props) {
 
   const renderRow = (index: number, column: Column, item: Row) => {
     if (column.accessor === '#') {
-      return `${index + 1}.`;
+      return `${index + itemsPerPage * (currentPage - 1)}.`;
     }
 
     if (column.render) {
@@ -111,7 +118,7 @@ export default function DataTable({ rows, columns }: Props) {
                       const icon = iconElement;
                       return (
                         <th
-                          key={accessor+"_"+label}
+                          key={accessor + '_' + label}
                           scope="col"
                           className={clsx(
                             'px-3 py-3.5 text-left text-sm font-semibold text-gray-900',
@@ -152,7 +159,7 @@ export default function DataTable({ rows, columns }: Props) {
                         index++;
                         return (
                           <td
-                            key={column.accessor+"_"+item.id+"_"+index}
+                            key={column.accessor + '_' + item.id + '_' + index}
                             className="px-3 py-4 text-sm text-gray-500"
                           >
                             {renderRow(index, column, item)}

@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation';
 import type { Column, Row } from '@/types/table';
 import type { List } from '@/types/sap13/sap13';
 
-export default function DataTable({ 
+export default function DataTable({
   data,
   columns,
   itemsPerPage,
@@ -16,7 +16,7 @@ export default function DataTable({
   order,
   setOrder,
   setSortField,
-}: { 
+}: {
   data: Row[];
   columns: Column[];
   itemsPerPage: number;
@@ -36,7 +36,7 @@ export default function DataTable({
 
   const renderRow = (index: number, column: Column, item: Row) => {
     if (column.accessor === '#') {
-      return `${(index)+(itemsPerPage*(currentPage-1))}.`;
+      return `${index + itemsPerPage * (currentPage - 1)}.`;
     }
 
     if (column.render) {
@@ -106,7 +106,7 @@ export default function DataTable({
                       const icon = iconElement;
                       return (
                         <th
-                          key={accessor+"_"+label}
+                          key={accessor + '_' + label}
                           scope="col"
                           className={clsx(
                             'px-3 py-3.5 text-left text-sm font-semibold text-gray-900',
@@ -147,7 +147,7 @@ export default function DataTable({
                         index++;
                         return (
                           <td
-                            key={column.accessor+"_"+item.id+"_"+index}
+                            key={column.accessor + '_' + item.id + '_' + index}
                             className="px-3 py-4 text-sm text-gray-500"
                           >
                             {renderRow(index, column, item)}
