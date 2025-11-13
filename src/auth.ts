@@ -29,7 +29,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return session;
     },
   },
-  session: { strategy: 'jwt' },
+  session: {
+    strategy: 'jwt',
+    maxAge: 7200,
+    updateAge: 3600,
+  },
+  jwt: {
+    maxAge: 7200,
+  },
   secret: process.env.AUTH_SECRET,
   ...authConfig,
 });
